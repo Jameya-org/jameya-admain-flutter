@@ -16,7 +16,7 @@ class SocietyCubit extends Cubit<SocietyState> {
     _allSocieties = [
       SocietyModel(
         id: '1',
-        name: 'جمعية 12 شهر',
+        name: 'جمعية شهر 12',
         code: 'JMY-2024-001',
         status: 'نشطة',
         currentTurn: 5,
@@ -28,7 +28,7 @@ class SocietyCubit extends Cubit<SocietyState> {
       ),
       SocietyModel(
         id: '2',
-        name: 'جمعية 12 شهر',
+        name: 'جمعية شهر 12',
         code: 'JMY-2024-001',
         status: 'مسددة',
         currentTurn: 5,
@@ -40,7 +40,7 @@ class SocietyCubit extends Cubit<SocietyState> {
       ),
       SocietyModel(
         id: '3',
-        name: 'جمعية 12 شهر',
+        name: 'جمعية شهر 12',
         code: 'JMY-2024-001',
         status: 'نشطة',
         currentTurn: 5,
@@ -52,7 +52,7 @@ class SocietyCubit extends Cubit<SocietyState> {
       ),
       SocietyModel(
         id: '4',
-        name: 'جمعية 12 شهر',
+        name: 'جمعية شهر 12',
         code: 'JMY-2024-001',
         status: 'منتهية',
         currentTurn: 5,

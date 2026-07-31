@@ -14,28 +14,28 @@ class SocietyDetailsChartHeader extends StatelessWidget {
         children: [
           SizedBox(height: 8.h),
           SizedBox(
-            width: 260.w,
+            width: double.infinity,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 const Center(child: AnimatedCircularChartWidget()),
                 Positioned(
-                  bottom: -4.h,
-                  right: 0,
+                  bottom: -10.h,
+
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 14.w,
                       vertical: 5.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1F5F9),
-                      borderRadius: BorderRadius.circular(16.r),
+                      color: const Color(0xFFF7F7F7),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
                       code.isNotEmpty ? code : 'JMY-2024-001',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: const Color(0xFF475569),
+                        color: const Color(0xff575757).withValues(alpha: 0.6),
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
