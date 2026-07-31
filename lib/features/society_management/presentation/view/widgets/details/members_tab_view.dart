@@ -14,22 +14,29 @@ class MembersTabView extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Column(
         children: [
+          // Search Bar
           Container(
-            height: 42.h,
+            height: 46.h,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: TextField(
               onChanged: (val) =>
                   context.read<SocietyDetailsCubit>().searchMember(val),
               decoration: InputDecoration(
                 hintText: 'البحث عن عضو...',
-                hintStyle: TextStyle(fontSize: 13.sp, color: Colors.grey),
-                prefixIcon: Icon(Icons.search, size: 20.sp, color: Colors.grey),
+                hintStyle: TextStyle(fontSize: 13.sp, color: Colors.grey.shade400),
+                prefixIcon: Icon(Icons.search, size: 20.sp, color: Colors.grey.shade400),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                contentPadding: EdgeInsets.symmetric(vertical: 13.h),
               ),
             ),
           ),
@@ -45,7 +52,11 @@ class MembersTabView extends StatelessWidget {
                     },
                   );
                 }
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF00CECD),
+                  ),
+                );
               },
             ),
           ),

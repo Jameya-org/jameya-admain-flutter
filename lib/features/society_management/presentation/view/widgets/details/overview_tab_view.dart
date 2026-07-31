@@ -12,33 +12,39 @@ class OverviewTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: CircleInfoCard(society: society),
-          ),
-          SizedBox(height: 16.h),
-          Container(
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: const CircleAmountsCard(),
-          ),
-          SizedBox(height: 16.h),
+          // معلومات الدائرة
+          _card(child: CircleInfoCard(society: society)),
+          SizedBox(height: 12.h),
+          // المبالغ
+          _card(child: const CircleAmountsCard()),
+          SizedBox(height: 12.h),
+          // الإجراءات السريعة
           const QuickActionsGrid(),
           SizedBox(height: 24.h),
         ],
       ),
+    );
+  }
+
+  Widget _card({required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }

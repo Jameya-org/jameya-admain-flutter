@@ -26,10 +26,12 @@ class SocietyDetailsView extends StatelessWidget {
             children: [
               SocietyDetailsChartHeader(code: society.code),
               TabBar(
-                labelColor: const Color(0xFF00796B),
-                unselectedLabelColor: Colors.grey.shade600,
-                indicatorColor: const Color(0xFF00796B),
+                labelColor: const Color(0xFF00CECD),
+                unselectedLabelColor: Colors.grey.shade400,
+                indicatorColor: const Color(0xFF00CECD),
+                indicatorSize: TabBarIndicatorSize.tab,
                 indicatorWeight: 3.h,
+                dividerColor: Colors.transparent,
                 labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                 tabs: const [
                   Tab(text: 'نظرة عامة'),

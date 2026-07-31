@@ -19,10 +19,12 @@ class AnimatedCircularChartWidget extends StatefulWidget {
   });
 
   @override
-  State<AnimatedCircularChartWidget> createState() => _AnimatedCircularChartWidgetState();
+  State<AnimatedCircularChartWidget> createState() =>
+      _AnimatedCircularChartWidgetState();
 }
 
-class _AnimatedCircularChartWidgetState extends State<AnimatedCircularChartWidget>
+class _AnimatedCircularChartWidgetState
+    extends State<AnimatedCircularChartWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -34,9 +36,10 @@ class _AnimatedCircularChartWidgetState extends State<AnimatedCircularChartWidge
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     );
-    _animation = Tween<double>(begin: 0.0, end: widget.progress).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutCirc),
-    );
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: widget.progress,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCirc));
     _controller.forward();
   }
 
@@ -44,9 +47,10 @@ class _AnimatedCircularChartWidgetState extends State<AnimatedCircularChartWidge
   void didUpdateWidget(covariant AnimatedCircularChartWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.progress != widget.progress) {
-      _animation = Tween<double>(begin: _animation.value, end: widget.progress).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeOutCirc),
-      );
+      _animation = Tween<double>(begin: _animation.value, end: widget.progress)
+          .animate(
+            CurvedAnimation(parent: _controller, curve: Curves.easeOutCirc),
+          );
       _controller.forward(from: 0.0);
     }
   }

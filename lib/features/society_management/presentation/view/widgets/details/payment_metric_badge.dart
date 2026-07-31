@@ -29,9 +29,19 @@ class PaymentMetricBadgesRow extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(count, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color)),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
           SizedBox(height: 2.h),
-          Text(label, style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600)),
+          Text(
+            label,
+            style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+          ),
         ],
       ),
     );
