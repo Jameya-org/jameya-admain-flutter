@@ -4,6 +4,8 @@ import 'package:jameya/core/cache/cache_helper.dart';
 import 'package:jameya/core/services/services_locator.dart';
 import 'package:jameya/features/onboarding/data/models/onboarding_model.dart';
 import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_state.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jameya/core/routing/routes.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit() : super(const OnboardingInitialState());
@@ -25,8 +27,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       value: true,
     );
     if (context.mounted) {
-      // TODO: navigate to login/auth screen when ready
-      // context.go(AppRoutes.kLoginView);
+      context.go(AppRoutes.kSocietyManagementView);
     }
   }
 }
