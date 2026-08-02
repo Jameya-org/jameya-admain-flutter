@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/society_model.dart';
+import '../../data/repos/society_repo.dart';
 import 'society_state.dart';
 
 class SocietyCubit extends Cubit<SocietyState> {
-  SocietyCubit() : super(SocietyInitial());
+  final SocietyRepo _societyRepo;
+
+  SocietyCubit(this._societyRepo) : super(SocietyInitial());
 
   List<SocietyModel> _allSocieties = [];
   String _activeTab = 'الكل';
@@ -11,59 +14,12 @@ class SocietyCubit extends Cubit<SocietyState> {
 
   void fetchSocieties() async {
     emit(SocietyLoading());
-    await Future.delayed(const Duration(seconds: 2)); // Simulate network
-
-    _allSocieties = [
-      SocietyModel(
-        id: '1',
-        name: 'جمعية شهر 12',
-        code: 'JMY-2024-001',
-        status: 'نشطة',
-        currentTurn: 5,
-        monthlyAmount: 1000,
-        startDate: '01/12/2024',
-        endDate: '01/12/2024',
-        duration: '12/08',
-        iconType: 'completed',
-      ),
-      SocietyModel(
-        id: '2',
-        name: 'جمعية شهر 12',
-        code: 'JMY-2024-001',
-        status: 'مسددة',
-        currentTurn: 5,
-        monthlyAmount: 1000,
-        startDate: '01/12/2024',
-        endDate: '01/12/2024',
-        duration: '12/08',
-        iconType: 'waiting',
-      ),
-      SocietyModel(
-        id: '3',
-        name: 'جمعية شهر 12',
-        code: 'JMY-2024-001',
-        status: 'نشطة',
-        currentTurn: 5,
-        monthlyAmount: 1000,
-        startDate: '01/12/2024',
-        endDate: '01/12/2024',
-        duration: '12/08',
-        iconType: 'late',
-      ),
-      SocietyModel(
-        id: '4',
-        name: 'جمعية شهر 12',
-        code: 'JMY-2024-001',
-        status: 'منتهية',
-        currentTurn: 5,
-        monthlyAmount: 1000,
-        startDate: '01/12/2024',
-        endDate: '01/12/2024',
-        duration: '12/08',
-        iconType: 'completed',
-      ),
-    ];
-    _emitLoadedState();
+    try {
+      _allSocieties = await _societyRepo.getCircles();
+      _emitLoadedState();
+    } catch (e) {
+      emit(SocietyError(e.toString()));
+    }
   }
 
   void search(String query) {
@@ -81,7 +37,13 @@ class SocietyCubit extends Cubit<SocietyState> {
 
     // Filter by Tab
     if (_activeTab != 'الكل') {
-      filtered = filtered.where((e) => e.status == _activeTab).toList();
+      // Basic status translation logic for demo purposes, you may need to map properly
+      String statusToMatch = _activeTab;
+      if (_activeTab == 'نشطة') statusToMatch = 'IN_PROGRESS';
+      if (_activeTab == 'مسددة') statusToMatch = 'COMPLETED';
+      if (_activeTab == 'منتهية') statusToMatch = 'CANCELLED';
+
+      filtered = filtered.where((e) => e.status == statusToMatch || e.status == _activeTab).toList();
     }
 
     // Filter by Search

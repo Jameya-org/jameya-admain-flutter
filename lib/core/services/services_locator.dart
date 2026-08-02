@@ -4,6 +4,8 @@ import 'package:jameya/core/localization/cubit/localization_cubit.dart';
 import 'package:jameya/core/services/api_service.dart';
 import 'package:jameya/features/home/data/repos/home_repo.dart';
 import 'package:jameya/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:jameya/features/society_management/data/repos/society_repo.dart';
+import 'package:jameya/features/society_management/presentation/viewmodel/society_cubit.dart';
 
 // Global GetIt instance for dependency injection
 final getIt = GetIt.instance;
@@ -24,4 +26,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<ApiService>(() => ApiService());
   getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt<ApiService>()));
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+
+  getIt.registerLazySingleton<SocietyRepo>(() => SocietyRepo(getIt<ApiService>()));
+  getIt.registerFactory<SocietyCubit>(() => SocietyCubit(getIt<SocietyRepo>()));
 }

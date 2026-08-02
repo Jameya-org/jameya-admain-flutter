@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jameya/core/services/services_locator.dart';
 import 'package:jameya/core/utils/app_colors.dart';
 import '../viewmodel/society_cubit.dart';
 import 'widgets/society_search_bar.dart';
@@ -15,7 +16,8 @@ class SocietyManagementView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SocietyCubit()..fetchSocieties(),
+      create: (context) => getIt<SocietyCubit>()..fetchSocieties(),
+
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
