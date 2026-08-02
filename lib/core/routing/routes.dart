@@ -2,6 +2,7 @@
 abstract final class AppRoutes {
   static const kSplashView = '/';
   static const kOnboardingView = '/onboarding';
+  static const kHomeView = '/home';
   static const kSocietyManagementView = '/society-management';
   static const kSocietyDetailsView = '/society-details';
 }

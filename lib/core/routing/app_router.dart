@@ -9,6 +9,8 @@ import 'package:jameya/features/society_management/presentation/view/society_man
 import 'package:jameya/features/society_management/presentation/view/society_details_view.dart';
 import 'package:jameya/features/society_management/data/models/society_model.dart';
 
+import 'package:jameya/features/home/presentation/view/main_view.dart';
+
 // Defines the app's navigation using GoRouter
 abstract final class AppRouter {
   static final router = GoRouter(
@@ -28,6 +30,15 @@ abstract final class AppRouter {
             create: (_) => OnboardingCubit(),
             child: const OnboardingView(),
           ),
+        ),
+      ),
+
+      //* ── Home (Main Shell) ───────────────────────────
+      GoRoute(
+        path: AppRoutes.kHomeView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: const MainView(),
         ),
       ),
 

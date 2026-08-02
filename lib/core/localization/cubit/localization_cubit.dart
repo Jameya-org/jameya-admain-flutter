@@ -8,14 +8,14 @@ import '../../../../core/cache/cache_helper.dart';
 // Manages the app locale (language) and persists the selection
 class LocaleCubit extends Cubit<LocaleState> {
   LocaleCubit(this._cacheHelper)
-    : super(const LocaleState(locale: Locale('en')));
+    : super(const LocaleState(locale: Locale('ar')));
 
   final CacheHelper _cacheHelper;
 
   /// load saved language
   void loadSavedLanguage() {
     final languageCode =
-        _cacheHelper.getString(key: CacheKey.languageCode) ?? 'en';
+        _cacheHelper.getString(key: CacheKey.languageCode) ?? 'ar';
 
     emit(LocaleState(locale: Locale(languageCode)));
   }

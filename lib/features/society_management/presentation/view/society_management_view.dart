@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jameya/core/utils/app_colors.dart';
 import '../viewmodel/society_cubit.dart';
 import 'widgets/society_search_bar.dart';
 import 'widgets/society_filter_tabs.dart';
 import 'widgets/society_list_view.dart';
 
 class SocietyManagementView extends StatelessWidget {
-  const SocietyManagementView({super.key});
+  const SocietyManagementView({super.key, this.onBack});
+
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +22,24 @@ class SocietyManagementView extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
+          automaticallyImplyLeading: false,
+          leading: onBack != null
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  onPressed: onBack,
+                )
+              : null,
           title: Text(
             'إدارة الجمعيات',
-            style: TextStyle(color: const Color(0xFF00796B), fontSize: 18.sp, fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: const Color(0xFF00796B), size: 20.sp),
-            onPressed: () => Navigator.of(context).pop(),
+            style: TextStyle(
+              color: AppColors.primary,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         body: Padding(
@@ -40,37 +54,7 @@ class SocietyManagementView extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: const Color(0xFF00796B),
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 8,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _navItem(Icons.home_outlined, 'الرئيسية', false),
-              _navItem(Icons.refresh, 'الجمعيات', true),
-              SizedBox(width: 40.w), // space for FAB
-              _navItem(Icons.payment_outlined, 'المدفوعات', false),
-              _navItem(Icons.person_outline, 'حسابي', false),
-            ],
-          ),
-        ),
       ),
-    );
-  }
-
-  Widget _navItem(IconData icon, String label, bool isActive) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: isActive ? const Color(0xFF00796B) : Colors.grey, size: 24.sp),
-        Text(label, style: TextStyle(color: isActive ? const Color(0xFF00796B) : Colors.grey, fontSize: 12.sp)),
-      ],
     );
   }
 }

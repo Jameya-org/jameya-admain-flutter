@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jameya/core/cache/cache_helper.dart';
+import 'package:jameya/core/routing/routes.dart';
+import 'package:jameya/core/services/services_locator.dart';
 
 import '../controllers/splash_controller.dart';
 import '../widgets/animated_logo.dart';
-import '../widgets/language_button.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -20,19 +22,36 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
 
     // Re-render the widget whenever the controller notifies a change
-    controller.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-    });
+    controller.addListener(_onControllerUpdate);
 
     // Kick off the typing animation
     controller.startTyping();
   }
 
+  void _onControllerUpdate() {
+    if (!mounted) return;
+    setState(() {});
+
+    if (controller.animationCompleted) {
+      _navigateToNextScreen();
+    }
+  }
+
+  void _navigateToNextScreen() {
+    final bool isOnboardingCompleted =
+        getIt<CacheHelper>().getBool(key: 'isOnboardingCompleted') ?? false;
+
+    if (isOnboardingCompleted) {
+      context.go(AppRoutes.kHomeView);
+    } else {
+      context.go(AppRoutes.kOnboardingView);
+    }
+  }
+
   @override
   void dispose() {
     // Cancel timer and release the ChangeNotifier
+    controller.removeListener(_onControllerUpdate);
     controller.disposeController();
     controller.dispose();
     super.dispose();
@@ -49,24 +68,6 @@ class _SplashViewState extends State<SplashView> {
                 text: controller.displayedText,
                 moveUp: controller.moveUp,
                 maxHeight: constraints.maxHeight,
-              ),
-              // Fade in the language buttons after animation completes
-              AnimatedOpacity(
-                opacity: controller.showButtons ? 1 : 0,
-                duration: const Duration(milliseconds: 700),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 535.h),
-                        const LanguageButton(text: 'العربية', localeCode: 'ar'),
-                        SizedBox(height: 14.h),
-                        const LanguageButton(text: 'English', localeCode: 'en'),
-                      ],
-                    ),
-                  ),
-                ),
               ),
             ],
           );

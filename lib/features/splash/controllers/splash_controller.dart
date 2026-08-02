@@ -11,8 +11,7 @@ class SplashController extends ChangeNotifier {
 
   // Whether the logo has slid up
   bool moveUp = false;
-  // Whether the language buttons are visible
-  bool showButtons = false;
+  bool animationCompleted = false;
 
   // Milliseconds between each character being typed
   static const int typingSpeed = 400;
@@ -39,8 +38,8 @@ class SplashController extends ChangeNotifier {
           moveUp = true;
           notifyListeners();
 
-          Future.delayed(const Duration(milliseconds: 400), () {
-            showButtons = true;
+          Future.delayed(const Duration(milliseconds: 600), () {
+            animationCompleted = true;
             notifyListeners();
           });
         }
