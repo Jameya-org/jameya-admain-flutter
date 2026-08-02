@@ -127,31 +127,47 @@ class SocietyCard extends StatelessWidget {
     String botLbl,
     String botTxt,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(topIcon, size: 16.sp, color: Colors.teal),
-            SizedBox(width: 4.w),
-            Text(
-              topTxt,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        SizedBox(height: 8.h),
-        Row(
-          children: [
-            Icon(botIcon, size: 14.sp, color: Colors.grey),
-            SizedBox(width: 4.w),
-            Text(
-              '$botLbl: $botTxt',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-            ),
-          ],
-        ),
-      ],
+    // Helper to format long ISO dates to simple date
+    String formattedBotTxt = botTxt;
+    if (botTxt.length > 10 && botTxt.contains('T')) {
+      formattedBotTxt = botTxt.substring(0, 10);
+    }
+
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(topIcon, size: 16.sp, color: Colors.teal),
+              SizedBox(width: 4.w),
+              Expanded(
+                child: Text(
+                  topTxt,
+                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Row(
+            children: [
+              Icon(botIcon, size: 14.sp, color: Colors.grey),
+              SizedBox(width: 4.w),
+              Expanded(
+                child: Text(
+                  '$botLbl: $formattedBotTxt',
+                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

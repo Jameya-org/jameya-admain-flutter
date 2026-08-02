@@ -27,6 +27,13 @@ class SocietyListView extends StatelessWidget {
               return SocietyCard(society: state.societies[index]);
             },
           );
+        } else if (state is SocietyError) {
+          return Center(
+            child: Text(
+              state.message,
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
         }
         return const SizedBox.shrink();
       },

@@ -17,3 +17,9 @@ class SocietyLoaded extends SocietyState {
     required this.searchQuery,
   });
 }
+
+class SocietyError extends SocietyState {
+  final String message;
+
+  SocietyError(this.message);
+}
