@@ -1,21 +1,22 @@
 import 'package:dio/dio.dart';
-import 'package:jameya/core/services/api_service.dart';
+import 'package:jameya/core/api/api_services.dart';
+import 'package:jameya/core/api/end_points.dart';
+import 'package:jameya/core/errors/failures.dart';
 import 'package:jameya/features/home/data/models/dashboard_model.dart';
 
 class HomeRepo {
-  final ApiService _apiService;
+  final ApiServices _apiServices;
 
-  HomeRepo(this._apiService);
+  HomeRepo(this._apiServices);
 
   Future<DashboardModel> getDashboardData() async {
     try {
-      final response = await _apiService.get(endPoint: '/admin/dashboard');
+      final response = await _apiServices.get(endPoint: EndPoints.adminDashboard);
       return DashboardModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw ServerFailure.fromDioException(e).error;
     } catch (e) {
-      if (e is DioException) {
-        throw Exception(e.response?.data['message'] ?? 'Failed to fetch dashboard data');
-      }
-      throw Exception('An unexpected error occurred');
+      throw ServerFailure(e.toString()).error;
     }
   }
 }

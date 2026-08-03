@@ -1,7 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:jameya/core/api/api_services.dart';
+import 'package:jameya/core/api/api_services_implementation.dart';
+import 'package:jameya/core/api/app_interceptors.dart';
 import 'package:jameya/core/cache/cache_helper.dart';
 import 'package:jameya/core/localization/cubit/localization_cubit.dart';
-import 'package:jameya/core/services/api_service.dart';
 import 'package:jameya/features/home/data/repos/home_repo.dart';
 import 'package:jameya/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:jameya/features/society_management/data/repos/society_repo.dart';
@@ -23,10 +25,17 @@ Future<void> setupServiceLocator() async {
     () => LocaleCubit(getIt<CacheHelper>()),
   );
 
-  getIt.registerLazySingleton<ApiService>(() => ApiService());
-  getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt<ApiService>()));
-  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+  // Network & API Services
+  getIt.registerSingleton<AppInterceptors>(AppInterceptors());
+  getIt.registerLazySingleton<ApiServices>(
+    () => ApiServicesImplementation(getIt<AppInterceptors>()),
+  );
 
-  getIt.registerLazySingleton<SocietyRepo>(() => SocietyRepo(getIt<ApiService>()));
+  // Repositories
+  getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt<ApiServices>()));
+  getIt.registerLazySingleton<SocietyRepo>(() => SocietyRepo(getIt<ApiServices>()));
+
+  // Cubits / Blocs
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
   getIt.registerFactory<SocietyCubit>(() => SocietyCubit(getIt<SocietyRepo>()));
 }
