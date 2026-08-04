@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CreateSavingsCircleView extends StatelessWidget {
-  const CreateSavingsCircleView({super.key});
+class CreateJameyaView extends StatelessWidget {
+  const CreateJameyaView({super.key});
 
   @override
   Widget build(BuildContext context) {
