@@ -191,7 +191,7 @@ class _SectionHeader extends StatelessWidget {
             color: AppColors.primaryLight,
             borderRadius: BorderRadius.circular(90.r),
           ),
-          child: showImage(Assets.iconsWalletIcon, width: 20.w, height: 20.h),
+          child: showImage(Assets.iconsWalletIcon, width: 36.w, height: 36.h),
         ),
 
         SizedBox(width: 8.w),

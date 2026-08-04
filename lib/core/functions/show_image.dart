@@ -13,12 +13,7 @@ Widget showImage(
 
   switch (extension) {
     case 'svg':
-      return SvgPicture.file(
-        File(path),
-        width: width,
-        height: height,
-        fit: fit,
-      );
+      return SvgPicture.asset(path, width: width, height: height, fit: fit);
 
     case 'png':
     case 'jpg':
@@ -33,7 +28,7 @@ Widget showImage(
     case 'avif':
     case 'heic':
     case 'heif':
-      return Image.file(File(path), width: width, height: height, fit: fit);
+      return Image.asset(path, width: width, height: height, fit: fit);
 
     default:
       return const SizedBox.shrink();
