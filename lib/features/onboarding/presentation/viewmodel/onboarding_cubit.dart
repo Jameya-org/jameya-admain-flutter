@@ -27,11 +27,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       value: true,
     );
     if (context.mounted) {
-      // TODO: navigate to login/auth screen when ready
-      // context.go(AppRoutes.kLoginView);
-
-      // TODO: Remove this part when login/auth screen is ready
-      context.go(AppRoutes.kCreateJameyaView);
+      context.go(AppRoutes.kAdminLoginView);
     }
   }
 }

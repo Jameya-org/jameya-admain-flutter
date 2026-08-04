@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/routing/routes.dart';
 import '../presentation/view_model/auth_cubit.dart';
 import '../presentation/view_model/auth_state.dart';
 import '../widgets/auth_back_button.dart';
@@ -38,8 +39,8 @@ class _AdminLoginViewState extends State<AdminLoginView> {
   void _validateForm() {
     final isValid =
         _emailController.text.trim().isNotEmpty &&
-            _passwordController.text.trim().isNotEmpty &&
-            _acceptedTerms;
+        _passwordController.text.trim().isNotEmpty &&
+        _acceptedTerms;
 
     if (isValid != _isButtonEnabled) {
       setState(() {
@@ -61,20 +62,15 @@ class _AdminLoginViewState extends State<AdminLoginView> {
       listener: (context, state) {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('تم تسجيل الدخول بنجاح'),
-            ),
+            const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
           );
-
-          // context.go(AppRoutes.kHomeView);
+          context.go(AppRoutes.kCreateJameyaView);
         }
 
         if (state is AuthFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -84,9 +80,7 @@ class _AdminLoginViewState extends State<AdminLoginView> {
             children: [
               SizedBox(height: 2.h),
 
-              AuthBackButton(
-                onPressed: () => context.pop(),
-              ),
+              AuthBackButton(onPressed: () => context.pop()),
 
               SizedBox(height: 4.h),
 
@@ -98,8 +92,7 @@ class _AdminLoginViewState extends State<AdminLoginView> {
           ),
 
           child: SingleChildScrollView(
-            keyboardDismissBehavior:
-            ScrollViewKeyboardDismissBehavior.onDrag,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Padding(
               padding: EdgeInsets.only(
                 left: 24.w,
@@ -135,9 +128,7 @@ class _AdminLoginViewState extends State<AdminLoginView> {
                             : Icons.visibility_outlined,
                       ),
                     ),
-                    suffixIcon: const Icon(
-                      Icons.lock_outline,
-                    ),
+                    suffixIcon: const Icon(Icons.lock_outline),
                   ),
 
                   SizedBox(height: 240.h),
@@ -158,20 +149,15 @@ class _AdminLoginViewState extends State<AdminLoginView> {
                   SizedBox(height: 50.h),
 
                   PrimaryButton(
-                    text: state is AuthLoading
-                        ? 'جاري التحميل...'
-                        : 'تأكيد',
-                    isEnabled:
-                    _isButtonEnabled && state is! AuthLoading,
+                    text: state is AuthLoading ? 'جاري التحميل...' : 'تأكيد',
+                    isEnabled: _isButtonEnabled && state is! AuthLoading,
                     onPressed: _isButtonEnabled
                         ? () {
-                      context.read<AuthCubit>().login(
-                        email:
-                        _emailController.text.trim(),
-                        password:
-                        _passwordController.text.trim(),
-                      );
-                    }
+                            context.read<AuthCubit>().login(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
+                          }
                         : null,
                   ),
 

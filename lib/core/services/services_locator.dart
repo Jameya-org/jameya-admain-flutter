@@ -9,6 +9,8 @@ import 'package:jameya/features/create_jameya/data/repositories/create_jameya_re
 import 'package:jameya/features/create_jameya/domain/repositories/create_jameya_repository.dart';
 import 'package:jameya/features/create_jameya/domain/usecases/create_jameya_usecase.dart';
 import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya/features/auth/data/services/admin_auth_service.dart';
+import 'package:jameya/features/auth/presentation/view_model/auth_cubit.dart';
 
 // Global GetIt instance for dependency injection
 final getIt = GetIt.instance;
@@ -46,5 +48,14 @@ Future<void> setupServiceLocator() async {
   // Factory: a new cubit is created each time the route is pushed
   getIt.registerFactory<CreateJameyaCubit>(
     () => CreateJameyaCubit(getIt<CreateJameyaUseCase>()),
+  );
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  getIt.registerLazySingleton<AdminAuthService>(
+    () => AdminAuthService(getIt<Dio>()),
+  );
+  
+  getIt.registerFactory<AuthCubit>(
+    () => AuthCubit(),
   );
 }
