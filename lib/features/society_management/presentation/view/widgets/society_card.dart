@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:jameya/core/routing/routes.dart';
+import 'package:jameya/core/utils/app_colors.dart';
 import '../../../data/models/society_model.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,13 +13,34 @@ class SocietyCard extends StatelessWidget {
   Color _getStatusColor() {
     switch (society.status) {
       case 'نشطة':
-        return Colors.teal;
-      case 'مسددة':
-        return Colors.amber;
+        return Color(0xFFB1FFC5).withValues(alpha: 0.3);
+      case 'مسودة':
+        return Color(0xFFE9D5B3).withValues(alpha: 0.5);
+      case 'مكتملة':
+        return Color(0xFFD6E4FF);
       case 'منتهية':
-        return Colors.grey;
+        return Color(0xFFFDFDFD);
+      case 'دفعات متأخرة':
+        return Color(0xFFFFD6DB);
       default:
-        return Colors.blue;
+        return Color(0xFFB1FFC5);
+    }
+  }
+
+  Color _getStatusTextColor() {
+    switch (society.status) {
+      case 'نشطة':
+        return AppColors.primary;
+      case 'مسودة':
+        return Color(0xFFF59E0B);
+      case 'مكتملة':
+        return Color(0xFF2563EB);
+      case 'منتهية':
+        return Color(0xFF282828);
+      case 'دفعات متأخرة':
+        return Color(0xFFB91C1C);
+      default:
+        return Color(0xFFB91C1C);
     }
   }
 
@@ -34,7 +57,7 @@ class SocietyCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -68,49 +91,106 @@ class SocietyCard extends StatelessWidget {
                     vertical: 4.h,
                   ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor().withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20.r),
+                    color: _getStatusColor(),
+                    borderRadius: BorderRadius.circular(24.r),
                   ),
                   child: Text(
                     society.status,
-                    style: TextStyle(color: _getStatusColor(), fontSize: 12.sp),
+                    style: TextStyle(
+                      color: _getStatusTextColor(),
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
+            SizedBox(height: 10.h),
+
+            // ===== نقطة الحالة + النص =====
             Row(
               children: [
-                Icon(Icons.stars, color: Colors.teal, size: 16.sp),
-                SizedBox(width: 4.w),
+                Container(
+                  width: 8.w,
+                  height: 8.w,
+                  decoration: BoxDecoration(
+                    color: _getStatusTextColor(),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(width: 6.w),
                 Text(
-                  'الدور الحالي: ${society.currentTurn}',
-                  style: TextStyle(fontSize: 12.sp),
+                  society.status,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: Colors.grey.shade700,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
-            Divider(height: 24.h, color: Colors.grey.shade200),
+            SizedBox(height: 10.h),
+
+            Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/Refresh.svg',
+                  width: 18.w,
+                  height: 18.h,
+                  colorFilter: ColorFilter.mode(
+                    Color(0xff181818).withValues(alpha: 0.5),
+                    BlendMode.srcIn,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Text(
+                  'الدور الحالي: ${society.currentTurn}',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 14.h),
+
+            // ===== صندوقين: المبلغ الشهري + المدة =====
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatBox(
+                    icon: Icons.groups_outlined,
+                    text: society.duration,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: _buildStatBox(
+                    icon: Icons.savings_outlined,
+                    text: '${society.monthlyAmount.toStringAsFixed(0)} ج.م',
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 14.h),
+
+            // ===== النهاية / البداية: زي كودك الأصلي (Divider + عمودين) =====
+            Divider(height: 1.h, color: Colors.grey.shade200),
+            SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildInfoCol(
-                  Icons.people,
-                  society.duration,
-                  Icons.calendar_today,
-                  'البداية',
-                  society.startDate,
-                ),
+                _buildInfoCol(Icons.calendar_today, 'النهاية', society.endDate),
                 Container(
                   width: 1.w,
-                  height: 40.h,
+                  height: 32.h,
                   color: Colors.grey.shade200,
                 ),
                 _buildInfoCol(
-                  Icons.payments,
-                  '${society.monthlyAmount} ج.م',
                   Icons.calendar_today,
-                  'النهاية',
-                  society.endDate,
+                  'البداية',
+                  society.startDate,
                 ),
               ],
             ),
@@ -120,54 +200,53 @@ class SocietyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCol(
-    IconData topIcon,
-    String topTxt,
-    IconData botIcon,
-    String botLbl,
-    String botTxt,
-  ) {
-    // Helper to format long ISO dates to simple date
-    String formattedBotTxt = botTxt;
-    if (botTxt.length > 10 && botTxt.contains('T')) {
-      formattedBotTxt = botTxt.substring(0, 10);
-    }
-
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildStatBox({required IconData icon, required String text}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Icon(topIcon, size: 16.sp, color: Colors.teal),
-              SizedBox(width: 4.w),
-              Expanded(
-                child: Text(
-                  topTxt,
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Row(
-            children: [
-              Icon(botIcon, size: 14.sp, color: Colors.grey),
-              SizedBox(width: 4.w),
-              Expanded(
-                child: Text(
-                  '$botLbl: $formattedBotTxt',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ],
+          Icon(icon, size: 18.sp, color: Colors.teal),
+          SizedBox(width: 6.w),
+          Text(
+            text,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInfoCol(IconData icon, String label, String rawDate) {
+    String formatted = rawDate;
+    if (rawDate.length > 10 && rawDate.contains('T')) {
+      formatted = rawDate.substring(0, 10);
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 14.sp, color: Colors.grey),
+            SizedBox(width: 4.w),
+            Text(
+              label,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+            ),
+          ],
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          formatted,
+          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+        ),
+      ],
     );
   }
 }

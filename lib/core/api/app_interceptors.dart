@@ -12,9 +12,12 @@ class AppInterceptors extends Interceptor {
   bool _isRefreshing = false;
   final List<_PendingRequest> _queue = [];
 
-  // Temporary fallback admin token provided for testing prior to login screen implementation
-  static const String tempAdminToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOGY5MzJhZS03NTg5LTQxYjItYjljZi1kOGU2ZmU3YzFiMTgiLCJlbWFpbCI6ImFkbWluQGphbWV5YS5sb2NhbCIsInJvbGUiOiJTVVBFUl9BRE1JTiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc4NTY3MTAzNiwiZXhwIjoxNzg1NjcxOTM2fQ.2NJBJICzbBJ2scj8fPi3SIYOPsQYSEzaWUpv7eRM7HQ';
+  // Temporary fallback tokens provided for testing prior to login screen implementation
+  static const String tempAccessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOGY5MzJhZS03NTg5LTQxYjItYjljZi1kOGU2ZmU3YzFiMTgiLCJlbWFpbCI6ImFkbWluQGphbWV5YS5sb2NhbCIsInJvbGUiOiJTVVBFUl9BRE1JTiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc4NTc3NjM4MiwiZXhwIjoxNzg1Nzc3MjgyfQ.K_943WeLzK_feLuPMeiRdM36N7ujpi-QaNktg4pp85I';
+
+  static const String tempRefreshToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOGY5MzJhZS03NTg5LTQxYjItYjljZi1kOGU2ZmU3YzFiMTgiLCJlbWFpbCI6ImFkbWluQGphbWV5YS5sb2NhbCIsInJvbGUiOiJTVVBFUl9BRE1JTiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc4NTc3NjM4MiwiZXhwIjoxNzg1ODA1MTgyfQ.7NaA7fokRnJUGgryUfUh7v-vzXzb41GOsYOIA8V7hXo';
 
   AppInterceptors() {
     dio = Dio(
@@ -34,8 +37,8 @@ class AppInterceptors extends Interceptor {
   ) async {
     String? token = await SecureStorageService.getAccessToken();
 
-    // Use stored token if available, otherwise fallback to temporary admin token
-    token ??= tempAdminToken;
+    // Use stored token if available, otherwise fallback to temporary access token
+    token ??= tempAccessToken;
 
     options.headers['Authorization'] = 'Bearer $token';
     options.headers['Accept'] = '*/*';
@@ -66,9 +69,10 @@ class AppInterceptors extends Interceptor {
     _isRefreshing = true;
 
     try {
-      final refreshToken = await SecureStorageService.getRefreshToken();
+      String? refreshToken = await SecureStorageService.getRefreshToken();
+      refreshToken ??= tempRefreshToken;
 
-      if (refreshToken == null || refreshToken.isEmpty) {
+      if (refreshToken.isEmpty) {
         await logout();
         return handler.reject(err);
       }
@@ -86,42 +90,50 @@ class AppInterceptors extends Interceptor {
         data: {"refreshToken": refreshToken},
       );
 
-      final newAccess = refreshResponse.data['accessToken'];
-      final newRefresh = refreshResponse.data['refreshToken'];
+      final data = refreshResponse.data is Map ? refreshResponse.data : {};
+      final responseBody = data['data'] ?? data;
+      final newAccess = responseBody['accessToken']?.toString();
+      final newRefresh = responseBody['refreshToken']?.toString();
 
-      if (newAccess != null && newRefresh != null) {
+      if (newAccess != null && newAccess.isNotEmpty) {
         await SecureStorageService.saveTokens(
           accessToken: newAccess,
-          refreshToken: newRefresh,
+          refreshToken: newRefresh ?? refreshToken,
         );
-      }
 
-      if (!kReleaseMode) {
-        debugPrint("Token Refreshed Successfully");
-      }
-
-      // Retry original request
-      requestOptions.headers['Authorization'] = 'Bearer $newAccess';
-      final response = await dio.fetch(requestOptions);
-
-      // Retry queued requests
-      for (final pending in _queue) {
-        try {
-          pending.request.headers['Authorization'] = 'Bearer $newAccess';
-          final res = await dio.fetch(pending.request);
-          pending.completer.complete(res);
-        } catch (e) {
-          pending.completer.completeError(e);
+        if (!kReleaseMode) {
+          debugPrint("Token Refreshed Successfully");
         }
-      }
 
-      _queue.clear();
-      return handler.resolve(response);
+        // Retry original request
+        requestOptions.headers['Authorization'] = 'Bearer $newAccess';
+        final response = await dio.fetch(requestOptions);
+
+        // Retry queued requests
+        for (final pending in _queue) {
+          try {
+            pending.request.headers['Authorization'] = 'Bearer $newAccess';
+            final res = await dio.fetch(pending.request);
+            pending.completer.complete(res);
+          } catch (e) {
+            pending.completer.completeError(e);
+          }
+        }
+
+        _queue.clear();
+        return handler.resolve(response);
+      } else {
+        throw Exception("Invalid refresh response format");
+      }
     } catch (e) {
       for (final pending in _queue) {
         pending.completer.completeError(e);
       }
       _queue.clear();
+
+      if (!kReleaseMode) {
+        debugPrint("Token Refresh Failed: $e");
+      }
 
       await logout();
       return handler.reject(err);

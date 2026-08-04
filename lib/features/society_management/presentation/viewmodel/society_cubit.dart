@@ -33,27 +33,23 @@ class SocietyCubit extends Cubit<SocietyState> {
   }
 
   void _emitLoadedState() {
-    List<SocietyModel> filtered = _allSocieties;
+    List<SocietyModel> filtered = List.from(_allSocieties);
 
     // Filter by Tab
     if (_activeTab != 'الكل') {
-      // Basic status translation logic for demo purposes, you may need to map properly
-      String statusToMatch = _activeTab;
-      if (_activeTab == 'نشطة') statusToMatch = 'IN_PROGRESS';
-      if (_activeTab == 'مسددة') statusToMatch = 'COMPLETED';
-      if (_activeTab == 'منتهية') statusToMatch = 'CANCELLED';
-
-      filtered = filtered.where((e) => e.status == statusToMatch || e.status == _activeTab).toList();
+      filtered = filtered.where((e) => e.status == _activeTab).toList();
     }
 
-    // Filter by Search
-    if (_searchQuery.isNotEmpty) {
-      filtered = filtered
-          .where(
-            (e) =>
-                e.name.contains(_searchQuery) || e.code.contains(_searchQuery),
-          )
-          .toList();
+    // Filter by Search Query
+    if (_searchQuery.trim().isNotEmpty) {
+      final query = _searchQuery.trim().toLowerCase();
+      filtered = filtered.where((e) {
+        final nameMatch = e.name.toLowerCase().contains(query);
+        final codeMatch = e.code.toLowerCase().contains(query);
+        final amountMatch = e.monthlyAmount.toString().contains(query);
+        final durationMatch = e.duration.toLowerCase().contains(query);
+        return nameMatch || codeMatch || amountMatch || durationMatch;
+      }).toList();
     }
 
     emit(
@@ -65,3 +61,4 @@ class SocietyCubit extends Cubit<SocietyState> {
     );
   }
 }
+

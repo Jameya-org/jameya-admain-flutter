@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:jameya/core/utils/app_colors.dart';
 import '../../viewmodel/society_cubit.dart';
 import '../../viewmodel/society_state.dart';
 
 class SocietyFilterTabs extends StatelessWidget {
   SocietyFilterTabs({super.key});
 
-  final List<String> tabs = ['الكل', 'نشطة', 'مسددة', 'مكتملة', 'منتهية'];
+  final List<String> tabs = [
+    'الكل',
+    'نشطة',
+    'مسودة',
+    'مكتملة',
+    'منتهية',
+    'دفعات متأخرة',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +27,32 @@ class SocietyFilterTabs extends StatelessWidget {
 
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
           child: Row(
             children: tabs.map((tab) {
               final isActive = tab == activeTab;
               return GestureDetector(
                 onTap: () => context.read<SocietyCubit>().changeTab(tab),
                 child: Container(
-                  margin: EdgeInsets.only(left: 8.w),
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  margin: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 18.w,
+                    vertical: 10.h,
+                  ),
                   decoration: BoxDecoration(
-                    color: isActive ? const Color(0xFF00796B) : Colors.white,
-                    borderRadius: BorderRadius.circular(20.r),
+                    color: isActive ? AppColors.primary : Colors.white,
+                    borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(
-                      color: isActive ? const Color(0xFF00796B) : Colors.grey.shade300,
+                      color: isActive ? AppColors.primary : AppColors.border,
+                      width: 1,
                     ),
                   ),
                   child: Text(
                     tab,
-                    style: TextStyle(
-                      color: isActive ? Colors.white : Colors.grey.shade700,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                      fontSize: 14.sp,
+                    style: GoogleFonts.inter(
+                      color: isActive ? Colors.white : AppColors.textPrimary,
+                      fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+                      fontSize: 16.sp,
                     ),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya/core/utils/app_colors.dart';
 import 'package:jameya/features/home/presentation/view/widgets/home_view_body.dart';
 import 'package:jameya/features/society_management/presentation/view/society_management_view.dart';
@@ -21,101 +22,94 @@ class _MainViewState extends State<MainView> {
     });
   }
 
-  // إخفاء الـ Bottom Nav لما بنكون في tab الجمعيات (index=1)
-  // لأن صفحة الجمعيات عندها UI مستقل
-  bool get _showBottomNav => _currentIndex != 1;
+  // الـ Bottom Nav يظل ظاهراً في صفحة الجمعيات ليكون مطابقاً للتصميم
+  bool get _showBottomNav => true;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       HomeViewBody(onNavigateToSocieties: () => _onTabSelected(1)),
-      // صفحة الجمعيات كاملة بدون bottom nav بتاع الهوم
+      // صفحة الجمعيات داخل الـ main view مع الـ bottom nav
       SocietyManagementView(onBack: () => _onTabSelected(0)),
       const Center(child: Text('إضافة جمعية جديدة')),
-      const Center(child: Text('صفحة المدفوعات')),
+      const Center(child: Text('صفحة المصروفات')),
       const Center(child: Text('الملف الشخصي')),
     ];
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: IndexedStack(index: _currentIndex, children: pages),
-      floatingActionButtonLocation: _showBottomNav
-          ? FloatingActionButtonLocation.centerDocked
-          : null,
-      floatingActionButton: _showBottomNav
-          ? Container(
-              width: 58.w,
-              height: 58.h,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        width: 58.w,
+        height: 58.h,
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            _onTabSelected(2);
+          },
+          backgroundColor: AppColors.primary,
+          elevation: 0,
+          shape: const CircleBorder(),
+          child: Icon(Icons.add, color: Colors.white, size: 30.sp),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
+          ),
+        ),
+        child: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8.r,
+          color: Colors.white,
+          elevation: 0,
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              // 1. الرئيسية (Home)
+              _buildNavItem(
+                index: 0,
+                label: 'الرئيسية',
+                svgIcon: 'assets/icons/Home.svg',
               ),
-              child: FloatingActionButton(
-                onPressed: () {
-                  _onTabSelected(2);
-                },
-                backgroundColor: AppColors.primary,
-                elevation: 0,
-                shape: const CircleBorder(),
-                child: Icon(Icons.add, color: Colors.white, size: 30.sp),
+              // 2. الجمعيات (Societies)
+              _buildNavItem(
+                index: 1,
+                label: 'الجمعيات',
+                svgIcon: 'assets/icons/Refresh copy.svg',
               ),
-            )
-          : null,
-      bottomNavigationBar: _showBottomNav
-          ? Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
-                ),
+              // Spacer for center FAB
+              SizedBox(width: 44.w),
+              // 3. المصروفات (Expenses)
+              _buildNavItem(
+                index: 3,
+                label: 'المصروفات',
+                svgIcon: 'assets/icons/Payments.svg',
               ),
-              child: BottomAppBar(
-                shape: const CircularNotchedRectangle(),
-                notchMargin: 8.r,
-                color: Colors.white,
-                elevation: 0,
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // 1. الرئيسية (Home)
-                    _buildNavItem(
-                      index: 0,
-                      label: 'الرئيسية',
-                      svgIcon: 'assets/icons/Home.svg',
-                    ),
-                    // 2. الجمعيات (Societies)
-                    _buildNavItem(
-                      index: 1,
-                      label: 'الجمعيات',
-                      svgIcon: 'assets/icons/Refresh copy.svg',
-                    ),
-                    // Spacer for center FAB
-                    SizedBox(width: 44.w),
-                    // 3. المدفوعات (Payments)
-                    _buildNavItem(
-                      index: 3,
-                      label: 'المدفوعات',
-                      svgIcon: 'assets/icons/Payments.svg',
-                    ),
-                    // 4. حسابي (Profile)
-                    _buildNavItem(
-                      index: 4,
-                      label: 'حسابي',
-                      iconData: Icons.person_outline_rounded,
-                    ),
-                  ],
-                ),
+              // 4. حسابي (Profile)
+              _buildNavItem(
+                index: 4,
+                label: 'حسابي',
+                iconData: Icons.person_outline_rounded,
               ),
-            )
-          : null,
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -150,9 +144,9 @@ class _MainViewState extends State<MainView> {
             SizedBox(height: 3.h),
             Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.inter(
                 fontSize: 12.sp,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 color: itemColor,
               ),
             ),

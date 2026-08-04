@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jameya/core/services/services_locator.dart';
 import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya/core/utils/app_text_styles.dart';
 import '../viewmodel/society_cubit.dart';
 import 'widgets/society_search_bar.dart';
 import 'widgets/society_filter_tabs.dart';
@@ -17,7 +18,6 @@ class SocietyManagementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<SocietyCubit>()..fetchSocieties(),
-
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -27,31 +27,27 @@ class SocietyManagementView extends StatelessWidget {
           automaticallyImplyLeading: false,
           leading: onBack != null
               ? IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
+                  icon: Icon(
+                    Icons.arrow_back_ios_rounded,
                     color: AppColors.primary,
-                    size: 16,
+                    size: 24.sp,
                   ),
                   onPressed: onBack,
                 )
               : null,
           title: Text(
             'إدارة الجمعيات',
-            style: TextStyle(
-              color: AppColors.primary,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.title.copyWith(color: AppColors.primary),
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
           child: Column(
             children: [
               const SocietySearchBar(),
               SizedBox(height: 16.h),
               SocietyFilterTabs(),
-              SizedBox(height: 16.h),
+              SizedBox(height: 23.h),
               const Expanded(child: SocietyListView()),
             ],
           ),
