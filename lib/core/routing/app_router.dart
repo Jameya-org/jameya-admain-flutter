@@ -2,6 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jameya/core/animations/smart_animate_transition.dart';
 import 'package:jameya/core/routing/routes.dart';
+import 'package:jameya/core/services/services_locator.dart';
+import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya/features/create_jameya/presentation/page/create_jameya_page.dart';
 import 'package:jameya/features/onboarding/presentation/view/onboarding_view.dart';
 import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
 import 'package:jameya/features/splash/view/splash_view.dart';
@@ -24,6 +27,19 @@ abstract final class AppRouter {
           child: BlocProvider(
             create: (_) => OnboardingCubit(),
             child: const OnboardingView(),
+          ),
+        ),
+      ),
+
+      //* ── Create Jameya ───────────────────────────────
+      GoRoute(
+        path: AppRoutes.kCreateJameyaView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: BlocProvider(
+            // Factory registration ensures a fresh cubit per navigation
+            create: (_) => getIt<CreateJameyaCubit>(),
+            child: const CreateJameyaPage(),
           ),
         ),
       ),

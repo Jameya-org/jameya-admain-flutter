@@ -1,0 +1,7 @@
+import 'package:jameya/features/create_jameya/domain/entities/create_jameya_entity.dart';
+
+/// Abstract contract that the data layer must implement.
+abstract class CreateJameyaRepository {
+  /// Sends a request to persist the new jameya in the backend.
+  Future<void> createJameya(CreateJameyaEntity entity);
+}
