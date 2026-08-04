@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:jameya/core/functions/show_image.dart';
 import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya/core/utils/app_images.dart';
 import 'package:jameya/core/utils/app_text_styles.dart';
 import 'package:jameya/core/widgets/custom_button.dart';
 import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
@@ -52,10 +54,13 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateJameyaCubit, CreateJameyaState>(
       // Update total controller whenever totalAmount changes
-      listenWhen: (prev, curr) => prev.form.totalAmount != curr.form.totalAmount,
+      listenWhen: (prev, curr) =>
+          prev.form.totalAmount != curr.form.totalAmount,
       listener: (context, state) {
         final total = state.form.totalAmount;
-        _totalController.text = total != null ? _numberFormat.format(total) : '';
+        _totalController.text = total != null
+            ? _numberFormat.format(total)
+            : '';
       },
       builder: (context, state) {
         final cubit = CreateJameyaCubit.get(context);
@@ -91,8 +96,9 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
               SizedBox(height: 8.h),
               TextField(
                 controller: _installmentController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: false),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: false,
+                ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 textAlign: TextAlign.right,
                 style: AppTextStyles.bodySmall.copyWith(
@@ -137,12 +143,13 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
             ],
           ),
           footer: Padding(
-            padding:
-                EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 32.h),
+            padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 32.h),
             child: CustomButton(
               text: 'التالي',
               onPressed: canGoNext ? cubit.nextStep : () {},
-              backgroundColor: canGoNext ? AppColors.primary : AppColors.grey200,
+              backgroundColor: canGoNext
+                  ? AppColors.primary
+                  : AppColors.grey200,
               textColor: canGoNext ? Colors.white : AppColors.textDisabled,
             ),
           ),
@@ -155,8 +162,7 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
     return InputDecoration(
       filled: true,
       fillColor: readOnly ? AppColors.grey100 : AppColors.surface,
-      contentPadding:
-          EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
         borderSide: BorderSide(color: AppColors.border, width: 1.2),
@@ -181,13 +187,13 @@ class _SectionHeader extends StatelessWidget {
       children: [
         // In RTL Row: index 0 = rightmost → icon on right ✓
         Container(
-          padding: EdgeInsets.all(8.r),
           decoration: BoxDecoration(
-            color: AppColors.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(8.r),
+            color: AppColors.primaryLight,
+            borderRadius: BorderRadius.circular(90.r),
           ),
-          child: Icon(Icons.savings, color: AppColors.primary, size: 18),
+          child: showImage(Assets.iconsWalletIcon, width: 20.w, height: 20.h),
         ),
+
         SizedBox(width: 8.w),
         Text(
           'معلومات الجمعية',

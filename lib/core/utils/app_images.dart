@@ -19,8 +19,8 @@ class Assets {
   static const String fontsInterInter24ptSemiBold = "assets/fonts/Inter/Inter_24pt-SemiBold.ttf";
 
   /// Assets for iconsWalletIcon
-  /// assets/icons/wallet_icon.svg
-  static const String iconsWalletIcon = "assets/icons/wallet_icon.svg";
+  /// assets/icons/wallet_icon.png
+  static const String iconsWalletIcon = "assets/icons/wallet_icon.png";
 
   /// Assets for images2
   /// assets/images/2.0x
