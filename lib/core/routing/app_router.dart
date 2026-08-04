@@ -4,7 +4,7 @@ import 'package:jameya/core/animations/smart_animate_transition.dart';
 import 'package:jameya/core/routing/routes.dart';
 import 'package:jameya/core/services/services_locator.dart';
 import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
-import 'package:jameya/features/create_jameya/presentation/page/create_jameya_page.dart';
+import 'package:jameya/features/create_jameya/presentation/view/create_jameya_view.dart';
 import 'package:jameya/features/onboarding/presentation/view/onboarding_view.dart';
 import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
 import 'package:jameya/features/splash/view/splash_view.dart';
@@ -39,7 +39,7 @@ abstract final class AppRouter {
           child: BlocProvider(
             // Factory registration ensures a fresh cubit per navigation
             create: (_) => getIt<CreateJameyaCubit>(),
-            child: const CreateJameyaPage(),
+            child: const CreateJameyaView(),
           ),
         ),
       ),
