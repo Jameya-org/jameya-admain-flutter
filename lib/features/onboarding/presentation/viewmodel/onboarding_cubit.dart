@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jameya/core/cache/cache_helper.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/features/onboarding/data/models/onboarding_model.dart';
-import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_state.dart';
+
+import '../../../../core/cache/cache_helper.dart';
+import '../../../../core/services/services_locator.dart';
+import '../../data/models/onboarding_model.dart';
+import 'onboarding_state.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit() : super(const OnboardingInitialState());

@@ -6,6 +6,10 @@ import 'package:jameya/features/onboarding/presentation/view/onboarding_view.dar
 import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
 import 'package:jameya/features/splash/view/splash_view.dart';
 
+import '../../features/auth/presentation/view_model/auth_cubit.dart';
+import '../../features/auth/views/admin_login_view.dart';
+import '../services/services_locator.dart';
+
 // Defines the app's navigation using GoRouter
 abstract final class AppRouter {
   static final router = GoRouter(
@@ -24,6 +28,16 @@ abstract final class AppRouter {
           child: BlocProvider(
             create: (_) => OnboardingCubit(),
             child: const OnboardingView(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.kAdminLoginView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: BlocProvider(
+            create: (_) => getIt<AuthCubit>(),
+            child: const AdminLoginView(),
           ),
         ),
       ),
