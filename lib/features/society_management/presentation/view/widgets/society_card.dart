@@ -44,6 +44,14 @@ class SocietyCard extends StatelessWidget {
     }
   }
 
+  /// نسبة التقدم في الدور الحالي بالنسبة لإجمالي المدة (بين 0 و 1)
+  double _getProgress() {
+    final totalDuration = int.tryParse(society.duration) ?? 0;
+    if (totalDuration <= 0) return 0;
+    final progress = society.currentTurn / totalDuration;
+    return progress.clamp(0.0, 1.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -155,19 +163,32 @@ class SocietyCard extends StatelessWidget {
             ),
             SizedBox(height: 14.h),
 
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: LinearProgressIndicator(
+                value: _getProgress(),
+                minHeight: 4.h,
+                backgroundColor: Color(0xff00DDDB).withValues(alpha: 0.2),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Color(0xff3EFFFE).withValues(alpha: 1),
+                ),
+              ),
+            ),
+            SizedBox(height: 14.h),
+
             // ===== صندوقين: المبلغ الشهري + المدة =====
             Row(
               children: [
                 Expanded(
                   child: _buildStatBox(
-                    icon: Icons.groups_outlined,
+                    iconAsset: 'assets/icons/Members Count.svg',
                     text: society.duration,
                   ),
                 ),
                 SizedBox(width: 10.w),
                 Expanded(
                   child: _buildStatBox(
-                    icon: Icons.savings_outlined,
+                    iconAsset: 'assets/icons/MonthlyInstallment.svg',
                     text: '${society.monthlyAmount.toStringAsFixed(0)} ج.م',
                   ),
                 ),
@@ -181,16 +202,24 @@ class SocietyCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildInfoCol(Icons.calendar_today, 'النهاية', society.endDate),
+                Expanded(
+                  child: _buildInfoCol(
+                    'assets/icons/EndDate.svg',
+                    'النهاية',
+                    society.endDate,
+                  ),
+                ),
                 Container(
                   width: 1.w,
                   height: 32.h,
                   color: Colors.grey.shade200,
                 ),
-                _buildInfoCol(
-                  Icons.calendar_today,
-                  'البداية',
-                  society.startDate,
+                Expanded(
+                  child: _buildInfoCol(
+                    'assets/icons/StartDate.svg',
+                    'البداية',
+                    society.startDate,
+                  ),
                 ),
               ],
             ),
@@ -200,51 +229,62 @@ class SocietyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatBox({required IconData icon, required String text}) {
+  Widget _buildStatBox({required String iconAsset, required String text}) {
     return Container(
+      height: 56.h,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 18.sp, color: Colors.teal),
-          SizedBox(width: 6.w),
+          SvgPicture.asset(iconAsset, width: 24.w, height: 24.h),
+          SizedBox(width: 17.w),
           Text(
             text,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoCol(IconData icon, String label, String rawDate) {
+  Widget _buildInfoCol(String iconAsset, String label, String rawDate) {
     String formatted = rawDate;
     if (rawDate.length > 10 && rawDate.contains('T')) {
       formatted = rawDate.substring(0, 10);
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 14.sp, color: Colors.grey),
+            SvgPicture.asset(iconAsset, width: 14.w, height: 14.h),
             SizedBox(width: 4.w),
             Text(
               label,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              style: TextStyle(fontSize: 16.sp, color: AppColors.textPrimary),
             ),
           ],
         ),
         SizedBox(height: 4.h),
         Text(
           formatted,
-          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: AppColors.textHint,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
