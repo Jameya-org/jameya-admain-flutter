@@ -6,6 +6,9 @@ abstract final class AppRoutes {
   static const kSocietyManagementView = '/society-management';
   static const kSocietyDetailsView = '/society-details';
 
+  // Auth feature routes
+  static const kAdminLoginView = '/admin-login';
+
   // Tasks feature routes
   static const kOverduePaymentsView = '/overdue-payments';
   static const kDelayDetailsView = '/delay-details';

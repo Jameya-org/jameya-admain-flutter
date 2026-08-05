@@ -14,6 +14,9 @@ import 'package:jameya/features/tasks/presentation/view/overdue_payments_view.da
 import 'package:jameya/features/tasks/presentation/view/delay_details_view.dart';
 import 'package:jameya/features/tasks/presentation/view/review_payments_view.dart';
 import 'package:jameya/features/tasks/presentation/view/expenses_view.dart';
+import 'package:jameya/features/auth/presentation/view_model/auth_cubit.dart';
+import 'package:jameya/features/auth/views/admin_login_view.dart';
+import 'package:jameya/core/services/services_locator.dart';
 
 // Defines the app's navigation using GoRouter
 abstract final class AppRouter {
@@ -33,6 +36,18 @@ abstract final class AppRouter {
           child: BlocProvider(
             create: (_) => OnboardingCubit(),
             child: const OnboardingView(),
+          ),
+        ),
+      ),
+
+      //* ── Admin Login ─────────────────────────────────
+      GoRoute(
+        path: AppRoutes.kAdminLoginView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: BlocProvider(
+            create: (_) => getIt<AuthCubit>(),
+            child: const AdminLoginView(),
           ),
         ),
       ),
