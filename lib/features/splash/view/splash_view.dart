@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jameya/core/cache/cache_helper.dart';
 import 'package:jameya/core/routing/routes.dart';
 import 'package:jameya/core/services/services_locator.dart';
+import 'package:jameya/core/services/shared_preferences_service.dart';
 
 import '../controllers/splash_controller.dart';
 import '../widgets/animated_logo.dart';
@@ -39,12 +40,17 @@ class _SplashViewState extends State<SplashView> {
 
   void _navigateToNextScreen() {
     final bool isOnboardingCompleted =
-        getIt<CacheHelper>().getBool(key: 'isOnboardingCompleted') ?? false;
+        (getIt<CacheHelper>().getBool(key: 'isOnboardingCompleted') ?? false) ||
+            SharedPreferencesService.isOnBoardingViewed();
+    final String? token =
+        getIt<CacheHelper>().getData(key: 'accessToken');
 
-    if (isOnboardingCompleted) {
-      context.go(AppRoutes.kHomeView);
-    } else {
+    if (!isOnboardingCompleted) {
       context.go(AppRoutes.kOnboardingView);
+    } else if (token == null || token.toString().trim().isEmpty) {
+      context.go(AppRoutes.kAdminLoginView);
+    } else {
+      context.go(AppRoutes.kHomeView);
     }
   }
 

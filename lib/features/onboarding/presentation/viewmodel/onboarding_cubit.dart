@@ -27,7 +27,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       value: true,
     );
     if (context.mounted) {
-      context.go(AppRoutes.kHomeView);
+      context.go(AppRoutes.kAdminLoginView);
     }
   }
 }

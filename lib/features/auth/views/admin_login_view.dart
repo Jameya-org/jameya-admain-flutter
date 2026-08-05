@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:jameya/core/routing/routes.dart';
 import '../presentation/view_model/auth_cubit.dart';
 import '../presentation/view_model/auth_state.dart';
 import '../widgets/auth_back_button.dart';
@@ -66,7 +67,7 @@ class _AdminLoginViewState extends State<AdminLoginView> {
             ),
           );
 
-          // context.go(AppRoutes.kHomeView);
+          context.go(AppRoutes.kHomeView);
         }
 
         if (state is AuthFailure) {
@@ -78,24 +79,26 @@ class _AdminLoginViewState extends State<AdminLoginView> {
         }
       },
       builder: (context, state) {
-        return AuthBackground(
-          header: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(height: 2.h),
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: AuthBackground(
+            header: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 2.h),
 
-              AuthBackButton(
-                onPressed: () => context.pop(),
-              ),
+                AuthBackButton(
+                  onPressed: () => context.pop(),
+                ),
 
-              SizedBox(height: 4.h),
+                SizedBox(height: 4.h),
 
-              const AuthTitleSection(
-                title: 'ادخل بياناتك',
-                subtitle: 'اكتب بياناتك علشان تبدأ رحلتك',
-              ),
-            ],
-          ),
+                const AuthTitleSection(
+                  title: 'ادخل بياناتك',
+                  subtitle: 'اكتب بياناتك علشان تبدأ رحلتك',
+                ),
+              ],
+            ),
 
           child: SingleChildScrollView(
             keyboardDismissBehavior:
@@ -178,6 +181,7 @@ class _AdminLoginViewState extends State<AdminLoginView> {
                   SizedBox(height: 24.h),
                 ],
               ),
+            ),
             ),
           ),
         );

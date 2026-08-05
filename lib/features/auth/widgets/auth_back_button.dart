@@ -11,11 +11,11 @@ class AuthBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: AlignmentDirectional.centerStart,
       child: IconButton(
         onPressed: onPressed,
         icon: const Icon(
-          Icons.arrow_forward_ios,
+          Icons.arrow_back_ios,
           color: Colors.white,
         ),
       ),
