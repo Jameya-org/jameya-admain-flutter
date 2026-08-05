@@ -5,4 +5,10 @@ abstract final class AppRoutes {
   static const kHomeView = '/home';
   static const kSocietyManagementView = '/society-management';
   static const kSocietyDetailsView = '/society-details';
+
+  // Tasks feature routes
+  static const kOverduePaymentsView = '/overdue-payments';
+  static const kDelayDetailsView = '/delay-details';
+  static const kReviewPaymentsView = '/review-payments';
+  static const kExpensesView = '/expenses';
 }

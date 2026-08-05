@@ -8,6 +8,8 @@ import 'package:jameya/features/home/data/repos/home_repo.dart';
 import 'package:jameya/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:jameya/features/society_management/data/repos/society_repo.dart';
 import 'package:jameya/features/society_management/presentation/viewmodel/society_cubit.dart';
+import 'package:jameya/features/tasks/data/repos/tasks_repo.dart';
+import 'package:jameya/features/tasks/presentation/manager/tasks_cubit.dart';
 
 // Global GetIt instance for dependency injection
 final getIt = GetIt.instance;
@@ -34,8 +36,13 @@ Future<void> setupServiceLocator() async {
   // Repositories
   getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt<ApiServices>()));
   getIt.registerLazySingleton<SocietyRepo>(() => SocietyRepo(getIt<ApiServices>()));
+  getIt.registerLazySingleton<TasksRepo>(() => TasksRepo(getIt<ApiServices>()));
 
   // Cubits / Blocs
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
   getIt.registerFactory<SocietyCubit>(() => SocietyCubit(getIt<SocietyRepo>()));
+  getIt.registerFactory<OverduePaymentsCubit>(() => OverduePaymentsCubit(getIt<TasksRepo>()));
+  getIt.registerFactory<ReviewPaymentsCubit>(() => ReviewPaymentsCubit(getIt<TasksRepo>()));
+  getIt.registerFactory<ExpensesCubit>(() => ExpensesCubit(getIt<TasksRepo>()));
 }
+

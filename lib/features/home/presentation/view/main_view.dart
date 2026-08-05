@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya/core/utils/app_colors.dart';
 import 'package:jameya/features/home/presentation/view/widgets/home_view_body.dart';
 import 'package:jameya/features/society_management/presentation/view/society_management_view.dart';
+import 'package:jameya/features/tasks/presentation/view/expenses_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -32,7 +33,7 @@ class _MainViewState extends State<MainView> {
       // صفحة الجمعيات داخل الـ main view مع الـ bottom nav
       SocietyManagementView(onBack: () => _onTabSelected(0)),
       const Center(child: Text('إضافة جمعية جديدة')),
-      const Center(child: Text('صفحة المصروفات')),
+      const ExpensesView(),
       const Center(child: Text('الملف الشخصي')),
     ];
 

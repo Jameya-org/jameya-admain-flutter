@@ -8,8 +8,12 @@ import 'package:jameya/features/splash/view/splash_view.dart';
 import 'package:jameya/features/society_management/presentation/view/society_management_view.dart';
 import 'package:jameya/features/society_management/presentation/view/society_details_view.dart';
 import 'package:jameya/features/society_management/data/models/society_model.dart';
-
 import 'package:jameya/features/home/presentation/view/main_view.dart';
+import 'package:jameya/features/tasks/data/models/overdue_payment_model.dart';
+import 'package:jameya/features/tasks/presentation/view/overdue_payments_view.dart';
+import 'package:jameya/features/tasks/presentation/view/delay_details_view.dart';
+import 'package:jameya/features/tasks/presentation/view/review_payments_view.dart';
+import 'package:jameya/features/tasks/presentation/view/expenses_view.dart';
 
 // Defines the app's navigation using GoRouter
 abstract final class AppRouter {
@@ -61,6 +65,45 @@ abstract final class AppRouter {
             child: SocietyDetailsView(society: society),
           );
         },
+      ),
+
+      //* ── Overdue Payments ──────────────────────────
+      GoRoute(
+        path: AppRoutes.kOverduePaymentsView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: const OverduePaymentsView(),
+        ),
+      ),
+
+      //* ── Delay Details ─────────────────────────────
+      GoRoute(
+        path: AppRoutes.kDelayDetailsView,
+        pageBuilder: (context, state) {
+          final payment = state.extra as OverduePaymentModel;
+          return SmartAnimateTransition.buildPage(
+            state: state,
+            child: DelayDetailsView(payment: payment),
+          );
+        },
+      ),
+
+      //* ── Review Payments ───────────────────────────
+      GoRoute(
+        path: AppRoutes.kReviewPaymentsView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: const ReviewPaymentsView(),
+        ),
+      ),
+
+      //* ── Expenses ───────────────────────────────────
+      GoRoute(
+        path: AppRoutes.kExpensesView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: const ExpensesView(),
+        ),
       ),
     ],
   );
