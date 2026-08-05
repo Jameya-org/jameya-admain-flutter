@@ -1,19 +1,15 @@
 import 'package:dio/dio.dart';
-
-import '../cache/cache_helper.dart';
-import '../services/services_locator.dart';
+import '../services/secure_storage_service.dart';
 
 class AppInterceptor extends Interceptor {
   @override
   void onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) {
-    final token = getIt<CacheHelper>().getData(
-      key: 'accessToken',
-    );
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    final token = await SecureStorageService.getAccessToken();
 
-    if (token != null) {
+    if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
 

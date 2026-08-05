@@ -12,13 +12,6 @@ class AppInterceptors extends Interceptor {
   bool _isRefreshing = false;
   final List<_PendingRequest> _queue = [];
 
-  // Temporary fallback tokens provided for testing prior to login screen implementation
-  static const String tempAccessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOGY5MzJhZS03NTg5LTQxYjItYjljZi1kOGU2ZmU3YzFiMTgiLCJlbWFpbCI6ImFkbWluQGphbWV5YS5sb2NhbCIsInJvbGUiOiJTVVBFUl9BRE1JTiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc4NTg5OTEzNiwiZXhwIjoxNzg1OTAwMDM2fQ.MJZO_WCs76LBvgM4URGFyYScV5GzWEColGhy3CZaoJk';
-
-  static const String tempRefreshToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOGY5MzJhZS03NTg5LTQxYjItYjljZi1kOGU2ZmU3YzFiMTgiLCJlbWFpbCI6ImFkbWluQGphbWV5YS5sb2NhbCIsInJvbGUiOiJTVVBFUl9BRE1JTiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc4NTg5OTEzNiwiZXhwIjoxNzg1OTI3OTM2fQ.5n5cijseaOhfNeQfUt7qKb7zPCWOJl_esELC3pGDKfM';
-
   AppInterceptors() {
     dio = Dio(
       BaseOptions(
@@ -35,12 +28,11 @@ class AppInterceptors extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    String? token = await SecureStorageService.getAccessToken();
+    final String? token = await SecureStorageService.getAccessToken();
 
-    // Use stored token if available, otherwise fallback to temporary access token
-    token ??= tempAccessToken;
-
-    options.headers['Authorization'] = 'Bearer $token';
+    if (token != null && token.trim().isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
     options.headers['Accept'] = '*/*';
 
     handler.next(options);
@@ -48,7 +40,8 @@ class AppInterceptors extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode != StatusCode.unauthorized) {
+    if (err.response?.statusCode != StatusCode.unauthorized ||
+        err.requestOptions.path.contains(EndPoints.adminRefresh)) {
       return handler.next(err);
     }
 
@@ -61,18 +54,17 @@ class AppInterceptors extends Interceptor {
       try {
         final response = await completer.future;
         return handler.resolve(response);
-      } catch (_) {
-        return handler.reject(err);
+      } catch (e) {
+        return handler.reject(e is DioException ? e : err);
       }
     }
 
     _isRefreshing = true;
 
     try {
-      String? refreshToken = await SecureStorageService.getRefreshToken();
-      refreshToken ??= tempRefreshToken;
+      final String? refreshToken = await SecureStorageService.getRefreshToken();
 
-      if (refreshToken.isEmpty) {
+      if (refreshToken == null || refreshToken.trim().isEmpty) {
         await logout();
         return handler.reject(err);
       }
@@ -98,7 +90,9 @@ class AppInterceptors extends Interceptor {
       if (newAccess != null && newAccess.isNotEmpty) {
         await SecureStorageService.saveTokens(
           accessToken: newAccess,
-          refreshToken: newRefresh ?? refreshToken,
+          refreshToken: (newRefresh != null && newRefresh.isNotEmpty)
+              ? newRefresh
+              : refreshToken,
         );
 
         if (!kReleaseMode) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jameya/core/cache/cache_helper.dart';
 import 'package:jameya/core/routing/routes.dart';
+import 'package:jameya/core/services/secure_storage_service.dart';
 import 'package:jameya/core/services/services_locator.dart';
 import 'package:jameya/core/services/shared_preferences_service.dart';
 
@@ -38,16 +39,17 @@ class _SplashViewState extends State<SplashView> {
     }
   }
 
-  void _navigateToNextScreen() {
+  void _navigateToNextScreen() async {
     final bool isOnboardingCompleted =
         (getIt<CacheHelper>().getBool(key: 'isOnboardingCompleted') ?? false) ||
             SharedPreferencesService.isOnBoardingViewed();
-    final String? token =
-        getIt<CacheHelper>().getData(key: 'accessToken');
+    final String? token = await SecureStorageService.getAccessToken();
+
+    if (!mounted) return;
 
     if (!isOnboardingCompleted) {
       context.go(AppRoutes.kOnboardingView);
-    } else if (token == null || token.toString().trim().isEmpty) {
+    } else if (token == null || token.trim().isEmpty) {
       context.go(AppRoutes.kAdminLoginView);
     } else {
       context.go(AppRoutes.kHomeView);
