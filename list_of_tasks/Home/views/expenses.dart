@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-const Color primaryTeal = Color(0xFF009688);
-
 void main() {
   runApp(const MyApp());
 }
@@ -13,335 +11,266 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Expenses',
+      // دعم اللغة العربية واتجاه الكتابة من اليمين لليسار
+      locale: const Locale('ar'),
+      builder: (context, child) {
+        return Directionality(textDirection: TextDirection.rtl, child: child!);
+      },
       theme: ThemeData(
+        primaryColor: const Color(0xFF0F6E5F),
         fontFamily: 'Cairo',
-        scaffoldBackgroundColor: Colors.white,
       ),
       home: const ExpensesScreen(),
     );
   }
 }
 
-class ExpensesScreen extends StatelessWidget {
+// موديل بيانات العملية
+class TransactionItem {
+  final String amount;
+  final String name;
+  final String phone;
+  final String date;
+  bool isConfirmed; // حالة تأكيد الدفع
+
+  TransactionItem({
+    required this.amount,
+    required this.name,
+    required this.phone,
+    required this.date,
+    this.isConfirmed = false,
+  });
+}
+
+class ExpensesScreen extends StatefulWidget {
   const ExpensesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final expenses = [
-      Expense(
-        amount: "10,800",
-        name: "احمد علي سامح",
-        phone: "01234567890",
-        floor: "الدور الرابع",
-      ),
-      Expense(
-        amount: "24,000",
-        name: "احمد علي سامح",
-        phone: "01234567890",
-        floor: "الدور السابع",
-      ),
-      Expense(
-        amount: "36,000",
-        name: "احمد علي سامح",
-        phone: "01234567890",
-        floor: "الدور التاسع",
-      ),
-    ];
-
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: const Color(0xffF7F7F7),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: primaryTeal,
-          onPressed: () {},
-          shape: const CircleBorder(),
-          child: const Icon(Icons.add, color: Colors.white, size: 28),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: _buildBottomNavBar(),
-        body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(12),
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_forward_ios),
-                  ),
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        "المصروفات",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff009688),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 40),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: const [
-                          Text(
-                            "عدد العمليات",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "3",
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Color(0xff009688),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Container(
-                      width: 1,
-                      height: 45,
-                      color: Colors.grey.shade300,
-                    ),
-
-                    Expanded(
-                      child: Column(
-                        children: const [
-                          Text(
-                            "إجمالي المبلغ",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "72,000 ج.م",
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Color(0xff009688),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              const Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "اليوم",
-                  style: TextStyle(
-                    color: Color(0xff009688),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              ...expenses.map((e) => ExpenseCard(expense: e)),
-
-              const SizedBox(height: 20),
-
-              const Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "1-8-2026",
-                  style: TextStyle(
-                    color: Color(0xff009688),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              ExpenseCard(
-                expense: Expense(
-                  amount: "36,000",
-                  name: "احمد علي سامح",
-                  phone: "01234567890",
-                  floor: "الدور التاسع",
-                ),
-              ),
-
-              const SizedBox(height: 80),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 8,
-      color: Colors.white,
-      height: 70,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        textDirection: TextDirection.rtl,
-        children: [
-          _navItem(Icons.home_outlined, 'الرئيسية', 0),
-          _navItem(Icons.sync, 'الجمعيات', 1),
-          const SizedBox(width: 40),
-          _navItem(Icons.payments_outlined, 'المدفوعات', 2),
-          _navItem(Icons.person_outline, 'حسابي', 3),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(IconData icon, String label, int index) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Colors.grey),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
-      ],
-    );
-  }
+  State<ExpensesScreen> createState() => _ExpensesScreenState();
 }
 
-class ExpenseCard extends StatelessWidget {
-  final Expense expense;
+class _ExpensesScreenState extends State<ExpensesScreen> {
+  final Color primaryColor = const Color(0xFF0F6E5F);
 
-  const ExpenseCard({super.key, required this.expense});
+  // بيانات وهمية مطابقة للتصميم
+  final List<TransactionItem> todayTransactions = [
+    TransactionItem(
+      amount: '10,800',
+      name: 'احمد علي سامح',
+      phone: '01234567890',
+      date: 'الدور الرابع',
+    ),
+    TransactionItem(
+      amount: '24,000',
+      name: 'احمد علي سامح',
+      phone: '01234567890',
+      date: 'الدور السابع',
+    ),
+    TransactionItem(
+      amount: '36,000',
+      name: 'احمد علي سامح',
+      phone: '01234567890',
+      date: 'الدور التاسع',
+    ),
+  ];
+
+  final List<TransactionItem> previousTransactions = [
+    TransactionItem(
+      amount: '36,000',
+      name: 'احمد علي سامح',
+      phone: '01234567890',
+      date: 'الدور الثاني',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade300),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F7F7),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'المصروفات',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        ),
+        leading: const Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.black54,
+          size: 18,
+        ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Row(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    expense.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    expense.phone,
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    expense.floor,
-                    style: TextStyle(color: Colors.grey.shade600),
-                  ),
-                ],
-              ),
+            _buildSummaryCard(),
+            const SizedBox(height: 20),
+            const Text(
+              'اليوم',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-
-            const SizedBox(width: 20),
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${expense.amount} ج.م",
-                  style: const TextStyle(
-                    color: Color(0xff009688),
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  height: 36,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff009688),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Text(
-                      "تأكيد الدفع",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
+            const SizedBox(height: 10),
+            ...todayTransactions.map((t) => _buildTransactionCard(t)),
+            const SizedBox(height: 16),
+            const Text(
+              '1-8-2026',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 10),
+            ...previousTransactions.map((t) => _buildTransactionCard(t)),
           ],
         ),
       ),
     );
   }
-}
 
-class Expense {
-  final String amount;
-  final String name;
-  final String phone;
-  final String floor;
+  // كارت الملخص العلوي (إجمالي المبلغ - عدد العمليات)
+  Widget _buildSummaryCard() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'عدد العمليات',
+                style: TextStyle(color: Colors.grey, fontSize: 13),
+              ),
+              SizedBox(height: 6),
+              Text(
+                '3',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: const [
+              Text(
+                'اجمالي المبلغ',
+                style: TextStyle(color: Colors.grey, fontSize: 13),
+              ),
+              SizedBox(height: 6),
+              Text(
+                '72,000 ج.م',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-  Expense({
-    required this.amount,
-    required this.name,
-    required this.phone,
-    required this.floor,
-  });
-}
+  // كارت كل عملية مع زر تأكيد الدفع
+  Widget _buildTransactionCard(TransactionItem item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.grey.shade200,
+            child: const Icon(Icons.person, color: Colors.grey),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${item.amount} ج.م',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: primaryColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  item.name,
+                  style: const TextStyle(fontSize: 13, color: Colors.black87),
+                ),
+                Text(
+                  item.phone,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                Text(
+                  item.date,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          _buildConfirmButton(item),
+        ],
+      ),
+    );
+  }
 
-class NavItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final bool selected;
-
-  const NavItem(this.icon, this.text, this.selected, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = selected ? const Color(0xff009688) : Colors.grey;
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        const SizedBox(height: 4),
-        Text(text, style: TextStyle(color: color, fontSize: 12)),
-      ],
+  // زر تأكيد الدفع، يتغير نصه بعد الضغط
+  Widget _buildConfirmButton(TransactionItem item) {
+    return SizedBox(
+      width: 100,
+      child: ElevatedButton(
+        onPressed: item.isConfirmed
+            ? null // تعطيل الزر بعد التأكيد
+            : () {
+                setState(() {
+                  item.isConfirmed = true;
+                });
+                // رسالة تأكيد سريعة (اختياري)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('تم تأكيد الدفع بنجاح'),
+                    duration: Duration(seconds: 2),
+                    backgroundColor: Color(0xFF0F6E5F),
+                  ),
+                );
+              },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: item.isConfirmed
+              ? Colors.grey.shade400
+              : primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 0,
+        ),
+        child: Text(
+          item.isConfirmed ? 'تم التأكيد' : 'تأكيد الدفع',
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }

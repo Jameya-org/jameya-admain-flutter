@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         return Directionality(textDirection: TextDirection.ltr, child: child!);
       },
 
-      locale: const Locale('ar'), // Set the default locale to Arabic
+      locale: const Locale('ar'),
       supportedLocales: const [Locale('ar')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
