@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:jameya/core/routing/routes.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
 import '../presentation/view_model/auth_cubit.dart';
 import '../presentation/view_model/auth_state.dart';
 import '../widgets/auth_back_button.dart';
@@ -39,8 +39,8 @@ class _AdminLoginViewState extends State<AdminLoginView> {
   void _validateForm() {
     final isValid =
         _emailController.text.trim().isNotEmpty &&
-            _passwordController.text.trim().isNotEmpty &&
-            _acceptedTerms;
+        _passwordController.text.trim().isNotEmpty &&
+        _acceptedTerms;
 
     if (isValid != _isButtonEnabled) {
       setState(() {
@@ -62,20 +62,15 @@ class _AdminLoginViewState extends State<AdminLoginView> {
       listener: (context, state) {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('تم تسجيل الدخول بنجاح'),
-            ),
+            const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
           );
-
           context.go(AppRoutes.kHomeView);
         }
 
         if (state is AuthFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -87,9 +82,7 @@ class _AdminLoginViewState extends State<AdminLoginView> {
               children: [
                 SizedBox(height: 2.h),
 
-                AuthBackButton(
-                  onPressed: () => context.pop(),
-                ),
+                AuthBackButton(onPressed: () => context.pop()),
 
                 SizedBox(height: 4.h),
 
@@ -100,88 +93,80 @@ class _AdminLoginViewState extends State<AdminLoginView> {
               ],
             ),
 
-          child: SingleChildScrollView(
-            keyboardDismissBehavior:
-            ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 24.w,
-                right: 24.w,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
-              ),
-              child: Column(
-                children: [
-                  SizedBox(height: 32.h),
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 24.w,
+                  right: 24.w,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 32.h),
 
-                  LabeledTextField(
-                    label: 'الايميل',
-                    controller: _emailController,
-                    hintText: 'example@gmail.com',
-                  ),
+                    LabeledTextField(
+                      label: 'الايميل',
+                      controller: _emailController,
+                      hintText: 'example@gmail.com',
+                    ),
 
-                  SizedBox(height: 16.h),
+                    SizedBox(height: 16.h),
 
-                  LabeledTextField(
-                    label: 'الرقم السري',
-                    controller: _passwordController,
-                    hintText: 'اكتب المحتوى هنا',
-                    obscureText: _isPasswordHidden,
-                    prefixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordHidden = !_isPasswordHidden;
-                        });
-                      },
-                      icon: Icon(
-                        _isPasswordHidden
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+                    LabeledTextField(
+                      label: 'الرقم السري',
+                      controller: _passwordController,
+                      hintText: 'اكتب المحتوى هنا',
+                      obscureText: _isPasswordHidden,
+                      prefixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordHidden = !_isPasswordHidden;
+                          });
+                        },
+                        icon: Icon(
+                          _isPasswordHidden
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
                       ),
+                      suffixIcon: const Icon(Icons.lock_outline),
                     ),
-                    suffixIcon: const Icon(
-                      Icons.lock_outline,
+
+                    SizedBox(height: 240.h),
+
+                    TermsCheckbox(
+                      value: _acceptedTerms,
+                      onChanged: (value) {
+                        setState(() {
+                          _acceptedTerms = value ?? false;
+                        });
+
+                        _validateForm();
+                      },
+                      onTermsTap: () {},
+                      onPrivacyTap: () {},
                     ),
-                  ),
 
-                  SizedBox(height: 240.h),
+                    SizedBox(height: 50.h),
 
-                  TermsCheckbox(
-                    value: _acceptedTerms,
-                    onChanged: (value) {
-                      setState(() {
-                        _acceptedTerms = value ?? false;
-                      });
+                    PrimaryButton(
+                      text: state is AuthLoading ? 'جاري التحميل...' : 'تأكيد',
+                      isEnabled: _isButtonEnabled && state is! AuthLoading,
+                      onPressed: _isButtonEnabled
+                          ? () {
+                              context.read<AuthCubit>().login(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
+                            }
+                          : null,
+                    ),
 
-                      _validateForm();
-                    },
-                    onTermsTap: () {},
-                    onPrivacyTap: () {},
-                  ),
-
-                  SizedBox(height: 50.h),
-
-                  PrimaryButton(
-                    text: state is AuthLoading
-                        ? 'جاري التحميل...'
-                        : 'تأكيد',
-                    isEnabled:
-                    _isButtonEnabled && state is! AuthLoading,
-                    onPressed: _isButtonEnabled
-                        ? () {
-                      context.read<AuthCubit>().login(
-                        email:
-                        _emailController.text.trim(),
-                        password:
-                        _passwordController.text.trim(),
-                      );
-                    }
-                        : null,
-                  ),
-
-                  SizedBox(height: 24.h),
-                ],
+                    SizedBox(height: 24.h),
+                  ],
+                ),
               ),
-            ),
             ),
           ),
         );

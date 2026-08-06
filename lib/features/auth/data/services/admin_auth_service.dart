@@ -11,9 +11,6 @@ class AdminAuthService {
     required String email,
     required String password,
   }) async {
-    print(email);
-    print(password);
-
     final response = await dio.post(
       '/admin/auth/login',
       data: {
@@ -21,8 +18,6 @@ class AdminAuthService {
         'password': password.trim(),
       },
     );
-
-    print(response.data);
 
     return AdminLoginModel.fromJson(response.data);
   }

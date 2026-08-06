@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/home/presentation/view/widgets/home_view_body.dart';
-import 'package:jameya/features/society_management/presentation/view/society_management_view.dart';
-import 'package:jameya/features/tasks/presentation/view/expenses_view.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/home/presentation/view/widgets/home_view_body.dart';
+import 'package:jameya_admin/features/society_management/presentation/view/society_management_view.dart';
+import 'package:jameya_admin/features/tasks/presentation/view/expenses_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -49,7 +49,7 @@ class _MainViewState extends State<MainView> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -68,9 +68,7 @@ class _MainViewState extends State<MainView> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: Border(
-            top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
-          ),
+          border: Border(top: BorderSide(color: Color(0xFFE2E8F0), width: 1)),
         ),
         child: BottomAppBar(
           shape: const CircularNotchedRectangle(),

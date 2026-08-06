@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:jameya/core/cache/cache_key.dart';
-import 'package:jameya/core/localization/cubit/localization_state.dart';
+import 'package:jameya_admin/core/cache/cache_key.dart';
+import 'package:jameya_admin/core/localization/cubit/localization_state.dart';
 
 import '../../../../core/cache/cache_helper.dart';
 

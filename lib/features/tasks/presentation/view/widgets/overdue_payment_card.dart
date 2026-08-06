@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/tasks/data/models/overdue_payment_model.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/tasks/data/models/overdue_payment_model.dart';
 
 /// Single card for an overdue payment list item matching Screenshot 2 exactly
 class OverduePaymentCard extends StatelessWidget {

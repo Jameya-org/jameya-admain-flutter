@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/society_management/presentation/viewmodel/society_details_cubit.dart';
-import 'package:jameya/features/society_management/presentation/viewmodel/society_details_state.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_details_cubit.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_details_state.dart';
 import 'member_card_item.dart';
 
 class MembersTabView extends StatelessWidget {

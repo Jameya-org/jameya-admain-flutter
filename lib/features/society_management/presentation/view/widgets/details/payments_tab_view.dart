@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/features/society_management/presentation/viewmodel/society_details_cubit.dart';
-import 'package:jameya/features/society_management/presentation/viewmodel/society_details_state.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_details_cubit.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_details_state.dart';
 
 import 'payment_metric_badge.dart';
 import 'payment_timeline_item.dart';

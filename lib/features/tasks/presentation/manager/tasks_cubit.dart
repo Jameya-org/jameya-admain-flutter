@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jameya/features/tasks/data/models/expense_model.dart';
-import 'package:jameya/features/tasks/data/models/overdue_payment_model.dart';
-import 'package:jameya/features/tasks/data/models/payment_review_model.dart';
-import 'package:jameya/features/tasks/data/repos/tasks_repo.dart';
-import 'package:jameya/features/tasks/presentation/manager/tasks_state.dart';
+import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/overdue_payment_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/payment_review_model.dart';
+import 'package:jameya_admin/features/tasks/data/repos/tasks_repo.dart';
+import 'package:jameya_admin/features/tasks/presentation/manager/tasks_state.dart';
 
 // ── Fallback Demo Data Matching Screenshots Exactly ───────────────────────────
 final List<OverduePaymentModel> _defaultOverduePayments = [
@@ -118,9 +118,11 @@ class OverduePaymentsCubit extends Cubit<OverduePaymentsState> {
     emit(OverduePaymentsLoading());
     try {
       final payments = await _repo.getOverduePayments(search: search);
-      emit(OverduePaymentsLoaded(
-        payments.isEmpty ? _defaultOverduePayments : payments,
-      ));
+      emit(
+        OverduePaymentsLoaded(
+          payments.isEmpty ? _defaultOverduePayments : payments,
+        ),
+      );
     } catch (_) {
       emit(OverduePaymentsLoaded(_defaultOverduePayments));
     }
@@ -178,11 +180,13 @@ class ReviewPaymentsCubit extends Cubit<ReviewPaymentsState> {
       }).toList();
     }
 
-    emit(ReviewPaymentsLoaded(
-      all: List.from(_allReviews),
-      filtered: filtered,
-      activeTab: _currentTab,
-    ));
+    emit(
+      ReviewPaymentsLoaded(
+        all: List.from(_allReviews),
+        filtered: filtered,
+        activeTab: _currentTab,
+      ),
+    );
   }
 
   Future<void> approvePayment(String paymentId) async {
@@ -209,22 +213,29 @@ class ExpensesCubit extends Cubit<ExpensesState> {
       final expenses = await _repo.getExpenses();
       final listToUse = expenses.isEmpty ? _defaultExpenses : expenses;
       final total = listToUse.fold<double>(0, (sum, e) => sum + e.amount);
-      emit(ExpensesLoaded(
-        expenses: listToUse,
-        summary: ExpensesSummaryModel(
-          operationsCount: listToUse.length,
-          totalAmount: total,
+      emit(
+        ExpensesLoaded(
+          expenses: listToUse,
+          summary: ExpensesSummaryModel(
+            operationsCount: listToUse.length,
+            totalAmount: total,
+          ),
         ),
-      ));
+      );
     } catch (_) {
-      final total = _defaultExpenses.fold<double>(0, (sum, e) => sum + e.amount);
-      emit(ExpensesLoaded(
-        expenses: _defaultExpenses,
-        summary: ExpensesSummaryModel(
-          operationsCount: 3, // Matches Screenshot 4
-          totalAmount: 72000, // Matches Screenshot 4
+      final total = _defaultExpenses.fold<double>(
+        0,
+        (sum, e) => sum + e.amount,
+      );
+      emit(
+        ExpensesLoaded(
+          expenses: _defaultExpenses,
+          summary: ExpensesSummaryModel(
+            operationsCount: 3, // Matches Screenshot 4
+            totalAmount: 72000, // Matches Screenshot 4
+          ),
         ),
-      ));
+      );
     }
   }
 

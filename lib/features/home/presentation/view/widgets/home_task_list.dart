@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 
 class HomeTaskList extends StatelessWidget {
   const HomeTaskList({super.key});

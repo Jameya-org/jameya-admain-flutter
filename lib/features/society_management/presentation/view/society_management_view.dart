@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 import '../viewmodel/society_cubit.dart';
 import 'widgets/society_search_bar.dart';
 import 'widgets/society_filter_tabs.dart';

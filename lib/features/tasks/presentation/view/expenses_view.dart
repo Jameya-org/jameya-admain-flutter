@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/tasks/data/models/expense_model.dart';
-import 'package:jameya/features/tasks/presentation/manager/tasks_cubit.dart';
-import 'package:jameya/features/tasks/presentation/manager/tasks_state.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
+import 'package:jameya_admin/features/tasks/presentation/manager/tasks_cubit.dart';
+import 'package:jameya_admin/features/tasks/presentation/manager/tasks_state.dart';
 
 class ExpensesView extends StatelessWidget {
   const ExpensesView({super.key});

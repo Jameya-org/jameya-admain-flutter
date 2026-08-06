@@ -1,4 +1,4 @@
-import 'package:jameya/features/society_management/data/models/society_model.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
 
 abstract class SocietyState {}
 

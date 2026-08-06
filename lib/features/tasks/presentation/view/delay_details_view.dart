@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/tasks/data/models/overdue_payment_model.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/tasks/data/models/overdue_payment_model.dart';
 
 /// تفاصيل التأخير - Screenshot 1
 class DelayDetailsView extends StatelessWidget {
@@ -87,7 +87,7 @@ class _MemberCard extends StatelessWidget {
               child: Image.network(
                 avatarUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
+                errorBuilder: (_, _, _) =>
                     Icon(Icons.person, size: 34.sp, color: Colors.white),
               ),
             ),

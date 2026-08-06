@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
 import '../../../data/models/society_model.dart';
 import 'package:go_router/go_router.dart';
 

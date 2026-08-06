@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jameya/core/api/api_services.dart';
-import 'package:jameya/core/api/app_interceptors.dart';
-import 'package:jameya/core/api/end_points.dart';
+import 'package:jameya_admin/core/api/api_services.dart';
+import 'package:jameya_admin/core/api/app_interceptors.dart';
+import 'package:jameya_admin/core/api/end_points.dart';
 
 class ApiServicesImplementation extends ApiServices {
   late final Dio _dio;
@@ -117,5 +117,3 @@ class ApiServicesImplementation extends ApiServices {
     );
   }
 }
-
-
