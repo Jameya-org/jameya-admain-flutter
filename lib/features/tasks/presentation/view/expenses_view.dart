@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya_admin/core/services/services_locator.dart';
 import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/widgets/error_state_view.dart';
 import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_cubit.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_state.dart';
@@ -52,6 +53,12 @@ class ExpensesView extends StatelessWidget {
                 return _ExpensesBody(
                   expenses: state.expenses,
                   summary: state.summary,
+                );
+              }
+              if (state is ExpensesError) {
+                return ErrorStateView(
+                  message: state.message,
+                  onRetry: () => context.read<ExpensesCubit>().fetchExpenses(),
                 );
               }
               return const SizedBox.shrink();

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya_admin/core/cache/cache_helper.dart';
 import 'package:jameya_admin/core/routing/routes.dart';
 import 'package:jameya_admin/core/services/secure_storage_service.dart';
-import 'package:jameya_admin/core/services/services_locator.dart';
 import 'package:jameya_admin/core/services/shared_preferences_service.dart';
 
 import '../controllers/splash_controller.dart';
@@ -40,9 +38,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   void _navigateToNextScreen() async {
-    final bool isOnboardingCompleted =
-        (getIt<CacheHelper>().getBool(key: 'isOnboardingCompleted') ?? false) ||
-        SharedPreferencesService.isOnBoardingViewed();
+    final bool isOnboardingCompleted = SharedPreferencesService.isOnBoardingViewed();
     final String? token = await SecureStorageService.getAccessToken();
 
     if (!mounted) return;

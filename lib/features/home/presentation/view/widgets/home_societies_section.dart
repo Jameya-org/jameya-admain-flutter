@@ -12,14 +12,20 @@ import 'package:jameya_admin/features/society_management/presentation/viewmodel/
 import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_state.dart';
 
 class HomeSocietiesSection extends StatelessWidget {
-  const HomeSocietiesSection({super.key, required this.onNavigateToSocieties});
+  const HomeSocietiesSection({
+    super.key,
+    required this.onNavigateToSocieties,
+    this.cubit,
+  });
 
   final VoidCallback onNavigateToSocieties;
+  final SocietyCubit? cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<SocietyCubit>()..fetchSocieties(),
+    final societyCubit = cubit ?? (getIt<SocietyCubit>()..fetchSocieties());
+    return BlocProvider.value(
+      value: societyCubit,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

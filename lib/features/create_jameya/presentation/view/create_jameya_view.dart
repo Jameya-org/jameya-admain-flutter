@@ -22,7 +22,10 @@ class CreateJameyaView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<CreateJameyaCubit, CreateJameyaState>(
           // Only switch widgets when the step changes
-          buildWhen: (prev, curr) => prev.currentStep != curr.currentStep,
+          buildWhen: (prev, curr) =>
+              prev.currentStep != curr.currentStep ||
+              prev.loading != curr.loading ||
+              prev.error != curr.error,
           builder: (context, state) {
             return AnimatedSwitcher(
               duration: SmartAnimateTransition.duration,
