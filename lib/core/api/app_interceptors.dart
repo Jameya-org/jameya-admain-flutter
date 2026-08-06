@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jameya/core/api/end_points.dart';
-import 'package:jameya/core/api/status_code.dart';
-import 'package:jameya/core/functions/logout.dart';
-import 'package:jameya/core/services/secure_storage_service.dart';
+import 'package:jameya_admin/core/api/end_points.dart';
+import 'package:jameya_admin/core/api/status_code.dart';
+import 'package:jameya_admin/core/functions/logout.dart';
+import 'package:jameya_admin/core/services/secure_storage_service.dart';
 
 class AppInterceptors extends Interceptor {
   late final Dio dio;

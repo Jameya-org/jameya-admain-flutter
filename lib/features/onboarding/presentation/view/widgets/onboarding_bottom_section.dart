@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/widgets/custom_button.dart';
-import 'package:jameya/generated/l10n.dart';
-import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
-import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_state.dart';
-import 'package:jameya/features/onboarding/presentation/view/widgets/onboarding_dots_indicator.dart';
+import 'package:jameya_admin/core/widgets/custom_button.dart';
+import 'package:jameya_admin/generated/l10n.dart';
+import 'package:jameya_admin/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
+import 'package:jameya_admin/features/onboarding/presentation/viewmodel/onboarding_state.dart';
+import 'package:jameya_admin/features/onboarding/presentation/view/widgets/onboarding_dots_indicator.dart';
 
 class OnboardingBottomSection extends StatelessWidget {
   final int totalPages;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 
 /// Step header showing the step title and descriptive subtitle.
 class CreateJameyaHeader extends StatelessWidget {
@@ -21,9 +21,7 @@ class CreateJameyaHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppTextStyles.headline.copyWith(
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headline.copyWith(color: AppColors.textPrimary),
         ),
         SizedBox(height: 8.h),
         Text(

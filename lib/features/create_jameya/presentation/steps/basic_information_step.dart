@@ -3,15 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:jameya/core/functions/show_image.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_images.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
-import 'package:jameya/core/widgets/custom_button.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_state.dart';
-import 'package:jameya/features/create_jameya/presentation/widgets/create_jameya_step_layout.dart';
-import 'package:jameya/features/create_jameya/presentation/widgets/duration_selector.dart';
+import 'package:jameya_admin/core/functions/show_image.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_images.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/widgets/custom_button.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_state.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/create_jameya_step_layout.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/duration_selector.dart';
 
 /// Step 0 — collect duration, installment amount, and displays the auto-total.
 class BasicInformationStep extends StatefulWidget {

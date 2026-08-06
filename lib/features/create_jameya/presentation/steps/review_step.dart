@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/widgets/custom_button.dart';
-import 'package:jameya/core/widgets/custom_outlined_button.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_state.dart';
-import 'package:jameya/features/create_jameya/presentation/widgets/create_jameya_step_layout.dart';
-import 'package:jameya/features/create_jameya/presentation/widgets/review_card.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/widgets/custom_button.dart';
+import 'package:jameya_admin/core/widgets/custom_outlined_button.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_state.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/create_jameya_step_layout.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/review_card.dart';
 
 /// Step 2 — shows a summary of all entered data for final review before submission.
 class ReviewStep extends StatelessWidget {
@@ -84,10 +84,7 @@ class ReviewStep extends StatelessWidget {
                 if (state.error != null) ...[
                   Text(
                     state.error!,
-                    style: TextStyle(
-                      color: AppColors.error,
-                      fontSize: 13.sp,
-                    ),
+                    style: TextStyle(color: AppColors.error, fontSize: 13.sp),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8.h),
@@ -96,8 +93,7 @@ class ReviewStep extends StatelessWidget {
                 // Create / loading button
                 CustomButton(
                   text: 'إنشاء الجمعية',
-                  onPressed:
-                      state.loading ? () {} : cubit.submitCreateJameya,
+                  onPressed: state.loading ? () {} : cubit.submitCreateJameya,
                   backgroundColor: state.loading
                       ? AppColors.primaryLight50
                       : AppColors.primary,

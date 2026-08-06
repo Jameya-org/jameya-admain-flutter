@@ -1,6 +1,6 @@
-import 'package:jameya/core/cache/cache_helper.dart';
-import 'package:jameya/core/cache/cache_key.dart';
-import 'package:jameya/core/services/services_locator.dart';
+import 'package:jameya_admin/core/cache/cache_helper.dart';
+import 'package:jameya_admin/core/cache/cache_key.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
 
 abstract class SecureStorageService {
   // --- Save access token and refresh token as secure data ---

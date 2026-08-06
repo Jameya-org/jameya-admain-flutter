@@ -1,4 +1,4 @@
-import 'package:jameya/features/create_jameya/domain/entities/create_jameya_entity.dart';
+import 'package:jameya_admin/features/create_jameya/domain/entities/create_jameya_entity.dart';
 
 /// Holds all form fields collected across the multi-step creation wizard.
 /// [totalAmount] is derived automatically from [duration] × [installmentAmount].
@@ -17,7 +17,9 @@ class CreateJameyaFormData {
 
   /// Auto-computed total: duration × installmentAmount. Null when inputs are incomplete.
   double? get totalAmount {
-    if (duration == null || installmentAmount == null || installmentAmount! <= 0) {
+    if (duration == null ||
+        installmentAmount == null ||
+        installmentAmount! <= 0) {
       return null;
     }
     return duration! * installmentAmount!;
@@ -34,11 +36,11 @@ class CreateJameyaFormData {
 
   /// Converts to the domain entity. Only call when all fields are validated.
   CreateJameyaEntity toEntity() => CreateJameyaEntity(
-        duration: duration!,
-        installmentAmount: installmentAmount!,
-        totalAmount: totalAmount!,
-        startDate: startDate!,
-      );
+    duration: duration!,
+    installmentAmount: installmentAmount!,
+    totalAmount: totalAmount!,
+    startDate: startDate!,
+  );
 
   CreateJameyaFormData copyWith({
     int? duration,
@@ -57,7 +59,8 @@ class CreateJameyaFormData {
 
 /// Single immutable state object for the entire create jameya flow.
 class CreateJameyaState {
-  final int currentStep; // 0 = basic info, 1 = schedule, 2 = review, 3 = success
+  final int
+  currentStep; // 0 = basic info, 1 = schedule, 2 = review, 3 = success
   final CreateJameyaFormData form;
   final bool loading;
   final bool success;

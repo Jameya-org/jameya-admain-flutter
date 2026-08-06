@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
-import 'package:jameya/core/widgets/custom_button.dart';
-import 'package:jameya/core/widgets/custom_outlined_button.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/widgets/custom_button.dart';
+import 'package:jameya_admin/core/widgets/custom_outlined_button.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
 
 /// Step 3 — success confirmation screen.
 /// No progress indicator or dismiss arrow — this is the terminal state.

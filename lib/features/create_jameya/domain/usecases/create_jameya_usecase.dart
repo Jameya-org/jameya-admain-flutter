@@ -1,5 +1,5 @@
-import 'package:jameya/features/create_jameya/domain/entities/create_jameya_entity.dart';
-import 'package:jameya/features/create_jameya/domain/repositories/create_jameya_repository.dart';
+import 'package:jameya_admin/features/create_jameya/domain/entities/create_jameya_entity.dart';
+import 'package:jameya_admin/features/create_jameya/domain/repositories/create_jameya_repository.dart';
 
 /// Single-purpose use case: create a new jameya.
 class CreateJameyaUseCase {

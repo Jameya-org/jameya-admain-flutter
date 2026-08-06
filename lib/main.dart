@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/localization/cubit/localization_cubit.dart';
-import 'package:jameya/core/localization/cubit/localization_state.dart';
-import 'package:jameya/core/routing/app_router.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/generated/l10n.dart';
+import 'package:jameya_admin/core/localization/cubit/localization_cubit.dart';
+import 'package:jameya_admin/core/localization/cubit/localization_state.dart';
+import 'package:jameya_admin/core/routing/app_router.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/generated/l10n.dart';
 
 void main() async {
   // Ensure Flutter bindings are ready before any async work

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:jameya/core/services/api_config.dart';
-import 'package:jameya/core/services/secure_storage_service.dart';
+import 'package:jameya_admin/core/services/api_config.dart';
+import 'package:jameya_admin/core/services/secure_storage_service.dart';
 
 /// Configures and provides a [Dio] instance used across all feature datasources.
 ///

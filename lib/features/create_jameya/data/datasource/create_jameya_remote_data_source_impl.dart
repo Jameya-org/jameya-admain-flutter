@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:jameya/core/services/api_config.dart';
-import 'package:jameya/features/create_jameya/data/datasource/create_jameya_remote_data_source.dart';
-import 'package:jameya/features/create_jameya/data/models/create_jameya_request_model.dart';
-import 'package:jameya/features/create_jameya/data/models/create_jameya_response_model.dart';
+import 'package:jameya_admin/core/services/api_config.dart';
+import 'package:jameya_admin/features/create_jameya/data/datasource/create_jameya_remote_data_source.dart';
+import 'package:jameya_admin/features/create_jameya/data/models/create_jameya_request_model.dart';
+import 'package:jameya_admin/features/create_jameya/data/models/create_jameya_response_model.dart';
 
 /// Real HTTP implementation of [CreateJameyaRemoteDataSource].
 /// Calls `POST /admin/circles` with a Bearer token from SecureStorage

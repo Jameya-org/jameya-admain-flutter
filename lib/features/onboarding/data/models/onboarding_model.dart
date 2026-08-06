@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jameya/core/utils/app_images.dart';
-import 'package:jameya/generated/l10n.dart';
+import 'package:jameya_admin/core/utils/app_images.dart';
+import 'package:jameya_admin/generated/l10n.dart';
 
 class OnboardingModel {
   final String image;

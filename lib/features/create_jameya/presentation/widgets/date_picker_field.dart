@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 
 /// Tappable field that opens a system date picker.
 /// Renders the calendar icon on the right (start in RTL) matching the design.
@@ -16,10 +16,9 @@ class DatePickerField extends StatelessWidget {
     required this.onDateSelected,
   });
 
-  String get _formattedDate =>
-      selectedDate != null
-          ? DateFormat('d MMMM yyyy', 'ar').format(selectedDate!)
-          : '';
+  String get _formattedDate => selectedDate != null
+      ? DateFormat('d MMMM yyyy', 'ar').format(selectedDate!)
+      : '';
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
 import '../../viewmodel/society_cubit.dart';
 import '../../viewmodel/society_state.dart';
 

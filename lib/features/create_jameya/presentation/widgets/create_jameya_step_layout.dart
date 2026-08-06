@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/create_jameya/presentation/widgets/create_jameya_header.dart';
-import 'package:jameya/features/create_jameya/presentation/widgets/create_jameya_progress_indicator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/create_jameya_header.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/create_jameya_progress_indicator.dart';
 
 /// Shared scaffold for steps 0–2. Composes:
 ///   • dismiss arrow (top-right)

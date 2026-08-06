@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:jameya/core/routing/routes.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
 import '../presentation/view_model/auth_cubit.dart';
 import '../presentation/view_model/auth_state.dart';
 import '../widgets/auth_back_button.dart';
@@ -39,8 +39,8 @@ class _AdminLoginViewState extends State<AdminLoginView> {
   void _validateForm() {
     final isValid =
         _emailController.text.trim().isNotEmpty &&
-            _passwordController.text.trim().isNotEmpty &&
-            _acceptedTerms;
+        _passwordController.text.trim().isNotEmpty &&
+        _acceptedTerms;
 
     if (isValid != _isButtonEnabled) {
       setState(() {
@@ -61,16 +61,16 @@ class _AdminLoginViewState extends State<AdminLoginView> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('تم تسجيل الدخول بنجاح')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
+          );
           context.go(AppRoutes.kHomeView);
         }
 
         if (state is AuthFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -156,9 +156,9 @@ class _AdminLoginViewState extends State<AdminLoginView> {
                       onPressed: _isButtonEnabled
                           ? () {
                               context.read<AuthCubit>().login(
-                                    email: _emailController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  );
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
                             }
                           : null,
                     ),

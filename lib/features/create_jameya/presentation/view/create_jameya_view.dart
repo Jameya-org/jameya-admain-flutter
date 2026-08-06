@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jameya/core/animations/smart_animate_transition.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_state.dart';
-import 'package:jameya/features/create_jameya/presentation/steps/basic_information_step.dart';
-import 'package:jameya/features/create_jameya/presentation/steps/review_step.dart';
-import 'package:jameya/features/create_jameya/presentation/steps/schedule_step.dart';
-import 'package:jameya/features/create_jameya/presentation/steps/success_step.dart';
+import 'package:jameya_admin/core/animations/smart_animate_transition.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_state.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/steps/basic_information_step.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/steps/review_step.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/steps/schedule_step.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/steps/success_step.dart';
 
 /// Root page for the create jameya wizard.
 /// Switches between steps using [AnimatedSwitcher] with the app's

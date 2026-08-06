@@ -1,6 +1,6 @@
-import 'package:jameya/features/tasks/data/models/overdue_payment_model.dart';
-import 'package:jameya/features/tasks/data/models/payment_review_model.dart';
-import 'package:jameya/features/tasks/data/models/expense_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/overdue_payment_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/payment_review_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
 
 // ── Overdue Payments States ───────────────────────────────────────────────────
 abstract class OverduePaymentsState {}

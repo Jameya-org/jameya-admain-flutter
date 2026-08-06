@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jameya/features/create_jameya/domain/usecases/create_jameya_usecase.dart';
-import 'package:jameya/features/create_jameya/presentation/cubit/create_jameya_state.dart';
+import 'package:jameya_admin/features/create_jameya/domain/usecases/create_jameya_usecase.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_state.dart';
 
 class CreateJameyaCubit extends Cubit<CreateJameyaState> {
   final CreateJameyaUseCase _createJameyaUseCase;
 
-  CreateJameyaCubit(this._createJameyaUseCase) : super(const CreateJameyaState());
+  CreateJameyaCubit(this._createJameyaUseCase)
+    : super(const CreateJameyaState());
 
-  static CreateJameyaCubit get(BuildContext context) => BlocProvider.of(context);
+  static CreateJameyaCubit get(BuildContext context) =>
+      BlocProvider.of(context);
 
   /// Steps 0–2 are form steps; step 3 is the success screen.
   static const int totalFormSteps = 3;
@@ -36,15 +38,14 @@ class CreateJameyaCubit extends Cubit<CreateJameyaState> {
 
   void nextStep() {
     if (!canGoNext || state.currentStep >= totalFormSteps) return;
-    emit(state.copyWith(
-      currentStep: state.currentStep + 1,
-      clearError: true,
-    ));
+    emit(state.copyWith(currentStep: state.currentStep + 1, clearError: true));
   }
 
   void previousStep() {
     if (state.currentStep > 0) {
-      emit(state.copyWith(currentStep: state.currentStep - 1, clearError: true));
+      emit(
+        state.copyWith(currentStep: state.currentStep - 1, clearError: true),
+      );
     }
   }
 
@@ -61,24 +62,30 @@ class CreateJameyaCubit extends Cubit<CreateJameyaState> {
   // ─── Form Updates ──────────────────────────────────────────────────────────
 
   void setDuration(int duration) {
-    emit(state.copyWith(
-      form: state.form.copyWith(duration: duration),
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        form: state.form.copyWith(duration: duration),
+        clearError: true,
+      ),
+    );
   }
 
   void setInstallmentAmount(double amount) {
-    emit(state.copyWith(
-      form: state.form.copyWith(installmentAmount: amount),
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        form: state.form.copyWith(installmentAmount: amount),
+        clearError: true,
+      ),
+    );
   }
 
   void setStartDate(DateTime date) {
-    emit(state.copyWith(
-      form: state.form.copyWith(startDate: date),
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        form: state.form.copyWith(startDate: date),
+        clearError: true,
+      ),
+    );
   }
 
   // ─── Calculation ───────────────────────────────────────────────────────────
@@ -96,16 +103,15 @@ class CreateJameyaCubit extends Cubit<CreateJameyaState> {
 
     try {
       await _createJameyaUseCase(form.toEntity());
-      emit(state.copyWith(
-        loading: false,
-        success: true,
-        currentStep: totalFormSteps, // Navigate to success screen
-      ));
+      emit(
+        state.copyWith(
+          loading: false,
+          success: true,
+          currentStep: totalFormSteps, // Navigate to success screen
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        loading: false,
-        error: e.toString(),
-      ));
+      emit(state.copyWith(loading: false, error: e.toString()));
     }
   }
 }

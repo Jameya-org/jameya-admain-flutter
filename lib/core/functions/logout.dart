@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:jameya/core/services/secure_storage_service.dart';
-import 'package:jameya/core/services/shared_preferences_service.dart';
+import 'package:jameya_admin/core/services/secure_storage_service.dart';
+import 'package:jameya_admin/core/services/shared_preferences_service.dart';
 
 Future<void> logout() async {
   try {

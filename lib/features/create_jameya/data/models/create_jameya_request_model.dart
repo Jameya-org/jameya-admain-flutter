@@ -1,4 +1,4 @@
-import 'package:jameya/features/create_jameya/domain/entities/create_jameya_entity.dart';
+import 'package:jameya_admin/features/create_jameya/domain/entities/create_jameya_entity.dart';
 
 /// Serializable request body for `POST /admin/circles`.
 ///
@@ -38,11 +38,11 @@ class CreateJameyaRequestModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'amount': amount,
-        'contributionAmount': contributionAmount,
-        'durationMonths': durationMonths,
-        'memberCapacity': memberCapacity,
-        'cycleFrequency': cycleFrequency,
-        'startDate': startDate,
-      };
+    'amount': amount,
+    'contributionAmount': contributionAmount,
+    'durationMonths': durationMonths,
+    'memberCapacity': memberCapacity,
+    'cycleFrequency': cycleFrequency,
+    'startDate': startDate,
+  };
 }

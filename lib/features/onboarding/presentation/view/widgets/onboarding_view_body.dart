@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya/core/animations/smart_animate_transition.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/features/onboarding/data/models/onboarding_model.dart';
-import 'package:jameya/features/onboarding/presentation/view/widgets/onboarding_bottom_section.dart';
-import 'package:jameya/features/onboarding/presentation/view/widgets/onboarding_page_item.dart';
-import 'package:jameya/features/onboarding/presentation/view/widgets/onboarding_top_bar.dart';
-import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
+import 'package:jameya_admin/core/animations/smart_animate_transition.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/features/onboarding/data/models/onboarding_model.dart';
+import 'package:jameya_admin/features/onboarding/presentation/view/widgets/onboarding_bottom_section.dart';
+import 'package:jameya_admin/features/onboarding/presentation/view/widgets/onboarding_page_item.dart';
+import 'package:jameya_admin/features/onboarding/presentation/view/widgets/onboarding_top_bar.dart';
+import 'package:jameya_admin/features/onboarding/presentation/viewmodel/onboarding_cubit.dart';
 
 class OnboardingViewBody extends StatefulWidget {
   const OnboardingViewBody({super.key});

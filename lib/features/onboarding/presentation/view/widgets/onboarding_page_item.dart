@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/animations/smart_animate_transition.dart';
-import 'package:jameya/features/onboarding/data/models/onboarding_model.dart';
-import 'package:jameya/features/onboarding/presentation/view/widgets/onboarding_subtitle.dart';
-import 'package:jameya/features/onboarding/presentation/view/widgets/onboarding_title.dart';
+import 'package:jameya_admin/core/animations/smart_animate_transition.dart';
+import 'package:jameya_admin/features/onboarding/data/models/onboarding_model.dart';
+import 'package:jameya_admin/features/onboarding/presentation/view/widgets/onboarding_subtitle.dart';
+import 'package:jameya_admin/features/onboarding/presentation/view/widgets/onboarding_title.dart';
 
 class OnboardingPageItem extends StatelessWidget {
   final OnboardingModel model;
