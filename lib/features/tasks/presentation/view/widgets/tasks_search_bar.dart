@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya/core/utils/app_colors.dart';
 
-/// Reusable search bar matching Screenshots 2 & 3 (RTL search icon on the right)
 class TasksSearchBar extends StatelessWidget {
   const TasksSearchBar({
     super.key,
@@ -17,49 +16,53 @@ class TasksSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        height: 48.h,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
-        ),
-        child: TextField(
-          onChanged: onChanged,
-          textAlign: TextAlign.right,
-          textDirection: TextDirection.rtl,
-          style: GoogleFonts.inter(
-            fontSize: 13.sp,
-            color: AppColors.textPrimary,
-          ),
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: GoogleFonts.inter(
-              fontSize: 13.sp,
-              color: AppColors.textHint,
+    return Container(
+      height: 48.h,
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.border, width: 1),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/icons/search.svg',
+            width: 24.w,
+            height: 24.h,
+            colorFilter: const ColorFilter.mode(
+              AppColors.grey500,
+              BlendMode.srcIn,
             ),
-            hintTextDirection: TextDirection.rtl,
-            prefixIcon: Padding(
-              padding: EdgeInsets.all(12.r),
-              child: SvgPicture.asset(
-                'assets/icons/search.svg',
-                width: 20.w,
-                height: 20.h,
-                colorFilter: ColorFilter.mode(
-                  AppColors.textHint,
-                  BlendMode.srcIn,
+          ),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: TextField(
+              onChanged: onChanged,
+              textAlignVertical: TextAlignVertical.center,
+              style: GoogleFonts.inter(
+                fontSize: 16.sp,
+                color: AppColors.textPrimary,
+                height: 1.2,
+              ),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: GoogleFonts.inter(
+                  fontSize: 16.sp,
+                  color: AppColors.grey500,
+                  fontWeight: FontWeight.w400,
+                  height: 1.2,
                 ),
+                isCollapsed: true,
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
               ),
             ),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 13.h,
-            ),
           ),
-        ),
+        ],
       ),
     );
   }

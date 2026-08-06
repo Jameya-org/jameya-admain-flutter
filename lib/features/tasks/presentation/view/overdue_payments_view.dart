@@ -27,7 +27,7 @@ class OverduePaymentsView extends StatelessWidget {
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(
-                Icons.chevron_right,
+                Icons.chevron_left,
                 color: AppColors.primary,
                 size: 28.sp,
               ),
@@ -36,7 +36,7 @@ class OverduePaymentsView extends StatelessWidget {
             title: Text(
               'الدفعات المتاخرة',
               style: GoogleFonts.inter(
-                fontSize: 18.sp,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
                 color: AppColors.primary,
               ),
@@ -55,12 +55,10 @@ class OverduePaymentsView extends StatelessWidget {
                           .fetchOverduePayments(search: query),
                     ),
                   ),
-                  SizedBox(height: 14.h),
+                  SizedBox(height: 23.h),
 
                   // ── List ──────────────────────────────────────────────────
-                  Expanded(
-                    child: _buildBody(context, state),
-                  ),
+                  Expanded(child: _buildBody(context, state)),
                 ],
               );
             },

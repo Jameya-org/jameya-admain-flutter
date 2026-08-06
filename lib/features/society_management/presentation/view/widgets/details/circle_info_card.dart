@@ -14,19 +14,63 @@ class CircleInfoCard extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(bottom: 8.h),
           child: Text(
-            'معلومات الدائرة',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black87),
+            'معلومات الجمعية',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
         ),
         _rowItem('الحالة', _statusChip(society.status)),
         _divider(),
-        _rowItem('كود الجمعية', Text(society.code.isNotEmpty ? society.code : 'JMY-2024-001', style: TextStyle(fontSize: 13.sp, color: Colors.black87, fontWeight: FontWeight.w500))),
+        _rowItem(
+          'كود الجمعية',
+          Text(
+            society.code.isNotEmpty ? society.code : 'JMY-2024-001',
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         _divider(),
-        _rowItem('مدة الدائرة', Text(society.duration.isNotEmpty ? society.duration : '12 شهر', style: TextStyle(fontSize: 13.sp, color: Colors.black87, fontWeight: FontWeight.w500))),
+        _rowItem(
+          'مدة الدائرة',
+          Text(
+            society.duration.isNotEmpty ? society.duration : '12 شهر',
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         _divider(),
-        _rowItem('تاريخ البدء', Text(society.startDate.isNotEmpty ? society.startDate : '01/01/2024', style: TextStyle(fontSize: 13.sp, color: Colors.black87, fontWeight: FontWeight.w500))),
+        _rowItem(
+          'تاريخ البدء',
+          Text(
+            society.startDate.isNotEmpty ? society.startDate : '01/01/2024',
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         _divider(),
-        _rowItem('تاريخ الانتهاء', Text(society.endDate.isNotEmpty ? society.endDate : '01/12/2024', style: TextStyle(fontSize: 13.sp, color: Colors.black87, fontWeight: FontWeight.w500))),
+        _rowItem(
+          'تاريخ الانتهاء',
+          Text(
+            society.endDate.isNotEmpty ? society.endDate : '01/12/2024',
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -44,7 +88,11 @@ class CircleInfoCard extends StatelessWidget {
       ),
       child: Text(
         status.isNotEmpty ? status : 'نشطة',
-        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF00CECD), fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: 12.sp,
+          color: const Color(0xFF00CECD),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -53,7 +101,14 @@ class CircleInfoCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: TextStyle(fontSize: 13.sp, color: Colors.grey.shade500, fontWeight: FontWeight.w500)),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 13.sp,
+            color: Colors.grey.shade500,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         valWidget,
       ],
     );

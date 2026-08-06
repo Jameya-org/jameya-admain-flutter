@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jameya/core/utils/app_colors.dart';
 import '../../../../data/models/society_member_model.dart';
 
 class MemberCardItem extends StatelessWidget {
@@ -21,7 +22,8 @@ class MemberCardItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.border, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -45,30 +47,47 @@ class MemberCardItem extends StatelessWidget {
               children: [
                 Text(
                   member.name,
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   member.phone,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade500),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey.shade500,
+                  ),
                 ),
                 SizedBox(height: 4.h),
                 Row(
                   children: [
                     Text(
                       'صفحة ',
-                      style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade400),
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        color: Colors.grey.shade400,
+                      ),
                     ),
                     Text(
                       '${member.turn} ج.م 12,000',
-                      style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade500, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        color: Colors.grey.shade500,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   'الدور الرابع',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade400),
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: Colors.grey.shade400,
+                  ),
                 ),
               ],
             ),
@@ -95,9 +114,9 @@ class MemberCardItem extends StatelessWidget {
               ),
               SizedBox(height: 16.h),
               Icon(
-                Icons.arrow_back_ios_new,
-                size: 14.sp,
-                color: const Color(0xFF00CECD),
+                Icons.arrow_forward_ios_outlined,
+                size: 20.sp,
+                color: AppColors.primary,
               ),
             ],
           ),

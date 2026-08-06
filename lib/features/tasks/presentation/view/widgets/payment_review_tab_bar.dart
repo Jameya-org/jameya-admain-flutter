@@ -19,7 +19,7 @@ class PaymentReviewTabBar extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _TabButton(
             label: 'الكل',
@@ -78,8 +78,8 @@ class _TabButton extends StatelessWidget {
         child: Text(
           label,
           style: GoogleFonts.inter(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
             color: isActive ? Colors.white : AppColors.textPrimary,
           ),
         ),

@@ -44,6 +44,13 @@ class SocietyCard extends StatelessWidget {
     }
   }
 
+  double _getProgress() {
+    final totalDuration = int.tryParse(society.duration) ?? 0;
+    if (totalDuration <= 0) return 0;
+    final progress = society.currentTurn / totalDuration;
+    return progress.clamp(0.0, 1.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -107,7 +114,6 @@ class SocietyCard extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
 
-            // ===== نقطة الحالة + النص =====
             Row(
               children: [
                 Container(
@@ -153,21 +159,33 @@ class SocietyCard extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 8.h),
+
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: LinearProgressIndicator(
+                value: _getProgress(),
+                minHeight: 4.h,
+                backgroundColor: Colors.grey.shade200,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+              ),
+            ),
+
             SizedBox(height: 14.h),
 
-            // ===== صندوقين: المبلغ الشهري + المدة =====
             Row(
               children: [
                 Expanded(
                   child: _buildStatBox(
-                    icon: Icons.groups_outlined,
+                    iconAsset: 'assets/icons/Members Count.svg',
                     text: society.duration,
                   ),
                 ),
+
                 SizedBox(width: 10.w),
                 Expanded(
                   child: _buildStatBox(
-                    icon: Icons.savings_outlined,
+                    iconAsset: 'assets/icons/MonthlyInstallment.svg',
                     text: '${society.monthlyAmount.toStringAsFixed(0)} ج.م',
                   ),
                 ),
@@ -175,20 +193,23 @@ class SocietyCard extends StatelessWidget {
             ),
             SizedBox(height: 14.h),
 
-            // ===== النهاية / البداية: زي كودك الأصلي (Divider + عمودين) =====
             Divider(height: 1.h, color: Colors.grey.shade200),
             SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildInfoCol(Icons.calendar_today, 'النهاية', society.endDate),
+                _buildInfoCol(
+                  'assets/icons/EndDate.svg',
+                  'النهاية',
+                  society.endDate,
+                ),
                 Container(
                   width: 1.w,
                   height: 32.h,
                   color: Colors.grey.shade200,
                 ),
                 _buildInfoCol(
-                  Icons.calendar_today,
+                  'assets/icons/StartDate.svg',
                   'البداية',
                   society.startDate,
                 ),
@@ -200,7 +221,7 @@ class SocietyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatBox({required IconData icon, required String text}) {
+  Widget _buildStatBox({required String iconAsset, required String text}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
       decoration: BoxDecoration(
@@ -211,7 +232,12 @@ class SocietyCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 18.sp, color: Colors.teal),
+          SvgPicture.asset(
+            iconAsset,
+            width: 18.w,
+            height: 18.h,
+            colorFilter: ColorFilter.mode(Colors.teal, BlendMode.srcIn),
+          ),
           SizedBox(width: 6.w),
           Text(
             text,
@@ -222,29 +248,29 @@ class SocietyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCol(IconData icon, String label, String rawDate) {
+  Widget _buildInfoCol(String svgAsset, String label, String rawDate) {
     String formatted = rawDate;
     if (rawDate.length > 10 && rawDate.contains('T')) {
       formatted = rawDate.substring(0, 10);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: [
-        Row(
+        SvgPicture.asset(svgAsset, width: 20.w, height: 20.h),
+        SizedBox(width: 6.w),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, size: 14.sp, color: Colors.grey),
-            SizedBox(width: 4.w),
             Text(
               label,
               style: TextStyle(fontSize: 12.sp, color: Colors.grey),
             ),
+            SizedBox(height: 2.h),
+            Text(
+              formatted.isEmpty ? '—' : formatted,
+              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+            ),
           ],
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          formatted,
-          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
         ),
       ],
     );

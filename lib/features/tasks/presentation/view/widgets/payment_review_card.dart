@@ -15,8 +15,8 @@ class PaymentReviewCard extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
-        margin: EdgeInsets.only(bottom: 12.h),
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+        margin: EdgeInsets.only(bottom: 24.h),
+        padding: EdgeInsets.symmetric(horizontal: 38.w, vertical: 14.h),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
@@ -33,7 +33,7 @@ class PaymentReviewCard extends StatelessWidget {
                   Text(
                     payment.memberName,
                     style: GoogleFonts.inter(
-                      fontSize: 14.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),
@@ -42,7 +42,7 @@ class PaymentReviewCard extends StatelessWidget {
                   Text(
                     payment.phone,
                     style: GoogleFonts.inter(
-                      fontSize: 12.sp,
+                      fontSize: 14.sp,
                       color: AppColors.textHint,
                     ),
                   ),
@@ -50,7 +50,7 @@ class PaymentReviewCard extends StatelessWidget {
                   Text(
                     payment.floor,
                     style: GoogleFonts.inter(
-                      fontSize: 12.sp,
+                      fontSize: 14.sp,
                       color: AppColors.textHint,
                     ),
                   ),
@@ -58,7 +58,7 @@ class PaymentReviewCard extends StatelessWidget {
                   Text(
                     'منذ ${payment.timeAgo}',
                     style: GoogleFonts.inter(
-                      fontSize: 11.sp,
+                      fontSize: 12.sp,
                       color: AppColors.textHint,
                     ),
                   ),
@@ -68,12 +68,13 @@ class PaymentReviewCard extends StatelessWidget {
 
             // Left: Amount + Status Pill Badge
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
                 Text(
                   '${_formatAmount(payment.amount)} ج.م',
                   style: GoogleFonts.inter(
-                    fontSize: 15.sp,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
                   ),
@@ -90,7 +91,9 @@ class PaymentReviewCard extends StatelessWidget {
 
   String _formatAmount(double amount) {
     if (amount == amount.truncateToDouble()) {
-      return amount.toStringAsFixed(0).replaceAllMapped(
+      return amount
+          .toStringAsFixed(0)
+          .replaceAllMapped(
             RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
             (m) => '${m[1]},',
           );
@@ -109,16 +112,20 @@ class _StatusBadge extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: isSuccess
-            ? const Color(0xFFA3E635).withOpacity(0.5) // Light green background matching screenshot 3
-            : const Color(0xFFFCA5A5).withOpacity(0.6), // Light red/pink background matching screenshot 3
+            ? const Color(
+                0xFF9CEEBA,
+              ) // Light green background matching screenshot 3
+            : const Color(
+                0xFFFBB3B3,
+              ), // Light red/pink background matching screenshot 3
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(
         isSuccess ? 'ناجحة' : 'فاشلة',
         style: GoogleFonts.inter(
-          fontSize: 12.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w600,
-          color: isSuccess ? const Color(0xFF15803D) : const Color(0xFFB91C1C),
+          color: AppColors.textPrimary,
         ),
       ),
     );

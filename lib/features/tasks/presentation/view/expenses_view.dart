@@ -26,7 +26,7 @@ class ExpensesView extends StatelessWidget {
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(
-                Icons.chevron_right,
+                Icons.chevron_left,
                 color: AppColors.primary,
                 size: 28.sp,
               ),
@@ -35,7 +35,7 @@ class ExpensesView extends StatelessWidget {
             title: Text(
               'المصروفات',
               style: GoogleFonts.inter(
-                fontSize: 18.sp,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
                 color: AppColors.primary,
               ),
@@ -65,10 +65,7 @@ class ExpensesView extends StatelessWidget {
 
 // ── Body with summary card + grouped list matching Screenshot 4 ────────────────
 class _ExpensesBody extends StatelessWidget {
-  const _ExpensesBody({
-    required this.expenses,
-    required this.summary,
-  });
+  const _ExpensesBody({required this.expenses, required this.summary});
 
   final List<ExpenseModel> expenses;
   final ExpensesSummaryModel summary;
@@ -108,7 +105,7 @@ class _ExpensesBody extends StatelessWidget {
                   Text(
                     dateKey,
                     style: GoogleFonts.inter(
-                      fontSize: 14.sp,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w700,
                       color: AppColors.primary,
                     ),
@@ -154,7 +151,7 @@ class _SummaryCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
       ),
       child: Row(
@@ -167,8 +164,8 @@ class _SummaryCard extends StatelessWidget {
                 Text(
                   'عدد العمليات',
                   style: GoogleFonts.inter(
-                    fontSize: 13.sp,
-                    color: AppColors.textHint,
+                    fontSize: 18.sp,
+                    color: AppColors.textPrimary.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -176,8 +173,8 @@ class _SummaryCard extends StatelessWidget {
                 Text(
                   summary.operationsCount.toString(),
                   style: GoogleFonts.inter(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
                     color: AppColors.primary,
                   ),
                 ),
@@ -185,11 +182,7 @@ class _SummaryCard extends StatelessWidget {
             ),
           ),
           // Vertical Divider
-          Container(
-            height: 44.h,
-            width: 1,
-            color: const Color(0xFFE2E8F0),
-          ),
+          Container(height: 44.h, width: 1, color: const Color(0xFFE2E8F0)),
           // Left Column (RTL End): اجمالي المبلغ
           Expanded(
             child: Column(
@@ -198,8 +191,8 @@ class _SummaryCard extends StatelessWidget {
                 Text(
                   'اجمالي المبلغ',
                   style: GoogleFonts.inter(
-                    fontSize: 13.sp,
-                    color: AppColors.textHint,
+                    fontSize: 18.sp,
+                    color: AppColors.textPrimary.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -207,8 +200,8 @@ class _SummaryCard extends StatelessWidget {
                 Text(
                   '${_formatAmount(summary.totalAmount)} ج.م',
                   style: GoogleFonts.inter(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
                     color: AppColors.primary,
                   ),
                 ),
@@ -222,7 +215,9 @@ class _SummaryCard extends StatelessWidget {
 
   String _formatAmount(double amount) {
     if (amount == amount.truncateToDouble()) {
-      return amount.toStringAsFixed(0).replaceAllMapped(
+      return amount
+          .toStringAsFixed(0)
+          .replaceAllMapped(
             RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
             (m) => '${m[1]},',
           );
@@ -240,10 +235,10 @@ class _ExpenseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.h),
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+      padding: EdgeInsets.symmetric(horizontal: 38.w, vertical: 30.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
       ),
       child: Row(
@@ -257,7 +252,7 @@ class _ExpenseCard extends StatelessWidget {
                 Text(
                   expense.memberName,
                   style: GoogleFonts.inter(
-                    fontSize: 14.sp,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
@@ -266,7 +261,7 @@ class _ExpenseCard extends StatelessWidget {
                 Text(
                   expense.phone,
                   style: GoogleFonts.inter(
-                    fontSize: 12.sp,
+                    fontSize: 14.sp,
                     color: AppColors.textHint,
                   ),
                 ),
@@ -274,7 +269,7 @@ class _ExpenseCard extends StatelessWidget {
                 Text(
                   expense.floor,
                   style: GoogleFonts.inter(
-                    fontSize: 12.sp,
+                    fontSize: 14.sp,
                     color: AppColors.textHint,
                   ),
                 ),
@@ -289,7 +284,7 @@ class _ExpenseCard extends StatelessWidget {
               Text(
                 '${_formatAmount(expense.amount)}ج.م',
                 style: GoogleFonts.inter(
-                  fontSize: 15.sp,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
                 ),
@@ -298,12 +293,14 @@ class _ExpenseCard extends StatelessWidget {
               GestureDetector(
                 onTap: expense.isConfirmed
                     ? null
-                    : () => context
-                        .read<ExpensesCubit>()
-                        .confirmExpense(expense.id),
+                    : () => context.read<ExpensesCubit>().confirmExpense(
+                        expense.id,
+                      ),
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                      horizontal: 18.w, vertical: 7.h),
+                    horizontal: 18.w,
+                    vertical: 7.h,
+                  ),
                   decoration: BoxDecoration(
                     color: expense.isConfirmed
                         ? const Color(0xFFCBD5E1)
@@ -313,7 +310,7 @@ class _ExpenseCard extends StatelessWidget {
                   child: Text(
                     'تأكيد الدفع',
                     style: GoogleFonts.inter(
-                      fontSize: 12.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -329,7 +326,9 @@ class _ExpenseCard extends StatelessWidget {
 
   String _formatAmount(double amount) {
     if (amount == amount.truncateToDouble()) {
-      return amount.toStringAsFixed(0).replaceAllMapped(
+      return amount
+          .toStringAsFixed(0)
+          .replaceAllMapped(
             RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
             (m) => '${m[1]},',
           );

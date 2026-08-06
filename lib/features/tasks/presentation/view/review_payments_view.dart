@@ -28,7 +28,7 @@ class ReviewPaymentsView extends StatelessWidget {
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(
-                Icons.chevron_right,
+                Icons.chevron_left,
                 color: AppColors.primary,
                 size: 28.sp,
               ),
@@ -37,8 +37,8 @@ class ReviewPaymentsView extends StatelessWidget {
             title: Text(
               'مراجعة الدفعات',
               style: GoogleFonts.inter(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
             ),
@@ -61,7 +61,7 @@ class ReviewPaymentsView extends StatelessWidget {
                               .read<ReviewPaymentsCubit>()
                               .fetchPaymentProofs(search: q),
                         ),
-                        SizedBox(height: 14.h),
+                        SizedBox(height: 23.h),
                         // ── Tab Bar (الكل - ناجحة - فاشلة) ──────────────
                         PaymentReviewTabBar(
                           activeTab: activeTab,
@@ -72,7 +72,7 @@ class ReviewPaymentsView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 14.h),
+                  SizedBox(height: 24.h),
 
                   // ── List ──────────────────────────────────────────────
                   Expanded(child: _buildBody(context, state)),
@@ -96,8 +96,7 @@ class ReviewPaymentsView extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemCount: state.filtered.length,
-        itemBuilder: (_, i) =>
-            PaymentReviewCard(payment: state.filtered[i]),
+        itemBuilder: (_, i) => PaymentReviewCard(payment: state.filtered[i]),
       );
     }
     return const SizedBox.shrink();

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:jameya/core/utils/app_colors.dart';
 import 'package:jameya/features/society_management/presentation/viewmodel/society_details_cubit.dart';
 import 'package:jameya/features/society_management/presentation/viewmodel/society_details_state.dart';
 import 'member_card_item.dart';
@@ -16,28 +19,53 @@ class MembersTabView extends StatelessWidget {
         children: [
           // Search Bar
           Container(
-            height: 46.h,
+            height: 48.h,
+            padding: EdgeInsets.symmetric(horizontal: 14.w),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: AppColors.border, width: 1),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/search.svg',
+                  width: 24.w,
+                  height: 24.h,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.grey500,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: TextField(
+                    onChanged: (val) =>
+                        context.read<SocietyDetailsCubit>().searchMember(val),
+                    textAlignVertical: TextAlignVertical.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 16.sp,
+                      color: AppColors.textPrimary,
+                      height: 1.2,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'البحث عن عضو...',
+                      hintStyle: GoogleFonts.inter(
+                        fontSize: 16.sp,
+                        color: AppColors.grey500,
+                        fontWeight: FontWeight.w400,
+                        height: 1.2,
+                      ),
+                      isCollapsed: true,
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
                 ),
               ],
-            ),
-            child: TextField(
-              onChanged: (val) =>
-                  context.read<SocietyDetailsCubit>().searchMember(val),
-              decoration: InputDecoration(
-                hintText: 'البحث عن عضو...',
-                hintStyle: TextStyle(fontSize: 13.sp, color: Colors.grey.shade400),
-                prefixIcon: Icon(Icons.search, size: 20.sp, color: Colors.grey.shade400),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 13.h),
-              ),
             ),
           ),
           SizedBox(height: 12.h),
@@ -53,9 +81,7 @@ class MembersTabView extends StatelessWidget {
                   );
                 }
                 return const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xFF00CECD),
-                  ),
+                  child: CircularProgressIndicator(color: Color(0xFF00CECD)),
                 );
               },
             ),

@@ -23,7 +23,7 @@ class DelayDetailsView extends StatelessWidget {
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: Icon(
-              Icons.chevron_right,
+              Icons.chevron_left,
               color: AppColors.primary,
               size: 28.sp,
             ),
@@ -32,7 +32,7 @@ class DelayDetailsView extends StatelessWidget {
           title: Text(
             'تفاصيل التأخير',
             style: GoogleFonts.inter(
-              fontSize: 18.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.w700,
               color: AppColors.primary,
             ),
@@ -68,10 +68,10 @@ class _MemberCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      padding: EdgeInsets.symmetric(horizontal: 90.w, vertical: 18.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
       ),
       child: Row(
@@ -87,15 +87,12 @@ class _MemberCard extends StatelessWidget {
               child: Image.network(
                 avatarUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Icon(
-                  Icons.person,
-                  size: 34.sp,
-                  color: Colors.white,
-                ),
+                errorBuilder: (_, __, ___) =>
+                    Icon(Icons.person, size: 34.sp, color: Colors.white),
               ),
             ),
           ),
-          SizedBox(width: 14.w),
+          SizedBox(width: 30.w),
 
           // Member Info Column
           Expanded(
@@ -103,9 +100,11 @@ class _MemberCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  payment.memberName.isNotEmpty ? payment.memberName : 'محمد احمد علي',
+                  payment.memberName.isNotEmpty
+                      ? payment.memberName
+                      : 'محمد احمد علي',
                   style: GoogleFonts.inter(
-                    fontSize: 16.sp,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
@@ -114,7 +113,7 @@ class _MemberCard extends StatelessWidget {
                 Text(
                   payment.email.isNotEmpty ? payment.email : 'ex@gmail.com',
                   style: GoogleFonts.inter(
-                    fontSize: 13.sp,
+                    fontSize: 18.sp,
                     color: AppColors.textHint,
                   ),
                 ),
@@ -122,7 +121,7 @@ class _MemberCard extends StatelessWidget {
                 Text(
                   payment.phone.isNotEmpty ? payment.phone : '01234567890',
                   style: GoogleFonts.inter(
-                    fontSize: 13.sp,
+                    fontSize: 18.sp,
                     color: AppColors.textHint,
                   ),
                 ),
@@ -142,16 +141,22 @@ class _DetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final amountText = payment.amount > 0 ? _formatAmount(payment.amount) : '1,000';
-    final dueDateText = payment.dueDate.isNotEmpty ? payment.dueDate : '1-7-2026';
-    final daysLateText = payment.daysLate > 0 ? payment.daysLate.toString() : '3';
+    final amountText = payment.amount > 0
+        ? _formatAmount(payment.amount)
+        : '1,000';
+    final dueDateText = payment.dueDate.isNotEmpty
+        ? payment.dueDate
+        : '1-7-2026';
+    final daysLateText = payment.daysLate > 0
+        ? payment.daysLate.toString()
+        : '3';
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 43.w, vertical: 41.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
       ),
       child: Column(
@@ -186,7 +191,9 @@ class _DetailsCard extends StatelessWidget {
 
   String _formatAmount(double amount) {
     if (amount == amount.truncateToDouble()) {
-      return amount.toStringAsFixed(0).replaceAllMapped(
+      return amount
+          .toStringAsFixed(0)
+          .replaceAllMapped(
             RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
             (m) => '${m[1]},',
           );
@@ -196,11 +203,7 @@ class _DetailsCard extends StatelessWidget {
 }
 
 class _DetailRow extends StatelessWidget {
-  const _DetailRow({
-    required this.label,
-    required this.value,
-    this.valueColor,
-  });
+  const _DetailRow({required this.label, required this.value, this.valueColor});
   final String label;
   final String value;
   final Color? valueColor;
@@ -216,7 +219,7 @@ class _DetailRow extends StatelessWidget {
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 14.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textHint,
             ),
@@ -225,7 +228,7 @@ class _DetailRow extends StatelessWidget {
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 14.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w700,
               color: valueColor ?? AppColors.textPrimary,
             ),
