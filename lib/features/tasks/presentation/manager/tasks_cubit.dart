@@ -1,112 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
-import 'package:jameya_admin/features/tasks/data/models/overdue_payment_model.dart';
 import 'package:jameya_admin/features/tasks/data/models/payment_review_model.dart';
 import 'package:jameya_admin/features/tasks/data/repos/tasks_repo.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_state.dart';
-
-// ── Fallback Demo Data Matching Screenshots Exactly ───────────────────────────
-final List<OverduePaymentModel> _defaultOverduePayments = [
-  OverduePaymentModel(
-    id: '1',
-    memberName: 'احمد علي سامح',
-    email: 'ex@gmail.com',
-    phone: '01234567890',
-    floor: 'الدور السابع',
-    dueDate: '1-7-2026',
-    amount: 3000,
-    daysLate: 3,
-  ),
-  OverduePaymentModel(
-    id: '2',
-    memberName: 'احمد علي سامح',
-    email: 'ex@gmail.com',
-    phone: '01234567890',
-    floor: 'الدور السابع',
-    dueDate: '1-7-2026',
-    amount: 3000,
-    daysLate: 3,
-  ),
-  OverduePaymentModel(
-    id: '3',
-    memberName: 'احمد علي سامح',
-    email: 'ex@gmail.com',
-    phone: '01234567890',
-    floor: 'الدور السابع',
-    dueDate: '1-7-2026',
-    amount: 3000,
-    daysLate: 3,
-  ),
-];
-
-final List<PaymentReviewModel> _defaultPaymentReviews = [
-  PaymentReviewModel(
-    id: '1',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور الرابع',
-    timeAgo: '15 دقيقة',
-    amount: 1000,
-    status: 'success',
-  ),
-  PaymentReviewModel(
-    id: '2',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور الرابع',
-    timeAgo: '15 دقيقة',
-    amount: 1000,
-    status: 'success',
-  ),
-  PaymentReviewModel(
-    id: '3',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور الرابع',
-    timeAgo: '15 دقيقة',
-    amount: 1000,
-    status: 'failed',
-  ),
-];
-
-final List<ExpenseModel> _defaultExpenses = [
-  ExpenseModel(
-    id: '1',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور الرابع',
-    amount: 10800,
-    date: 'اليوم',
-    isConfirmed: false,
-  ),
-  ExpenseModel(
-    id: '2',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور السابع',
-    amount: 24000,
-    date: 'اليوم',
-    isConfirmed: false,
-  ),
-  ExpenseModel(
-    id: '3',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور التاسع',
-    amount: 36000,
-    date: 'اليوم',
-    isConfirmed: false,
-  ),
-  ExpenseModel(
-    id: '4',
-    memberName: 'احمد علي سامح',
-    phone: '01234567890',
-    floor: 'الدور التاسع',
-    amount: 36000,
-    date: '1-8-2026',
-    isConfirmed: false,
-  ),
-];
 
 // ── 1. Overdue Payments Cubit (الدفعات المتأخرة) ────────────────────────────
 class OverduePaymentsCubit extends Cubit<OverduePaymentsState> {
@@ -118,13 +14,9 @@ class OverduePaymentsCubit extends Cubit<OverduePaymentsState> {
     emit(OverduePaymentsLoading());
     try {
       final payments = await _repo.getOverduePayments(search: search);
-      emit(
-        OverduePaymentsLoaded(
-          payments.isEmpty ? _defaultOverduePayments : payments,
-        ),
-      );
-    } catch (_) {
-      emit(OverduePaymentsLoaded(_defaultOverduePayments));
+      emit(OverduePaymentsLoaded(payments));
+    } catch (e) {
+      emit(OverduePaymentsError(e.toString()));
     }
   }
 }
@@ -146,11 +38,10 @@ class ReviewPaymentsCubit extends Cubit<ReviewPaymentsState> {
     emit(ReviewPaymentsLoading());
     try {
       final all = await _repo.getPaymentProofs(search: _searchQuery);
-      _allReviews = all.isEmpty ? _defaultPaymentReviews : all;
+      _allReviews = all;
       _emitFiltered();
-    } catch (_) {
-      _allReviews = _defaultPaymentReviews;
-      _emitFiltered();
+    } catch (e) {
+      emit(ReviewPaymentsError(e.toString()));
     }
   }
 
@@ -165,7 +56,7 @@ class ReviewPaymentsCubit extends Cubit<ReviewPaymentsState> {
     if (_currentTab == 'success') {
       filtered = _allReviews.where((p) => p.isSuccess).toList();
     } else if (_currentTab == 'failed') {
-      filtered = _allReviews.where((p) => !p.isSuccess).toList();
+      filtered = _allReviews.where((p) => p.status == 'failed').toList();
     } else {
       filtered = List.from(_allReviews);
     }
@@ -211,31 +102,18 @@ class ExpensesCubit extends Cubit<ExpensesState> {
     emit(ExpensesLoading());
     try {
       final expenses = await _repo.getExpenses();
-      final listToUse = expenses.isEmpty ? _defaultExpenses : expenses;
-      final total = listToUse.fold<double>(0, (sum, e) => sum + e.amount);
+      final total = expenses.fold<double>(0, (sum, e) => sum + e.amount);
       emit(
         ExpensesLoaded(
-          expenses: listToUse,
+          expenses: expenses,
           summary: ExpensesSummaryModel(
-            operationsCount: listToUse.length,
+            operationsCount: expenses.length,
             totalAmount: total,
           ),
         ),
       );
-    } catch (_) {
-      final total = _defaultExpenses.fold<double>(
-        0,
-        (sum, e) => sum + e.amount,
-      );
-      emit(
-        ExpensesLoaded(
-          expenses: _defaultExpenses,
-          summary: ExpensesSummaryModel(
-            operationsCount: 3, // Matches Screenshot 4
-            totalAmount: 72000, // Matches Screenshot 4
-          ),
-        ),
-      );
+    } catch (e) {
+      emit(ExpensesError(e.toString()));
     }
   }
 

@@ -8,11 +8,17 @@ import 'package:jameya_admin/features/home/presentation/view/widgets/home_header
 import 'package:jameya_admin/features/home/presentation/view/widgets/home_societies_section.dart';
 import 'package:jameya_admin/features/home/presentation/view/widgets/home_stats_grid.dart';
 import 'package:jameya_admin/features/home/presentation/view/widgets/home_task_list.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
 
 class HomeViewBody extends StatelessWidget {
-  const HomeViewBody({super.key, required this.onNavigateToSocieties});
+  const HomeViewBody({
+    super.key,
+    required this.onNavigateToSocieties,
+    this.societyCubit,
+  });
 
   final VoidCallback onNavigateToSocieties;
+  final SocietyCubit? societyCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,7 @@ class HomeViewBody extends StatelessWidget {
                 SizedBox(height: 24.h),
                 HomeSocietiesSection(
                   onNavigateToSocieties: onNavigateToSocieties,
+                  cubit: societyCubit,
                 ),
                 SizedBox(height: 24.h),
               ],

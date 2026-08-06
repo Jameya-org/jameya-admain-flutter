@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya_admin/core/services/services_locator.dart';
 import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/widgets/error_state_view.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_cubit.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_state.dart';
 import 'package:jameya_admin/features/tasks/presentation/view/widgets/overdue_payment_card.dart';
@@ -81,6 +82,12 @@ class OverduePaymentsView extends StatelessWidget {
         itemCount: state.payments.length,
         itemBuilder: (_, index) =>
             OverduePaymentCard(payment: state.payments[index]),
+      );
+    }
+    if (state is OverduePaymentsError) {
+      return ErrorStateView(
+        message: state.message,
+        onRetry: () => context.read<OverduePaymentsCubit>().fetchOverduePayments(),
       );
     }
     return const SizedBox.shrink();

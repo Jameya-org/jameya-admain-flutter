@@ -10,14 +10,16 @@ import 'widgets/society_filter_tabs.dart';
 import 'widgets/society_list_view.dart';
 
 class SocietyManagementView extends StatelessWidget {
-  const SocietyManagementView({super.key, this.onBack});
+  const SocietyManagementView({super.key, this.onBack, this.cubit});
 
   final VoidCallback? onBack;
+  final SocietyCubit? cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<SocietyCubit>()..fetchSocieties(),
+    final societyCubit = cubit ?? (getIt<SocietyCubit>()..fetchSocieties());
+    return BlocProvider.value(
+      value: societyCubit,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

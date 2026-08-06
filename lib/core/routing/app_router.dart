@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jameya_admin/core/animations/smart_animate_transition.dart';
 import 'package:jameya_admin/core/routing/routes.dart';
 import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/widgets/custom_error_view.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/view/create_jameya_view.dart';
 import 'package:jameya_admin/features/onboarding/presentation/view/onboarding_view.dart';
@@ -23,6 +24,11 @@ import 'package:jameya_admin/features/tasks/presentation/view/expenses_view.dart
 // Defines the app's navigation using GoRouter
 abstract final class AppRouter {
   static final router = GoRouter(
+    errorBuilder: (context, state) => CustomErrorViewForAppRouter(
+      path: state.uri.toString(),
+      errorMessage: state.error?.toString(),
+      onRetry: () => context.go(AppRoutes.kHomeView),
+    ),
     routes: [
       //* ── Splash ─────────────────────────────────────
       GoRoute(
@@ -89,7 +95,13 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kSocietyDetailsView,
         pageBuilder: (context, state) {
-          final society = state.extra as SocietyModel;
+          final society = state.extra;
+          if (society is! SocietyModel) {
+            return SmartAnimateTransition.buildPage(
+              state: state,
+              child: const SocietyManagementView(),
+            );
+          }
           return SmartAnimateTransition.buildPage(
             state: state,
             child: SocietyDetailsView(society: society),
@@ -110,7 +122,13 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kDelayDetailsView,
         pageBuilder: (context, state) {
-          final payment = state.extra as OverduePaymentModel;
+          final payment = state.extra;
+          if (payment is! OverduePaymentModel) {
+            return SmartAnimateTransition.buildPage(
+              state: state,
+              child: const OverduePaymentsView(),
+            );
+          }
           return SmartAnimateTransition.buildPage(
             state: state,
             child: DelayDetailsView(payment: payment),
