@@ -25,22 +25,22 @@ class LabeledTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Text(
+              label,
+              style: AppTextStyles.subtitle.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(width: 4.w),
             Text(
               '*',
               style: AppTextStyles.subtitle.copyWith(
                 color: Colors.red,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            Text(
-              label,
-              style: AppTextStyles.subtitle.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -51,7 +51,8 @@ class LabeledTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           obscureText: obscureText,
-          textAlign: TextAlign.right,
+          textAlign: TextAlign.start,
+          textDirection: TextDirection.rtl,
           decoration: InputDecoration(
             hintText: hintText,
 

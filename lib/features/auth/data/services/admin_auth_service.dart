@@ -11,7 +11,6 @@ class AdminAuthService {
     required String email,
     required String password,
   }) async {
-
     final response = await dio.post(
       '/admin/auth/login',
       data: {

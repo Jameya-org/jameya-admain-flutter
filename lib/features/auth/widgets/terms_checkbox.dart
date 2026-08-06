@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_styles.dart';
@@ -34,33 +33,25 @@ class TermsCheckbox extends StatelessWidget {
           child: RichText(
             textAlign: TextAlign.right,
             text: TextSpan(
-              style: AppTextStyles.body.copyWith(
-                color: AppColors.grey500,
-              ),
+              style: AppTextStyles.body.copyWith(color: AppColors.grey500),
               children: [
-                const TextSpan(
-                  text: 'أوافق على ',
-                ),
+                const TextSpan(text: 'أوافق على '),
                 TextSpan(
                   text: 'شروط الاستخدام',
                   style: AppTextStyles.body.copyWith(
                     color: AppColors.primary,
                     decoration: TextDecoration.underline,
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = onTermsTap,
+                  recognizer: TapGestureRecognizer()..onTap = onTermsTap,
                 ),
-                const TextSpan(
-                  text: ' و ',
-                ),
+                const TextSpan(text: ' و '),
                 TextSpan(
                   text: 'سياسة الخصوصية',
                   style: AppTextStyles.body.copyWith(
                     color: AppColors.primary,
                     decoration: TextDecoration.underline,
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = onPrivacyTap,
+                  recognizer: TapGestureRecognizer()..onTap = onPrivacyTap,
                 ),
               ],
             ),

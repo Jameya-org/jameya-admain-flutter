@@ -1,83 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya/core/utils/app_colors.dart';
 
 // Reusable text styles based on a consistent type scale
+// All styles use the Inter font via google_fonts
 abstract final class AppTextStyles {
   const AppTextStyles._();
 
-  // Default font used across all styles
-  static const _fontFamily = 'Inter';
-
-  static final appTitle = TextStyle(
+  static TextStyle get appTitle => GoogleFonts.inter(
     fontSize: 44.sp,
     fontWeight: FontWeight.w700,
     color: AppColors.primary,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
-  static final displayLarge = TextStyle(
+
+  static TextStyle get displayLarge => GoogleFonts.inter(
     fontSize: 36.sp,
     fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
 
-  static final displayMedium = TextStyle(
+  static TextStyle get displayMedium => GoogleFonts.inter(
     fontSize: 32.sp,
     fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
 
-  static final headline = TextStyle(
+  static TextStyle get headline => GoogleFonts.inter(
     fontSize: 28.sp,
     fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
 
-  static final title = TextStyle(
+  static TextStyle get title => GoogleFonts.inter(
     fontSize: 24.sp,
     fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
 
-  static final subtitle = TextStyle(
+  static TextStyle get subtitle => GoogleFonts.inter(
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
 
-  static final body = TextStyle(
+  static TextStyle get body => GoogleFonts.inter(
     fontSize: 16.sp,
     fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
     color: AppColors.primary,
   );
 
-  static final bodySmall = TextStyle(
+  static TextStyle get bodySmall => GoogleFonts.inter(
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
     height: 1.5,
     letterSpacing: -.02,
   );
 
-  static final label = TextStyle(
+  static TextStyle get label => GoogleFonts.inter(
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
+    height: 1.5,
+    letterSpacing: -.02,
+  );
+
+  static TextStyle get caption => GoogleFonts.inter(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
     height: 1.5,
     letterSpacing: -.02,
   );

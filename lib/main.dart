@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya/core/localization/cubit/localization_cubit.dart';
 import 'package:jameya/core/localization/cubit/localization_state.dart';
 import 'package:jameya/core/routing/app_router.dart';
@@ -45,7 +46,14 @@ class Jameya extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
                 debugShowCheckedModeBanner: false,
-                theme: ThemeData(primarySwatch: Colors.blue),
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                  // Apply Inter as the default font for the entire app
+                  fontFamily: GoogleFonts.inter().fontFamily,
+                  textTheme: GoogleFonts.interTextTheme(
+                    ThemeData.light().textTheme,
+                  ),
+                ),
               );
             },
           );
