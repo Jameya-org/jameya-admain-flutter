@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 
 class SocietyEmptyState extends StatelessWidget {
   const SocietyEmptyState({super.key, this.onCreateTap});
@@ -45,14 +45,16 @@ class SocietyEmptyState extends StatelessWidget {
                 onTap: onCreateTap ?? () {},
                 borderRadius: BorderRadius.circular(10.r),
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 28.w,
+                    vertical: 14.h,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(10.r),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.25),
+                        color: AppColors.primary.withValues(alpha: 0.25),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -61,8 +63,7 @@ class SocietyEmptyState extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.add_rounded,
-                          color: Colors.white, size: 20.sp),
+                      Icon(Icons.add_rounded, color: Colors.white, size: 20.sp),
                       SizedBox(width: 8.w),
                       Text(
                         'إنشاء جمعية',

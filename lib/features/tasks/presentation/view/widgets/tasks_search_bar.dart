@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
 
 class TasksSearchBar extends StatelessWidget {
   const TasksSearchBar({

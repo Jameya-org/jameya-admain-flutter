@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/home/presentation/view/widgets/home_view_body.dart';
-import 'package:jameya/features/society_management/presentation/view/society_management_view.dart';
-import 'package:jameya/features/tasks/presentation/view/expenses_view.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/home/presentation/view/widgets/home_view_body.dart';
+import 'package:jameya_admin/features/society_management/presentation/view/society_management_view.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
+import 'package:jameya_admin/features/tasks/presentation/view/expenses_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -16,6 +20,19 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   int _currentIndex = 0;
+  late final SocietyCubit _societyCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _societyCubit = getIt<SocietyCubit>()..fetchSocieties();
+  }
+
+  @override
+  void dispose() {
+    _societyCubit.close();
+    super.dispose();
+  }
 
   void _onTabSelected(int index) {
     setState(() {
@@ -23,15 +40,18 @@ class _MainViewState extends State<MainView> {
     });
   }
 
-  // الـ Bottom Nav يظل ظاهراً في صفحة الجمعيات ليكون مطابقاً للتصميم
-  bool get _showBottomNav => true;
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      HomeViewBody(onNavigateToSocieties: () => _onTabSelected(1)),
+      HomeViewBody(
+        onNavigateToSocieties: () => _onTabSelected(1),
+        societyCubit: _societyCubit,
+      ),
       // صفحة الجمعيات داخل الـ main view مع الـ bottom nav
-      SocietyManagementView(onBack: () => _onTabSelected(0)),
+      SocietyManagementView(
+        onBack: () => _onTabSelected(0),
+        cubit: _societyCubit,
+      ),
       const Center(child: Text('إضافة جمعية جديدة')),
       const ExpensesView(),
       const Center(child: Text('الملف الشخصي')),
@@ -49,7 +69,7 @@ class _MainViewState extends State<MainView> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -57,7 +77,7 @@ class _MainViewState extends State<MainView> {
         ),
         child: FloatingActionButton(
           onPressed: () {
-            _onTabSelected(2);
+            context.push(AppRoutes.kCreateJameyaView);
           },
           backgroundColor: AppColors.primary,
           elevation: 0,
@@ -68,9 +88,7 @@ class _MainViewState extends State<MainView> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: Border(
-            top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
-          ),
+          border: Border(top: BorderSide(color: Color(0xFFE2E8F0), width: 1)),
         ),
         child: BottomAppBar(
           shape: const CircularNotchedRectangle(),

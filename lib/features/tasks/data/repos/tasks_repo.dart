@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:jameya/core/api/api_services.dart';
-import 'package:jameya/core/api/end_points.dart';
-import 'package:jameya/core/errors/failures.dart';
-import 'package:jameya/features/tasks/data/models/expense_model.dart';
-import 'package:jameya/features/tasks/data/models/overdue_payment_model.dart';
-import 'package:jameya/features/tasks/data/models/payment_review_model.dart';
+import 'package:jameya_admin/core/api/api_services.dart';
+import 'package:jameya_admin/core/api/end_points.dart';
+import 'package:jameya_admin/core/errors/failures.dart';
+import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/overdue_payment_model.dart';
+import 'package:jameya_admin/features/tasks/data/models/payment_review_model.dart';
 
 class TasksRepo {
   final ApiServices _apiServices;
@@ -12,9 +12,7 @@ class TasksRepo {
   TasksRepo(this._apiServices);
 
   // ── 1. GET /admin/installments?status=OVERDUE ─────────────────────────────
-  Future<List<OverduePaymentModel>> getOverduePayments({
-    String? search,
-  }) async {
+  Future<List<OverduePaymentModel>> getOverduePayments({String? search}) async {
     try {
       final response = await _apiServices.get(
         endPoint: EndPoints.adminInstallments,
@@ -28,8 +26,8 @@ class TasksRepo {
       final List<dynamic> data = resData is List
           ? resData
           : (resData is Map && resData.containsKey('data')
-              ? resData['data']
-              : []);
+                ? resData['data']
+                : []);
 
       return data.map((e) => OverduePaymentModel.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -59,8 +57,8 @@ class TasksRepo {
         final List<dynamic> txList = txData is List
             ? txData
             : (txData is Map && txData.containsKey('data')
-                ? txData['data']
-                : []);
+                  ? txData['data']
+                  : []);
         result.addAll(txList.map((e) => PaymentReviewModel.fromJson(e)));
       } catch (_) {}
 
@@ -76,9 +74,11 @@ class TasksRepo {
         final List<dynamic> proofList = proofData is List
             ? proofData
             : (proofData is Map && proofData.containsKey('data')
-                ? proofData['data']
-                : []);
-        final proofs = proofList.map((e) => PaymentReviewModel.fromJson(e)).toList();
+                  ? proofData['data']
+                  : []);
+        final proofs = proofList
+            .map((e) => PaymentReviewModel.fromJson(e))
+            .toList();
 
         final existingIds = result.map((r) => r.id).toSet();
         for (final p in proofs) {
@@ -113,16 +113,14 @@ class TasksRepo {
   // ── 4. GET /admin/transactions ────────────────────────────────────────────
   Future<List<ExpenseModel>> getExpenses() async {
     try {
-      final response = await _apiServices.get(
-        endPoint: EndPoints.transactions,
-      );
+      final response = await _apiServices.get(endPoint: EndPoints.transactions);
 
       final dynamic resData = response.data;
       final List<dynamic> data = resData is List
           ? resData
           : (resData is Map && resData.containsKey('data')
-              ? resData['data']
-              : []);
+                ? resData['data']
+                : []);
 
       return data.map((e) => ExpenseModel.fromJson(e)).toList();
     } on DioException catch (e) {

@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 import '../viewmodel/society_cubit.dart';
 import 'widgets/society_search_bar.dart';
 import 'widgets/society_filter_tabs.dart';
 import 'widgets/society_list_view.dart';
 
 class SocietyManagementView extends StatelessWidget {
-  const SocietyManagementView({super.key, this.onBack});
+  const SocietyManagementView({super.key, this.onBack, this.cubit});
 
   final VoidCallback? onBack;
+  final SocietyCubit? cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<SocietyCubit>()..fetchSocieties(),
+    final societyCubit = cubit ?? (getIt<SocietyCubit>()..fetchSocieties());
+    return BlocProvider.value(
+      value: societyCubit,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

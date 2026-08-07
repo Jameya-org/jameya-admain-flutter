@@ -32,9 +32,7 @@ class AuthTitleSection extends StatelessWidget {
 
         Text(
           subtitle,
-          style: AppTextStyles.subtitle.copyWith(
-            color: Colors.white,
-          ),
+          style: AppTextStyles.subtitle.copyWith(color: Colors.white),
           textAlign: TextAlign.start,
         ),
       ],

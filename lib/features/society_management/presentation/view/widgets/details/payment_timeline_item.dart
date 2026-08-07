@@ -39,7 +39,7 @@ class PaymentTimelineItem extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
                 decoration: BoxDecoration(
-                  color: _getStatusColor().withOpacity(0.1),
+                  color: _getStatusColor().withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(payment.status, style: TextStyle(fontSize: 11.sp, color: _getStatusColor(), fontWeight: FontWeight.bold)),

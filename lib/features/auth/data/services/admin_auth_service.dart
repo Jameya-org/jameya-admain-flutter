@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:jameya_admin/core/services/api_config.dart';
 
 import '../models/admin_login_model.dart';
 
@@ -11,18 +12,13 @@ class AdminAuthService {
     required String email,
     required String password,
   }) async {
-    print(email);
-    print(password);
-
     final response = await dio.post(
-      '/admin/auth/login',
+      ApiConfig.adminLogin,
       data: {
         'email': email.trim(),
         'password': password.trim(),
       },
     );
-
-    print(response.data);
 
     return AdminLoginModel.fromJson(response.data);
   }

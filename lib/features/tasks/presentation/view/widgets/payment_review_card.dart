@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/tasks/data/models/payment_review_model.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/tasks/data/models/payment_review_model.dart';
 
 /// Single card for payment review list item matching Screenshot 3
 class PaymentReviewCard extends StatelessWidget {
@@ -80,7 +80,7 @@ class PaymentReviewCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 6.h),
-                _StatusBadge(isSuccess: payment.isSuccess),
+                _StatusBadge(payment: payment),
               ],
             ),
           ],
@@ -103,29 +103,41 @@ class PaymentReviewCard extends StatelessWidget {
 }
 
 class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.isSuccess});
-  final bool isSuccess;
+  const _StatusBadge({required this.payment});
+  final PaymentReviewModel payment;
 
   @override
   Widget build(BuildContext context) {
+    final (String label, Color bg, Color fg) = switch (payment.status) {
+      'success' => (
+          'ناجحة',
+          const Color(0xFF9CEEBA),
+          const Color(0xFF166534),
+        ),
+      'failed' => (
+          'فاشلة',
+          const Color(0xFFFBB3B3),
+          const Color(0xFF991B1B),
+        ),
+      _ => (
+          'معلق',
+          const Color(0xFFFDE68A),
+          const Color(0xFF92400E),
+        ),
+    };
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: isSuccess
-            ? const Color(
-                0xFF9CEEBA,
-              ) // Light green background matching screenshot 3
-            : const Color(
-                0xFFFBB3B3,
-              ), // Light red/pink background matching screenshot 3
+        color: bg,
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(
-        isSuccess ? 'ناجحة' : 'فاشلة',
+        label,
         style: GoogleFonts.inter(
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
+          color: fg,
         ),
       ),
     );

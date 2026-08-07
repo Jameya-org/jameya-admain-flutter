@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
 import '../../viewmodel/society_cubit.dart';
 
 class SocietySearchBar extends StatelessWidget {
@@ -34,8 +34,7 @@ class SocietySearchBar extends StatelessWidget {
           SizedBox(width: 10.w),
           Expanded(
             child: TextField(
-              onChanged: (value) =>
-                  context.read<SocietyCubit>().search(value),
+              onChanged: (value) => context.read<SocietyCubit>().search(value),
               textAlignVertical: TextAlignVertical.center,
               style: GoogleFonts.inter(
                 fontSize: 16.sp,

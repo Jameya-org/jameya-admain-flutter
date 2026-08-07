@@ -1,4 +1,4 @@
-import 'package:jameya/features/home/data/models/dashboard_model.dart';
+import 'package:jameya_admin/features/home/data/models/dashboard_model.dart';
 
 abstract class HomeState {}
 

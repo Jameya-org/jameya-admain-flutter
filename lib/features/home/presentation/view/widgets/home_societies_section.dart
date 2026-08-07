@@ -3,26 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
-import 'package:jameya/features/society_management/data/models/society_model.dart';
-import 'package:jameya/features/society_management/presentation/viewmodel/society_cubit.dart';
-import 'package:jameya/features/society_management/presentation/viewmodel/society_state.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_state.dart';
 
 class HomeSocietiesSection extends StatelessWidget {
   const HomeSocietiesSection({
     super.key,
     required this.onNavigateToSocieties,
+    this.cubit,
   });
 
   final VoidCallback onNavigateToSocieties;
+  final SocietyCubit? cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<SocietyCubit>()..fetchSocieties(),
+    final societyCubit = cubit ?? (getIt<SocietyCubit>()..fetchSocieties());
+    return BlocProvider.value(
+      value: societyCubit,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -59,9 +62,7 @@ class HomeSocietiesSection extends StatelessWidget {
               if (state is SocietyLoading) {
                 return SizedBox(
                   height: 195.h,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 );
               } else if (state is SocietyError) {
                 return SizedBox(
@@ -79,7 +80,8 @@ class HomeSocietiesSection extends StatelessWidget {
                         ),
                         SizedBox(height: 6.h),
                         GestureDetector(
-                          onTap: () => context.read<SocietyCubit>().fetchSocieties(),
+                          onTap: () =>
+                              context.read<SocietyCubit>().fetchSocieties(),
                           child: Text(
                             'إعادة المحاولة',
                             style: AppTextStyles.caption.copyWith(
@@ -115,7 +117,7 @@ class HomeSocietiesSection extends StatelessWidget {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: societies.length,
-                    separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                    separatorBuilder: (_, _) => SizedBox(width: 12.w),
                     itemBuilder: (context, index) {
                       final society = societies[index];
                       return _buildSocietyCard(context, society);
@@ -146,7 +148,7 @@ class HomeSocietiesSection extends StatelessWidget {
           border: Border.all(color: AppColors.grey200, width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -299,11 +301,7 @@ class HomeSocietiesSection extends StatelessWidget {
                   'النهاية',
                   society.endDate,
                 ),
-                Container(
-                  height: 24.h,
-                  width: 1,
-                  color: AppColors.grey300,
-                ),
+                Container(height: 24.h, width: 1, color: AppColors.grey300),
                 _buildDateCol(
                   'assets/icons/StartDate.svg',
                   'البداية',
@@ -325,11 +323,7 @@ class HomeSocietiesSection extends StatelessWidget {
 
     return Row(
       children: [
-        SvgPicture.asset(
-          svgPath,
-          width: 24.w,
-          height: 24.h,
-        ),
+        SvgPicture.asset(svgPath, width: 24.w, height: 24.h),
         SizedBox(width: 6.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
