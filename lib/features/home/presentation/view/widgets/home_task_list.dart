@@ -22,7 +22,7 @@ class HomeTaskList extends StatelessWidget {
         'title': 'إدارة الأعضاء',
         'icon': 'assets/icons/Member_Management.svg',
         'hasBadge': false,
-        'route': null, // مش متاح حالياً
+        'route': AppRoutes.kMembersView,
       },
       {
         'title': 'المصروفات',

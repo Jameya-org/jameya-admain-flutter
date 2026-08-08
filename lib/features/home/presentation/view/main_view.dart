@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +11,9 @@ import 'package:jameya_admin/features/home/presentation/view/widgets/home_view_b
 import 'package:jameya_admin/features/society_management/presentation/view/society_management_view.dart';
 import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
 import 'package:jameya_admin/features/tasks/presentation/view/expenses_view.dart';
+
+import '../../../profile/presentation/view_model/profile_cubit.dart';
+import '../../../profile/presentation/views/profile_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -54,8 +58,10 @@ class _MainViewState extends State<MainView> {
       ),
       const Center(child: Text('إضافة جمعية جديدة')),
       const ExpensesView(),
-      const Center(child: Text('الملف الشخصي')),
-    ];
+      BlocProvider(
+        create: (_) => getIt<ProfileCubit>()..getProfile(),
+        child: const ProfileView(),
+      ),    ];
 
     return Scaffold(
       backgroundColor: AppColors.background,
