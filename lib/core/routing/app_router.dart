@@ -2,6 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jameya_admin/core/animations/smart_animate_transition.dart';
 import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/features/member_verification/data/models/member_verification_model.dart';
+import 'package:jameya_admin/features/member_verification/presentation/view/member_verification_detail_view.dart';
+import 'package:jameya_admin/features/member_verification/presentation/view/member_verification_list_view.dart';
 import 'package:jameya_admin/core/services/services_locator.dart';
 import 'package:jameya_admin/core/widgets/custom_error_view.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
@@ -152,6 +155,33 @@ abstract final class AppRouter {
           state: state,
           child: const ExpensesView(),
         ),
+      ),
+
+      //* ── Member Verification List ───────────────────
+      GoRoute(
+        path: AppRoutes.kMemberVerificationListView,
+        pageBuilder: (context, state) => SmartAnimateTransition.buildPage(
+          state: state,
+          child: const MemberVerificationListView(),
+        ),
+      ),
+
+      //* ── Member Verification Detail ─────────────────
+      GoRoute(
+        path: AppRoutes.kMemberVerificationDetailView,
+        pageBuilder: (context, state) {
+          final member = state.extra;
+          if (member is! MemberVerificationModel) {
+            return SmartAnimateTransition.buildPage(
+              state: state,
+              child: const MemberVerificationListView(),
+            );
+          }
+          return SmartAnimateTransition.buildPage(
+            state: state,
+            child: MemberVerificationDetailView(member: member),
+          );
+        },
       ),
     ],
   );

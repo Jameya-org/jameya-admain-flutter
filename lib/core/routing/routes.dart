@@ -15,4 +15,7 @@ abstract final class AppRoutes {
   static const kDelayDetailsView = '/delay-details';
   static const kReviewPaymentsView = '/review-payments';
   static const kExpensesView = '/expenses';
+  // Member Verification routes
+  static const kMemberVerificationListView = '/member-verification-list';
+  static const kMemberVerificationDetailView = '/member-verification-detail';
 }

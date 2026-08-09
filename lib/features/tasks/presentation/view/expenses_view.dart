@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jameya_admin/core/services/services_locator.dart';
 import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 import 'package:jameya_admin/core/widgets/error_state_view.dart';
 import 'package:jameya_admin/features/tasks/data/models/expense_model.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_cubit.dart';
@@ -35,11 +36,7 @@ class ExpensesView extends StatelessWidget {
             ),
             title: Text(
               'المصروفات',
-              style: GoogleFonts.inter(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primary,
-              ),
+              style: AppTextStyles.appBarTitle,
             ),
           ),
           body: BlocBuilder<ExpensesCubit, ExpensesState>(

@@ -11,12 +11,12 @@ class HomeTaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tasks = [
+    final List<Map<String, dynamic>> tasks = [
       {
         'title': 'توثيق الأعضاء',
         'icon': 'assets/icons/MemberVerification.svg',
         'hasBadge': true,
-        'route': null, // مش متاح حالياً
+        'route': AppRoutes.kMemberVerificationListView,
       },
       {
         'title': 'إدارة الأعضاء',

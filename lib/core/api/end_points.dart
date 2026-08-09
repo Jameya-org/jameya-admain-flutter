@@ -37,4 +37,5 @@ class EndPoints {
   // KYC & Eligibility
   static const String pendingKycDocs = '/admin/kyc/pending-documents';
   static const String kycEligibility = '/admin/kyc/eligibility';
+  static String reviewKycDocument(String id) => '/admin/kyc/documents/$id/review';
 }

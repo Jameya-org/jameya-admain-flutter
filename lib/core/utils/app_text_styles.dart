@@ -44,6 +44,12 @@ abstract final class AppTextStyles {
     letterSpacing: -.02,
   );
 
+  static TextStyle get appBarTitle => GoogleFonts.inter(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primary,
+  );
+
   static TextStyle get subtitle => GoogleFonts.inter(
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,

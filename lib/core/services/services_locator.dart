@@ -18,6 +18,8 @@ import 'package:jameya_admin/features/home/data/repos/home_repo.dart';
 import 'package:jameya_admin/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:jameya_admin/features/society_management/data/repos/society_repo.dart';
 import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
+import 'package:jameya_admin/features/member_verification/data/repos/member_verification_repo.dart';
+import 'package:jameya_admin/features/member_verification/presentation/viewmodel/member_verification_cubit.dart';
 import 'package:jameya_admin/features/tasks/data/repos/tasks_repo.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_cubit.dart';
 
@@ -75,6 +77,9 @@ Future<void> setupServiceLocator() async {
     () => SocietyRepo(getIt<ApiServices>()),
   );
   getIt.registerLazySingleton<TasksRepo>(() => TasksRepo(getIt<ApiServices>()));
+  getIt.registerLazySingleton<MemberVerificationRepo>(
+    () => MemberVerificationRepo(getIt<ApiServices>()),
+  );
 
   // ── Cubits / Blocs ────────────────────────────────────────────────────
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
@@ -86,4 +91,7 @@ Future<void> setupServiceLocator() async {
     () => ReviewPaymentsCubit(getIt<TasksRepo>()),
   );
   getIt.registerFactory<ExpensesCubit>(() => ExpensesCubit(getIt<TasksRepo>()));
+  getIt.registerFactory<MemberVerificationCubit>(
+    () => MemberVerificationCubit(getIt<MemberVerificationRepo>()),
+  );
 }
