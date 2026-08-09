@@ -39,13 +39,14 @@ class _SplashViewState extends State<SplashView> {
 
   void _navigateToNextScreen() async {
     final bool isOnboardingCompleted = SharedPreferencesService.isOnBoardingViewed();
+    final bool isLoggedIn = SharedPreferencesService.isLoggedIn();
     final String? token = await SecureStorageService.getAccessToken();
 
     if (!mounted) return;
 
     if (!isOnboardingCompleted) {
       context.go(AppRoutes.kOnboardingView);
-    } else if (token == null || token.trim().isEmpty) {
+    } else if (!isLoggedIn || token == null || token.trim().isEmpty) {
       context.go(AppRoutes.kAdminLoginView);
     } else {
       context.go(AppRoutes.kHomeView);

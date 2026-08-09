@@ -195,7 +195,7 @@ class _SocietyDetailsAppBarState extends State<SocietyDetailsAppBar>
         icon: Icon(
           Icons.arrow_back_ios_new,
           color: const Color(0xFF00796B),
-          size: 18.sp,
+          size: 20.sp,
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
@@ -213,8 +213,8 @@ class _SocietyDetailsAppBarState extends State<SocietyDetailsAppBar>
           onPressed: _toggleMenu,
           icon: SvgPicture.asset(
             'assets/icons/menu.svg',
-            width: 22.sp,
-            height: 22.sp,
+            width: 20.sp,
+            height: 20.sp,
             colorFilter: const ColorFilter.mode(
               Color(0xFF00796B),
               BlendMode.srcIn,

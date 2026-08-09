@@ -273,9 +273,21 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kDelayDetailsView,
         pageBuilder: (context, state) {
-          final payment = state.extra;
+          final extra = state.extra;
+          OverduePaymentModel? payment;
+          
+          if (extra is OverduePaymentModel) {
+            payment = extra;
+          } else if (extra is Map<String, dynamic>) {
+            payment = OverduePaymentModel.fromJson(extra);
+          } else {
+             // Fallback or attempt dynamic cast if type information was lost
+             try {
+                payment = extra as OverduePaymentModel?;
+             } catch (_) {}
+          }
 
-          if (payment is! OverduePaymentModel) {
+          if (payment == null) {
             return SmartAnimateTransition.buildPage(
               state: state,
               child: const OverduePaymentsView(),

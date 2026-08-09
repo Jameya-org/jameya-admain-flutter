@@ -81,7 +81,7 @@ class MembersTabView extends StatelessWidget {
                   );
                 }
                 return const Center(
-                  child: CircularProgressIndicator(color: Color(0xFF00CECD)),
+                  child: CircularProgressIndicator(),
                 );
               },
             ),

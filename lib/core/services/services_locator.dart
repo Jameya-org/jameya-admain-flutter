@@ -44,8 +44,13 @@ Future<void> setupServiceLocator() async {
         () => LocaleCubit(getIt<CacheHelper>()),
   );
 
-  // Dio
+  // Api Services & Interceptors
+  getIt.registerLazySingleton<AppInterceptors>(() => AppInterceptors());
+  getIt.registerLazySingleton<ApiServices>(
+    () => ApiServicesImplementation(getIt<AppInterceptors>()),
+  );
 
+  // Dio
   getIt.registerLazySingleton<Dio>(
         () {
       final dio = Dio(
@@ -58,20 +63,22 @@ Future<void> setupServiceLocator() async {
       );
 
       dio.interceptors.add(
-        AppInterceptors(),
+        getIt<AppInterceptors>(),
       );
 
       return dio;
     },
   );
-  // AdminAuthService
 
+  // AdminAuthService
   getIt.registerLazySingleton<AdminAuthService>(
         () => AdminAuthService(getIt<Dio>()),
   );
   getIt.registerFactory<AuthCubit>(
         () => AuthCubit(),
   );
+
+  // Profile
   getIt.registerLazySingleton<ProfileService>(
         () => ProfileService(
       getIt<Dio>(),
@@ -89,6 +96,8 @@ Future<void> setupServiceLocator() async {
       getIt<ProfileRepo>(),
     ),
   );
+
+  // Members & Details
   getIt.registerLazySingleton<MembersService>(
         () => MembersService(getIt<Dio>()),
   );
@@ -106,6 +115,28 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<MembershipService>(
         () => MembershipService(),
   );
+
+  // Home & Society Repos & Cubits
+  getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt<ApiServices>()));
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+  getIt.registerLazySingleton<SocietyRepo>(() => SocietyRepo(getIt<ApiServices>()));
+  getIt.registerFactory<SocietyCubit>(() => SocietyCubit(getIt<SocietyRepo>()));
+
+  // Create Jameya
+  getIt.registerLazySingleton<CreateJameyaRemoteDataSource>(
+    () => CreateJameyaRemoteDataSourceImpl(getIt<Dio>()),
+  );
+  getIt.registerLazySingleton<CreateJameyaRepository>(
+    () => CreateJameyaRepositoryImpl(getIt<CreateJameyaRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<CreateJameyaUseCase>(
+    () => CreateJameyaUseCase(getIt<CreateJameyaRepository>()),
+  );
+  getIt.registerFactory<CreateJameyaCubit>(
+    () => CreateJameyaCubit(getIt<CreateJameyaUseCase>()),
+  );
+
+  // Tasks & Verification
   getIt.registerLazySingleton<TasksRepo>(() => TasksRepo(getIt<ApiServices>()));
   getIt.registerLazySingleton<MemberVerificationRepo>(
     () => MemberVerificationRepo(getIt<ApiServices>()),
@@ -114,10 +145,9 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory<MemberCirclesCubit>(
         () => MemberCirclesCubit(),
   );
-  getIt.registerFactory<SocietyCubit>(
-        () => SocietyCubit(getIt()),
-  );
   getIt.registerFactory<ExpensesCubit>(() => ExpensesCubit(getIt<TasksRepo>()));
+  getIt.registerFactory<OverduePaymentsCubit>(() => OverduePaymentsCubit(getIt<TasksRepo>()));
+  getIt.registerFactory<ReviewPaymentsCubit>(() => ReviewPaymentsCubit(getIt<TasksRepo>()));
   getIt.registerFactory<MemberVerificationCubit>(
     () => MemberVerificationCubit(getIt<MemberVerificationRepo>()),
   );

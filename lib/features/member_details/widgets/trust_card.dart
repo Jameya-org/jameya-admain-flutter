@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_styles.dart';
 import '../models/member_details_model.dart';
 
 class TrustCard extends StatelessWidget {
-  const TrustCard({
-    super.key,
-    required this.member,
-  });
+  const TrustCard({super.key, required this.member});
 
   final MemberDetailsModel member;
 
-  Widget progress(
-      String title,
-      int percent,
-      ) {
+  Widget progress(String title, int percent) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -28,9 +21,7 @@ class TrustCard extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.right,
-                style: AppTextStyles.label.copyWith(
-                  color: AppColors.textHint,
-                ),
+                style: AppTextStyles.label.copyWith(color: AppColors.textHint),
               ),
             ),
 
@@ -69,9 +60,7 @@ class TrustCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: AppColors.border,
-        ),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,17 +88,11 @@ class TrustCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    progress(
-                      'الالتزام بالدفع',
-                      trust.paymentCommitment,
-                    ),
+                    progress('الالتزام بالدفع', trust.paymentCommitment),
 
                     SizedBox(height: 18.h),
 
-                    progress(
-                      'توثيق الهوية',
-                      trust.identityVerification,
-                    ),
+                    progress('توثيق الهوية', trust.identityVerification),
                   ],
                 ),
               ),
@@ -164,18 +147,14 @@ class TrustCard extends StatelessWidget {
 
               Text(
                 'محدث',
-                style: AppTextStyles.label.copyWith(
-                  color: AppColors.accent,
-                ),
+                style: AppTextStyles.label.copyWith(color: AppColors.accent),
               ),
 
               const Spacer(),
 
               Text(
                 'تحدث تلقائياً كل 30 يوماً',
-                style: AppTextStyles.label.copyWith(
-                  color: AppColors.textHint,
-                ),
+                style: AppTextStyles.label.copyWith(color: AppColors.textHint),
               ),
             ],
           ),

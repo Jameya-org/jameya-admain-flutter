@@ -15,10 +15,7 @@ import 'package:jameya_admin/features/member_verification/presentation/widgets/m
 class MemberVerificationDetailView extends StatefulWidget {
   final MemberVerificationModel member;
 
-  const MemberVerificationDetailView({
-    super.key,
-    required this.member,
-  });
+  const MemberVerificationDetailView({super.key, required this.member});
 
   @override
   State<MemberVerificationDetailView> createState() =>
@@ -61,16 +58,13 @@ class _MemberVerificationDetailViewState
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(
-                Icons.chevron_right,
+                Icons.chevron_left,
                 color: AppColors.primary,
                 size: 28.sp,
               ),
               onPressed: () => context.pop(),
             ),
-            title: Text(
-              'توثيق الاعضاء',
-              style: AppTextStyles.appBarTitle,
-            ),
+            title: Text('توثيق الاعضاء', style: AppTextStyles.appBarTitle),
           ),
           body: BlocConsumer<MemberVerificationCubit, MemberVerificationState>(
             listener: (context, state) {
@@ -78,7 +72,7 @@ class _MemberVerificationDetailViewState
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppColors.primary,
                   ),
                 );
                 context.pop();
@@ -86,7 +80,7 @@ class _MemberVerificationDetailViewState
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.error,
                   ),
                 );
               }
@@ -107,7 +101,7 @@ class _MemberVerificationDetailViewState
                   children: [
                     // Member Info Header Card
                     MemberInfoHeaderCard(member: state.member),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 24.h),
 
                     // Attached Documents Card Container
                     Container(
@@ -115,7 +109,7 @@ class _MemberVerificationDetailViewState
                       padding: EdgeInsets.all(14.r),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(16.r),
+                        borderRadius: BorderRadius.circular(12.r),
                         border: Border.all(color: Colors.grey.shade200),
                       ),
                       child: Column(
@@ -124,12 +118,12 @@ class _MemberVerificationDetailViewState
                           Text(
                             'المستندات المرفقة',
                             style: AppTextStyles.headline.copyWith(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
                             ),
                           ),
-                          SizedBox(height: 12.h),
+                          SizedBox(height: 34.h),
 
                           // List of Document Accordion Items
                           ...List.generate(documents.length, (index) {
@@ -141,10 +135,14 @@ class _MemberVerificationDetailViewState
                               },
                               onImagePicked: (_) async {
                                 final picker = ImagePicker();
-                                final pickedFile =
-                                    await picker.pickImage(source: ImageSource.gallery);
+                                final pickedFile = await picker.pickImage(
+                                  source: ImageSource.gallery,
+                                );
                                 if (pickedFile != null) {
-                                  cubit.setDocumentLocalImage(index, pickedFile.path);
+                                  cubit.setDocumentLocalImage(
+                                    index,
+                                    pickedFile.path,
+                                  );
                                 }
                               },
                               onStatusChanged: (status) {
@@ -158,13 +156,14 @@ class _MemberVerificationDetailViewState
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 40.h),
 
                     // Estimated Amount Field
                     Container(
+                      margin: EdgeInsets.symmetric(horizontal: 40.w),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.r),
+                        borderRadius: BorderRadius.circular(8.r),
                         border: Border.all(color: Colors.grey.shade300),
                       ),
                       child: TextField(
@@ -178,8 +177,10 @@ class _MemberVerificationDetailViewState
                         decoration: InputDecoration(
                           hintText: 'المبلغ التقديري للمشاركة',
                           hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontSize: 14.sp,
+                            color: const Color(
+                              0xff797979,
+                            ).withValues(alpha: 0.5),
+                            fontSize: 16.sp,
                           ),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
@@ -189,13 +190,19 @@ class _MemberVerificationDetailViewState
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 24.h),
 
                     // Verification Action Button
                     Builder(
                       builder: (context) {
-                        final bool isActive = documents.any((d) => d.status != DocumentVerificationStatus.pending) ||
-                            (state.estimatedAmount != null && state.estimatedAmount! > 0);
+                        final bool isActive =
+                            documents.any(
+                              (d) =>
+                                  d.status !=
+                                  DocumentVerificationStatus.pending,
+                            ) ||
+                            (state.estimatedAmount != null &&
+                                state.estimatedAmount! > 0);
 
                         return SizedBox(
                           width: double.infinity,
@@ -210,27 +217,32 @@ class _MemberVerificationDetailViewState
                               backgroundColor: isSubmitting
                                   ? Colors.grey.shade400
                                   : isActive
-                                      ? AppColors.primary
-                                      : const Color(0xFFE2E8F0),
+                                  ? Colors.grey.shade400
+                                  : const Color(0xFFDBDBDB),
                               elevation: 0,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
+                                borderRadius: BorderRadius.circular(8.r),
                               ),
                             ),
                             child: isSubmitting
-                                ? const CircularProgressIndicator(color: Colors.white)
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
                                 : Text(
                                     'توثيق',
                                     style: TextStyle(
-                                      color: isActive ? Colors.white : const Color(0xFF94A3B8),
+                                      color: isActive
+                                          ? Colors.white
+                                          : const Color(0xFF797979),
                                       fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                           ),
                         );
                       },
                     ),
+                    SizedBox(height: 40.h),
                   ],
                 ),
               );

@@ -23,14 +23,16 @@ class DocumentAccordionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isApproved = document.status == DocumentVerificationStatus.approved;
-    final bool isRejected = document.status == DocumentVerificationStatus.rejected;
+    final bool isApproved =
+        document.status == DocumentVerificationStatus.approved;
+    final bool isRejected =
+        document.status == DocumentVerificationStatus.rejected;
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
@@ -39,7 +41,7 @@ class DocumentAccordionItem extends StatelessWidget {
           // Header Row
           InkWell(
             onTap: onToggleExpand,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(8.r),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
               child: Row(
@@ -47,9 +49,9 @@ class DocumentAccordionItem extends StatelessWidget {
                   Text(
                     document.title,
                     style: AppTextStyles.bodySmall.copyWith(
-                      fontSize: 14.sp,
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
+                      color: AppColors.textSecondary.withValues(alpha: 0.5),
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   const Spacer(),
@@ -57,8 +59,8 @@ class DocumentAccordionItem extends StatelessWidget {
                     document.isExpanded
                         ? Icons.keyboard_arrow_down_rounded
                         : Icons.chevron_left_rounded,
-                    color: Colors.grey.shade600,
-                    size: 24.sp,
+                    color: AppColors.primary,
+                    size: 30.sp,
                   ),
                 ],
               ),
@@ -68,7 +70,9 @@ class DocumentAccordionItem extends StatelessWidget {
           // Expanded Content
           if (document.isExpanded) ...[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14.w).copyWith(bottom: 14.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: 14.w,
+              ).copyWith(bottom: 14.h),
               child: Column(
                 children: [
                   // Image Preview Box
@@ -98,21 +102,21 @@ class DocumentAccordionItem extends StatelessWidget {
                               ),
                             )
                           : (document.imageUrl.startsWith('http') &&
-                                  !document.imageUrl.contains('placeholder'))
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  child: Image.network(
-                                    document.imageUrl,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                )
-                              : Icon(
-                                  Icons.image_outlined,
-                                  size: 48.sp,
-                                  color: Colors.grey.shade500,
-                                ),
+                                !document.imageUrl.contains('placeholder'))
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Image.network(
+                                document.imageUrl,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                            )
+                          : Icon(
+                              Icons.image_outlined,
+                              size: 48.sp,
+                              color: Colors.grey.shade500,
+                            ),
                     ),
                   ),
                   SizedBox(height: 14.h),
@@ -124,54 +128,62 @@ class DocumentAccordionItem extends StatelessWidget {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            onStatusChanged(DocumentVerificationStatus.approved);
+                            onStatusChanged(
+                              DocumentVerificationStatus.approved,
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: isApproved
                                 ? const Color(0xFF1E8E3E)
-                                : AppColors.primary,
+                                : Color(0xff008080),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
+                              borderRadius: BorderRadius.circular(8.r),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            padding: EdgeInsets.symmetric(vertical: 20.h),
                           ),
                           child: Text(
                             'قبول',
                             style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 32.w),
                       // Reject Button on Left (second in RTL Row)
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            onStatusChanged(DocumentVerificationStatus.rejected);
+                            onStatusChanged(
+                              DocumentVerificationStatus.rejected,
+                            );
                           },
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(
-                              color: isRejected ? Colors.red : AppColors.primary,
+                              color: isRejected
+                                  ? Colors.red
+                                  : AppColors.primary,
                               width: 1.5,
                             ),
                             backgroundColor: isRejected
                                 ? Colors.red.shade50
                                 : Colors.transparent,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
+                              borderRadius: BorderRadius.circular(8.r),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            padding: EdgeInsets.symmetric(vertical: 20.h),
                           ),
                           child: Text(
                             'رفض',
                             style: TextStyle(
-                              color: isRejected ? Colors.red : AppColors.primary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.sp,
+                              color: isRejected
+                                  ? Colors.red
+                                  : AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
                             ),
                           ),
                         ),
@@ -181,15 +193,15 @@ class DocumentAccordionItem extends StatelessWidget {
 
                   // Rejection Reason Field
                   if (isRejected) ...[
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 14.h),
                     TextField(
                       onChanged: onRejectionReasonChanged,
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
                         hintText: 'سبب الرفض',
                         hintStyle: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 13.sp,
+                          color: Color(0xff797979),
+                          fontSize: 16.sp,
                         ),
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 14.w,
@@ -198,16 +210,18 @@ class DocumentAccordionItem extends StatelessWidget {
                         fillColor: Colors.white,
                         filled: true,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(color: Colors.grey.shade300),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(color: Colors.grey.shade300),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                          borderSide: const BorderSide(color: AppColors.primary),
+                          borderRadius: BorderRadius.circular(8.r),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                          ),
                         ),
                       ),
                     ),

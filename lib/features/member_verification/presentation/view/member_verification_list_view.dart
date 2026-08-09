@@ -28,16 +28,13 @@ class MemberVerificationListView extends StatelessWidget {
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(
-                Icons.chevron_right,
+                Icons.chevron_left,
                 color: AppColors.primary,
                 size: 28.sp,
               ),
               onPressed: () => context.pop(),
             ),
-            title: Text(
-              'توثيق الاعضاء',
-              style: AppTextStyles.appBarTitle,
-            ),
+            title: Text('توثيق الاعضاء', style: AppTextStyles.appBarTitle),
           ),
           body: BlocBuilder<MemberVerificationCubit, MemberVerificationState>(
             builder: (context, state) {
