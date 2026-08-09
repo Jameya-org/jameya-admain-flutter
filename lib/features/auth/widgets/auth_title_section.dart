@@ -16,7 +16,7 @@ class AuthTitleSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
           title,
@@ -25,15 +25,15 @@ class AuthTitleSection extends StatelessWidget {
             fontSize: 36.sp,
             fontWeight: FontWeight.w700,
           ),
-          textAlign: TextAlign.start,
         ),
 
         SizedBox(height: 8.h),
 
         Text(
           subtitle,
-          style: AppTextStyles.subtitle.copyWith(color: Colors.white),
-          textAlign: TextAlign.start,
+          style: AppTextStyles.subtitle.copyWith(
+            color: Colors.white,
+          ),
         ),
       ],
     );

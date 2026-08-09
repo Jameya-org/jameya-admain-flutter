@@ -22,6 +22,15 @@ import 'package:jameya_admin/features/member_verification/data/repos/member_veri
 import 'package:jameya_admin/features/member_verification/presentation/viewmodel/member_verification_cubit.dart';
 import 'package:jameya_admin/features/tasks/data/repos/tasks_repo.dart';
 import 'package:jameya_admin/features/tasks/presentation/manager/tasks_cubit.dart';
+import '../../features/ member_circles/data/membership_service.dart';
+import '../../features/ member_circles/presentation/view_model/member_circles_cubit.dart';
+import '../../features/member_details/data/member_details_service.dart';
+import '../../features/member_details/presentation/view_model/member_details_cubit.dart';
+import '../../features/members/data/members_service.dart';
+import '../../features/members/presentation/view_model/members_cubit.dart';
+import '../../features/profile/data/services/profile_service.dart';
+import '../../features/profile/presentation/view_model/profile_cubit.dart';
+import '../../features/profile/presentation/view_model/profile_repo.dart';
 
 final getIt = GetIt.instance;
 
@@ -32,63 +41,81 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<CacheHelper>(cacheHelper);
 
   getIt.registerLazySingleton<LocaleCubit>(
-    () => LocaleCubit(getIt<CacheHelper>()),
+        () => LocaleCubit(getIt<CacheHelper>()),
   );
 
-  // ── Dio HTTP client ────────────────────────────────────────────────────────
-  // Registered as a lazy singleton so the same configured instance is reused
-  // (attaches the Bearer token via DioFactory's auth interceptor).
-  getIt.registerLazySingleton<Dio>(() => DioFactory.create());
+  // Dio
 
-  // ── Network & API Services (Tasks/Home/Society) ───────────────────────
-  getIt.registerSingleton<AppInterceptors>(AppInterceptors());
-  getIt.registerLazySingleton<ApiServices>(
-    () => ApiServicesImplementation(getIt<AppInterceptors>()),
+  getIt.registerLazySingleton<Dio>(
+        () {
+      final dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://jameya-backend.onrender.com',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      dio.interceptors.add(
+        AppInterceptors(),
+      );
+
+      return dio;
+    },
   );
+  // AdminAuthService
 
-  // ── Create Jameya ──────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<CreateJameyaRemoteDataSource>(
-    () => CreateJameyaRemoteDataSourceImpl(getIt<Dio>()),
-  );
-
-  getIt.registerLazySingleton<CreateJameyaRepository>(
-    () => CreateJameyaRepositoryImpl(getIt<CreateJameyaRemoteDataSource>()),
-  );
-
-  getIt.registerLazySingleton<CreateJameyaUseCase>(
-    () => CreateJameyaUseCase(getIt<CreateJameyaRepository>()),
-  );
-
-  // Factory: a new cubit is created each time the route is pushed
-  getIt.registerFactory<CreateJameyaCubit>(
-    () => CreateJameyaCubit(getIt<CreateJameyaUseCase>()),
-  );
-
-  // ── Auth ──────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<AdminAuthService>(
-    () => AdminAuthService(getIt<Dio>()),
+        () => AdminAuthService(getIt<Dio>()),
+  );
+  getIt.registerFactory<AuthCubit>(
+        () => AuthCubit(),
+  );
+  getIt.registerLazySingleton<ProfileService>(
+        () => ProfileService(
+      getIt<Dio>(),
+    ),
   );
 
-  getIt.registerFactory<AuthCubit>(() => AuthCubit());
+  getIt.registerLazySingleton<ProfileRepo>(
+        () => ProfileRepo(
+      getIt<ProfileService>(),
+    ),
+  );
 
-  // ── Repositories ──────────────────────────────────────────────────────
-  getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt<ApiServices>()));
-  getIt.registerLazySingleton<SocietyRepo>(
-    () => SocietyRepo(getIt<ApiServices>()),
+  getIt.registerFactory<ProfileCubit>(
+        () => ProfileCubit(
+      getIt<ProfileRepo>(),
+    ),
+  );
+  getIt.registerLazySingleton<MembersService>(
+        () => MembersService(getIt<Dio>()),
+  );
+  getIt.registerFactory<MembersCubit>(
+        () => MembersCubit(),
+  );
+  getIt.registerLazySingleton<MemberDetailsService>(
+        () => MemberDetailsService(
+      getIt<Dio>(),
+    ),
+  );
+  getIt.registerFactory<MemberDetailsCubit>(
+        () => MemberDetailsCubit(),
+  );
+  getIt.registerLazySingleton<MembershipService>(
+        () => MembershipService(),
   );
   getIt.registerLazySingleton<TasksRepo>(() => TasksRepo(getIt<ApiServices>()));
   getIt.registerLazySingleton<MemberVerificationRepo>(
     () => MemberVerificationRepo(getIt<ApiServices>()),
   );
 
-  // ── Cubits / Blocs ────────────────────────────────────────────────────
-  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
-  getIt.registerFactory<SocietyCubit>(() => SocietyCubit(getIt<SocietyRepo>()));
-  getIt.registerFactory<OverduePaymentsCubit>(
-    () => OverduePaymentsCubit(getIt<TasksRepo>()),
+  getIt.registerFactory<MemberCirclesCubit>(
+        () => MemberCirclesCubit(),
   );
-  getIt.registerFactory<ReviewPaymentsCubit>(
-    () => ReviewPaymentsCubit(getIt<TasksRepo>()),
+  getIt.registerFactory<SocietyCubit>(
+        () => SocietyCubit(getIt()),
   );
   getIt.registerFactory<ExpensesCubit>(() => ExpensesCubit(getIt<TasksRepo>()));
   getIt.registerFactory<MemberVerificationCubit>(

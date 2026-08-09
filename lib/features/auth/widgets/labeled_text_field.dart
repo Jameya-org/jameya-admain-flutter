@@ -24,65 +24,87 @@ class LabeledTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+    return SizedBox(
+      width: double.infinity,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              label,
-              style: AppTextStyles.subtitle.copyWith(
-                fontWeight: FontWeight.w600,
+            // =========================
+            // Label
+            // =========================
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: label,
+                      style: AppTextStyles.subtitle.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '*',
+                      style: AppTextStyles.subtitle.copyWith(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.right,
+                textDirection: TextDirection.rtl,
               ),
             ),
-            SizedBox(width: 4.w),
-            Text(
-              '*',
-              style: AppTextStyles.subtitle.copyWith(
-                color: Colors.red,
-                fontWeight: FontWeight.w600,
+
+            SizedBox(height: 8.h),
+
+            // =========================
+            // Text Field
+            // =========================
+            TextFormField(
+              controller: controller,
+              obscureText: obscureText,
+              textAlign: TextAlign.right,
+              textDirection: TextDirection.rtl,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintTextDirection: TextDirection.rtl,
+
+                hintStyle: AppTextStyles.body.copyWith(
+                  color: AppColors.grey500,
+                ),
+
+                // RTL:
+                // prefixIcon = RIGHT
+                // suffixIcon = LEFT
+                prefixIcon: prefixIcon,
+                suffixIcon: suffixIcon,
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(
+                    color: AppColors.grey300,
+                  ),
+                ),
+
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(
+                    color: AppColors.primary,
+                  ),
+                ),
               ),
             ),
           ],
         ),
-        SizedBox(height: 8.h),
-
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          textAlign: TextAlign.start,
-          textDirection: TextDirection.rtl,
-          decoration: InputDecoration(
-            hintText: hintText,
-
-            hintStyle: AppTextStyles.subtitle.copyWith(
-              color: AppColors.grey500,
-            ),
-
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: AppColors.grey300,
-              ),
-            ),
-
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
