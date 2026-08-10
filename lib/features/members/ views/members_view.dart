@@ -98,6 +98,10 @@ class MembersView extends StatelessWidget {
                             itemBuilder: (_, index) {
                               final member = state.members[index];
 
+                              debugPrint('================ MEMBER DEBUG ================');
+                              debugPrint('MEMBER ID: ${member.id}');
+                              debugPrint('MEMBER NAME: ${member.name}');
+                              debugPrint('==============================================');
                              return MemberCard(
                                 id: member.id,
                                 name: member.name,

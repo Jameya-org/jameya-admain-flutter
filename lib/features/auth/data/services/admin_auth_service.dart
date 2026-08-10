@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:jameya_admin/core/services/api_config.dart';
+import 'package:jameya_admin/core/services/secure_storage_service.dart';
 
 import '../models/admin_login_model.dart';
 
@@ -20,6 +21,16 @@ class AdminAuthService {
       },
     );
 
-    return AdminLoginModel.fromJson(response.data);
+    final loginModel = AdminLoginModel.fromJson(
+      response.data,
+    );
+
+    // حفظ الـ Access Token والـ Refresh Token
+    await SecureStorageService.saveTokens(
+      accessToken: loginModel.accessToken,
+      refreshToken: loginModel.refreshToken,
+    );
+
+    return loginModel;
   }
 }

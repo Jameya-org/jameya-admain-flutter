@@ -125,7 +125,14 @@ class _AdminLoginViewState extends State<AdminLoginView> {
                     controller: _passwordController,
                     hintText: 'اكتب المحتوى هنا',
                     obscureText: _isPasswordHidden,
-                    prefixIcon: IconButton(
+
+                    // القفل يمين
+                    prefixIcon: const Icon(
+                      Icons.lock_outline,
+                    ),
+
+                    // العين شمال
+                    suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
                           _isPasswordHidden = !_isPasswordHidden;
@@ -137,10 +144,8 @@ class _AdminLoginViewState extends State<AdminLoginView> {
                             : Icons.visibility_outlined,
                       ),
                     ),
-                    suffixIcon: const Icon(
-                      Icons.lock_outline,
-                    ),
                   ),
+
 
                   SizedBox(height: 240.h),
 
