@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../data/models/society_model.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
 import 'circle_info_card.dart';
 import 'circle_amounts_card.dart';
 import 'quick_actions_grid.dart';
@@ -19,7 +19,7 @@ class OverviewTabView extends StatelessWidget {
           _card(child: CircleInfoCard(society: society)),
           SizedBox(height: 12.h),
           // المبالغ
-          _card(child: const CircleAmountsCard()),
+          _card(child: CircleAmountsCard(society: society)),
           SizedBox(height: 12.h),
           // الإجراءات السريعة
           const QuickActionsGrid(),

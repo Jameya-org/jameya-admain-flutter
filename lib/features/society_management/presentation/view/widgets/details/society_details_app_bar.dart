@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_details_cubit.dart';
 import '../dialogs/end_society_dialog.dart';
 import '../dialogs/pause_society_dialog.dart';
 import '../dialogs/delete_society_dialog.dart';
 
 class SocietyDetailsAppBar extends StatefulWidget
     implements PreferredSizeWidget {
-  final String title;
-  const SocietyDetailsAppBar({super.key, required this.title});
+  final SocietyModel society;
+  const SocietyDetailsAppBar({super.key, required this.society});
 
   @override
   Size get preferredSize => Size.fromHeight(56.h);
@@ -112,20 +115,46 @@ class _SocietyDetailsAppBarState extends State<SocietyDetailsAppBar>
 
   void _onMenuSelected(String value) {
     _closeMenu();
-    Future.delayed(const Duration(milliseconds: 150), () {
+    Future.delayed(const Duration(milliseconds: 150), () async {
       if (!mounted) return;
       if (value == 'end') {
-        showDialog(context: context, builder: (_) => const EndSocietyDialog());
+        showDialog(
+          context: context,
+          builder: (_) => BlocProvider.value(
+            value: context.read<SocietyDetailsCubit>(),
+            child: EndSocietyDialog(society: widget.society),
+          ),
+        );
       } else if (value == 'pause') {
         showDialog(
           context: context,
-          builder: (_) => const PauseSocietyDialog(),
+          builder: (_) => BlocProvider.value(
+            value: context.read<SocietyDetailsCubit>(),
+            child: PauseSocietyDialog(society: widget.society),
+          ),
         );
       } else if (value == 'delete') {
         showDialog(
           context: context,
-          builder: (_) => const DeleteSocietyDialog(),
+          builder: (_) => BlocProvider.value(
+            value: context.read<SocietyDetailsCubit>(),
+            child: DeleteSocietyDialog(society: widget.society),
+          ),
         );
+      } else if (value == 'activate') {
+        final success = await context
+            .read<SocietyDetailsCubit>()
+            .activateCircle(widget.society.id);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                success ? 'تم تفعيل الجمعية بنجاح' : 'حدث خطأ أثناء تفعيل الجمعية',
+              ),
+              backgroundColor: success ? Colors.green : Colors.red,
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(
           context,
@@ -200,7 +229,7 @@ class _SocietyDetailsAppBarState extends State<SocietyDetailsAppBar>
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(
-        widget.title.isNotEmpty ? widget.title : 'جمعية شهر 12',
+        widget.society.name.isNotEmpty ? widget.society.name : 'جمعية',
         style: TextStyle(
           color: const Color(0xFF00796B),
           fontSize: 18.sp,

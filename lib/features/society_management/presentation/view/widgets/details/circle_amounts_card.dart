@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
 
 class CircleAmountsCard extends StatelessWidget {
-  const CircleAmountsCard({super.key});
+  final SocietyModel society;
+  const CircleAmountsCard({super.key, required this.society});
 
   @override
   Widget build(BuildContext context) {
     const tealColor = Color(0xFF00CECD);
+
+    final durationMonths = double.tryParse(society.duration) ?? 12;
+    final totalValue = society.monthlyAmount * durationMonths;
+    final collected = society.monthlyAmount * ((society.currentTurn - 1).clamp(0, durationMonths.toInt()));
+    final remaining = (totalValue - collected).clamp(0.0, totalValue);
+    final progress = totalValue > 0 ? (collected / totalValue).clamp(0.0, 1.0) : 0.0;
+    final percentInt = (progress * 100).toInt();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,18 +27,18 @@ class CircleAmountsCard extends StatelessWidget {
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black87),
           ),
         ),
-        _amountRow('إجمالي قيمة الدائرة', '12,000 ج.م', Colors.black87),
+        _amountRow('إجمالي قيمة الدائرة', '${totalValue.toStringAsFixed(0)} ج.م', Colors.black87),
         _divider(),
-        _amountRow('المبلغ المحصل', '5,000 ج.م', tealColor),
+        _amountRow('المبلغ المحصل', '${collected.toStringAsFixed(0)} ج.م', tealColor),
         _divider(),
-        _amountRow('المبلغ المتبقي', '7,000 ج.م', Colors.black87),
+        _amountRow('المبلغ المتبقي', '${remaining.toStringAsFixed(0)} ج.م', Colors.black87),
         _divider(),
-        _amountRow('نسبة الاكتمال', '40%', Colors.black87, isPercent: true),
+        _amountRow('نسبة الاكتمال', '$percentInt%', Colors.black87, isPercent: true),
         SizedBox(height: 12.h),
         ClipRRect(
           borderRadius: BorderRadius.circular(4.r),
           child: LinearProgressIndicator(
-            value: 0.4,
+            value: progress,
             minHeight: 8.h,
             backgroundColor: Colors.grey.shade100,
             valueColor: const AlwaysStoppedAnimation<Color>(tealColor),
@@ -39,8 +48,8 @@ class CircleAmountsCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('تحصيل 5,000 ج.م', style: TextStyle(fontSize: 11.sp, color: tealColor, fontWeight: FontWeight.w600)),
-            Text('12,000 ج.م', style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade400, fontWeight: FontWeight.w500)),
+            Text('تحصيل ${collected.toStringAsFixed(0)} ج.م', style: TextStyle(fontSize: 11.sp, color: tealColor, fontWeight: FontWeight.w600)),
+            Text('${totalValue.toStringAsFixed(0)} ج.م', style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade400, fontWeight: FontWeight.w500)),
           ],
         ),
       ],

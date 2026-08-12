@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../data/models/society_model.dart';
+import '../../../viewmodel/society_details_cubit.dart';
 
 class PauseSocietyDialog extends StatelessWidget {
-  const PauseSocietyDialog({super.key});
+  final SocietyModel society;
+  const PauseSocietyDialog({super.key, required this.society});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,19 @@ class PauseSocietyDialog extends StatelessWidget {
                   child: SizedBox(
                     height: 44.h,
                     child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () async {
+                        final navigator = Navigator.of(context);
+                        final scaffoldMessenger = ScaffoldMessenger.of(context);
+                        final cubit = context.read<SocietyDetailsCubit>();
+                        navigator.pop();
+                        final success = await cubit.pauseCircle(society.id);
+                        scaffoldMessenger.showSnackBar(
+                          SnackBar(
+                            content: Text(success ? 'تم إيقاف الجمعية مؤقتاً' : 'حدث خطأ أثناء إيقاف الجمعية'),
+                            backgroundColor: success ? Colors.orange : Colors.red,
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFF59E0B),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
@@ -61,3 +77,4 @@ class PauseSocietyDialog extends StatelessWidget {
     );
   }
 }
+

@@ -14,28 +14,28 @@ class PaymentsTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Column(
-        children: [
-          const PaymentMetricBadgesRow(),
-          SizedBox(height: 14.h),
-          Expanded(
-            child: BlocBuilder<SocietyDetailsCubit, SocietyDetailsState>(
-              builder: (context, state) {
-                if (state is SocietyDetailsLoaded) {
-                  return ListView.builder(
+      child: BlocBuilder<SocietyDetailsCubit, SocietyDetailsState>(
+        builder: (context, state) {
+          if (state is SocietyDetailsLoaded) {
+            return Column(
+              children: [
+                PaymentMetricBadgesRow(payments: state.payments),
+                SizedBox(height: 14.h),
+                Expanded(
+                  child: ListView.builder(
                     itemCount: state.payments.length,
                     itemBuilder: (context, index) {
                       return PaymentTimelineItem(
                         payment: state.payments[index],
                       );
                     },
-                  );
-                }
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
-        ],
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }

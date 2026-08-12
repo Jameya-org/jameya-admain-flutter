@@ -18,6 +18,7 @@ import 'package:jameya_admin/features/home/data/repos/home_repo.dart';
 import 'package:jameya_admin/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:jameya_admin/features/society_management/data/repos/society_repo.dart';
 import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_details_cubit.dart';
 import 'package:jameya_admin/features/member_verification/data/repos/member_verification_repo.dart';
 import 'package:jameya_admin/features/member_verification/presentation/viewmodel/member_verification_cubit.dart';
 import 'package:jameya_admin/features/tasks/data/repos/tasks_repo.dart';
@@ -121,6 +122,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
   getIt.registerLazySingleton<SocietyRepo>(() => SocietyRepo(getIt<ApiServices>()));
   getIt.registerFactory<SocietyCubit>(() => SocietyCubit(getIt<SocietyRepo>()));
+  getIt.registerFactory<SocietyDetailsCubit>(() => SocietyDetailsCubit(getIt<SocietyRepo>()));
 
   // Create Jameya
   getIt.registerLazySingleton<CreateJameyaRemoteDataSource>(

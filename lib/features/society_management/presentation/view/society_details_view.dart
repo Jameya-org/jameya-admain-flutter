@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
 import '../../data/models/society_model.dart';
 import '../viewmodel/society_details_cubit.dart';
 import 'widgets/details/society_details_app_bar.dart';
@@ -16,12 +17,12 @@ class SocietyDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SocietyDetailsCubit()..initDetails(),
+      create: (_) => getIt<SocietyDetailsCubit>()..initDetails(society.id),
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: SocietyDetailsAppBar(title: society.name),
+          appBar: SocietyDetailsAppBar(society: society),
           body: Column(
             children: [
               SocietyDetailsChartHeader(code: society.code),

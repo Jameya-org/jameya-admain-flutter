@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_payment_model.dart';
 
 class PaymentMetricBadgesRow extends StatelessWidget {
-  const PaymentMetricBadgesRow({super.key});
+  final List<SocietyPaymentModel> payments;
+  const PaymentMetricBadgesRow({super.key, required this.payments});
 
   @override
   Widget build(BuildContext context) {
+    final total = payments.length;
+    final completed = payments.where((p) => p.status == 'مدفوع').length;
+    final pending = payments.where((p) => p.status == 'معلق').length;
+    final upcoming = payments.where((p) => p.status == 'قادم').length;
+
     return Row(
       children: [
-        Expanded(child: _badge('4', 'الإجمالي', Colors.teal)),
+        Expanded(child: _badge('$total', 'الإجمالي', Colors.teal)),
         SizedBox(width: 8.w),
-        Expanded(child: _badge('3', 'قادمة', Colors.grey.shade700)),
+        Expanded(child: _badge('$upcoming', 'قادمة', Colors.grey.shade700)),
         SizedBox(width: 8.w),
-        Expanded(child: _badge('1', 'جزئية', Colors.amber.shade800)),
+        Expanded(child: _badge('$pending', 'جزئية/معلقة', Colors.amber.shade800)),
         SizedBox(width: 8.w),
-        Expanded(child: _badge('4', 'مكتملة', Colors.teal)),
+        Expanded(child: _badge('$completed', 'مكتملة', Colors.teal)),
       ],
     );
   }
