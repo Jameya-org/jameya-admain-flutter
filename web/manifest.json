@@ -1,6 +1,6 @@
 {
-    "name": "jameya",
-    "short_name": "jameya",
+    "name": "jameya admin",
+    "short_name": "jameya admin",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

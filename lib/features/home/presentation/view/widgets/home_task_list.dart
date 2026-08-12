@@ -1,39 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 
 class HomeTaskList extends StatelessWidget {
   const HomeTaskList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final tasks = [
+    final List<Map<String, dynamic>> tasks = [
       {
         'title': 'توثيق الأعضاء',
         'icon': 'assets/icons/MemberVerification.svg',
         'hasBadge': true,
+        'route': AppRoutes.kMemberVerificationListView,
       },
       {
         'title': 'إدارة الأعضاء',
         'icon': 'assets/icons/Member_Management.svg',
         'hasBadge': false,
+        'route': AppRoutes.kMembersView,
       },
       {
         'title': 'المصروفات',
         'icon': 'assets/icons/Expenses.svg',
         'hasBadge': false,
+        'route': AppRoutes.kExpensesView,
       },
       {
         'title': 'مراجعة الدفعات',
         'icon': 'assets/icons/Payment Review.svg',
         'hasBadge': false,
+        'route': AppRoutes.kReviewPaymentsView,
       },
       {
         'title': 'دفعات متأخرة',
         'icon': 'assets/icons/Overdue Payments.svg',
         'hasBadge': true,
+        'route': AppRoutes.kOverduePaymentsView,
       },
     ];
 
@@ -59,11 +66,12 @@ class HomeTaskList extends StatelessWidget {
               final task = tasks[index];
               final isLast = index == tasks.length - 1;
               final bool hasBadge = task['hasBadge'] as bool;
+              final String? route = task['route'] as String?;
 
               return Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: route != null ? () => context.push(route) : null,
                     borderRadius: BorderRadius.circular(24.r),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -73,7 +81,6 @@ class HomeTaskList extends StatelessWidget {
                       child: Row(
                         children: [
                           // 1. Task SVG Icon (First child in RTL = RIGHT edge)
-                          // Rendered directly without extra background container
                           Stack(
                             clipBehavior: Clip.none,
                             children: [
@@ -119,7 +126,9 @@ class HomeTaskList extends StatelessWidget {
                             child: Icon(
                               Icons.chevron_left,
                               size: 22.sp,
-                              color: const Color(0xFF94A3B8),
+                              color: route != null
+                                  ? const Color(0xFF94A3B8)
+                                  : const Color(0xFFCBD5E1),
                             ),
                           ),
                         ],

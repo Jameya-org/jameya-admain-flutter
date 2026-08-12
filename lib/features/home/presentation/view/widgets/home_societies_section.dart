@@ -1,93 +1,136 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
-import 'package:jameya/features/society_management/data/models/society_model.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_state.dart';
 
 class HomeSocietiesSection extends StatelessWidget {
   const HomeSocietiesSection({
     super.key,
     required this.onNavigateToSocieties,
+    this.cubit,
   });
 
   final VoidCallback onNavigateToSocieties;
+  final SocietyCubit? cubit;
 
   @override
   Widget build(BuildContext context) {
-    // Sample societies matching the screenshot design
-    final societies = [
-      SocietyModel(
-        id: '1',
-        name: 'جمعية 12 شهر',
-        code: '135352',
-        status: 'نشطة',
-        currentTurn: 5,
-        monthlyAmount: 1000,
-        startDate: '01/01/2024',
-        endDate: '01/12/2024',
-        duration: '12 شهر',
-        iconType: 'chart',
-      ),
-      SocietyModel(
-        id: '2',
-        name: 'جمعية 12 شهر',
-        code: '125352',
-        status: 'مكتملة',
-        currentTurn: 12,
-        monthlyAmount: 2000,
-        startDate: '01/01/2024',
-        endDate: '01/12/2024',
-        duration: '12 شهر',
-        iconType: 'chart',
-      ),
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Section Header Row
-        Row(
-          children: [
-            Text(
-              'متابعة الجمعيات',
-              style: AppTextStyles.headline.copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const Spacer(),
-            GestureDetector(
-              onTap: onNavigateToSocieties,
-              child: Text(
-                'عرض المزيد',
-                style: AppTextStyles.body.copyWith(
-                  fontSize: 14.sp,
-                  color: AppColors.grey500,
-                  decoration: TextDecoration.underline,
+    final societyCubit = cubit ?? (getIt<SocietyCubit>()..fetchSocieties());
+    return BlocProvider.value(
+      value: societyCubit,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section Header Row
+          Row(
+            children: [
+              Text(
+                'متابعة الجمعيات',
+                style: AppTextStyles.headline.copyWith(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
                 ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: 12.h),
-        // Horizontal list of cards
-        SizedBox(
-          height: 195.h,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: societies.length,
-            separatorBuilder: (_, __) => SizedBox(width: 12.w),
-            itemBuilder: (context, index) {
-              final society = societies[index];
-              return _buildSocietyCard(context, society);
+              const Spacer(),
+              GestureDetector(
+                onTap: onNavigateToSocieties,
+                child: Text(
+                  'عرض المزيد',
+                  style: AppTextStyles.body.copyWith(
+                    fontSize: 14.sp,
+                    color: AppColors.grey500,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+
+          // Dynamic API Societies
+          BlocBuilder<SocietyCubit, SocietyState>(
+            builder: (context, state) {
+              if (state is SocietyLoading) {
+                return SizedBox(
+                  height: 195.h,
+                  child: const Center(child: CircularProgressIndicator()),
+                );
+              } else if (state is SocietyError) {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'تعذر تحميل الجمعيات',
+                          style: AppTextStyles.caption.copyWith(
+                            color: Colors.red,
+                            fontSize: 13.sp,
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        GestureDetector(
+                          onTap: () =>
+                              context.read<SocietyCubit>().fetchSocieties(),
+                          child: Text(
+                            'إعادة المحاولة',
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else if (state is SocietyLoaded) {
+                final societies = state.societies;
+
+                if (societies.isEmpty) {
+                  return Container(
+                    height: 100.h,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'لا توجد جمعيات حالياً',
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColors.grey500,
+                      ),
+                    ),
+                  );
+                }
+
+                return SizedBox(
+                  height: 205.h,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: societies.length,
+                    separatorBuilder: (_, _) => SizedBox(width: 12.w),
+                    itemBuilder: (context, index) {
+                      final society = societies[index];
+                      return _buildSocietyCard(context, society);
+                    },
+                  ),
+                );
+              }
+
+              return const SizedBox.shrink();
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -97,7 +140,7 @@ class HomeSocietiesSection extends StatelessWidget {
         context.push(AppRoutes.kSocietyDetailsView, extra: society);
       },
       child: Container(
-        width: 285.w,
+        width: 295.w,
         padding: EdgeInsets.all(14.r),
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -105,7 +148,7 @@ class HomeSocietiesSection extends StatelessWidget {
           border: Border.all(color: AppColors.grey200, width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -115,31 +158,35 @@ class HomeSocietiesSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Top Row: Title + Code (RIGHT) & Active Badge (LEFT)
+            // Top Row: Title + Code (RIGHT) & Status Badge (LEFT)
             Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      society.name,
-                      style: AppTextStyles.headline.copyWith(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        society.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.headline.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      'كود: ${society.code}',
-                      style: AppTextStyles.caption.copyWith(
-                        fontSize: 11.sp,
-                        color: AppColors.grey500,
+                      SizedBox(height: 2.h),
+                      Text(
+                        'كود: ${society.code}',
+                        style: AppTextStyles.caption.copyWith(
+                          fontSize: 11.sp,
+                          color: AppColors.grey500,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                const Spacer(),
+                SizedBox(width: 8.w),
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 10.w,
@@ -161,7 +208,7 @@ class HomeSocietiesSection extends StatelessWidget {
               ],
             ),
 
-            // Middle Status & Details Row
+            // Middle Status & Turn Row
             Row(
               children: [
                 Container(
@@ -174,7 +221,7 @@ class HomeSocietiesSection extends StatelessWidget {
                 ),
                 SizedBox(width: 4.w),
                 Text(
-                  'مكتملة',
+                  society.status,
                   style: AppTextStyles.caption.copyWith(
                     fontSize: 12.sp,
                     color: AppColors.textPrimary,
@@ -194,7 +241,7 @@ class HomeSocietiesSection extends StatelessWidget {
               ],
             ),
 
-            // Members & Installment Row
+            // Duration & Installment Row
             Row(
               children: [
                 Row(
@@ -210,7 +257,7 @@ class HomeSocietiesSection extends StatelessWidget {
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      '12 عضو',
+                      society.duration,
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 11.sp,
                         color: AppColors.grey500,
@@ -232,7 +279,7 @@ class HomeSocietiesSection extends StatelessWidget {
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      'القسط الشهري: ${society.monthlyAmount.toInt()}',
+                      'القسط الشهري: ${society.monthlyAmount.toInt()} ج.م',
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 11.sp,
                         color: AppColors.grey500,
@@ -245,80 +292,62 @@ class HomeSocietiesSection extends StatelessWidget {
 
             Divider(height: 1, color: AppColors.grey200),
 
-            // Dates Row: StartDate & EndDate
+            // Dates Row: StartDate & EndDate with 24px SVG Icons
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/StartDate.svg',
-                      width: 14.w,
-                      height: 14.h,
-                    ),
-                    SizedBox(width: 4.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'البداية',
-                          style: AppTextStyles.caption.copyWith(
-                            fontSize: 10.sp,
-                            color: AppColors.grey500,
-                          ),
-                        ),
-                        Text(
-                          society.startDate,
-                          style: AppTextStyles.caption.copyWith(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                _buildDateCol(
+                  'assets/icons/EndDate.svg',
+                  'النهاية',
+                  society.endDate,
                 ),
-                Container(
-                  height: 20.h,
-                  width: 1,
-                  color: AppColors.grey300,
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/EndDate.svg',
-                      width: 14.w,
-                      height: 14.h,
-                    ),
-                    SizedBox(width: 4.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'النهاية',
-                          style: AppTextStyles.caption.copyWith(
-                            fontSize: 10.sp,
-                            color: AppColors.grey500,
-                          ),
-                        ),
-                        Text(
-                          society.endDate,
-                          style: AppTextStyles.caption.copyWith(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                Container(height: 24.h, width: 1, color: AppColors.grey300),
+                _buildDateCol(
+                  'assets/icons/StartDate.svg',
+                  'البداية',
+                  society.startDate,
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDateCol(String svgPath, String label, String rawDate) {
+    String formatted = rawDate;
+    if (rawDate.length > 10 && rawDate.contains('T')) {
+      formatted = rawDate.substring(0, 10);
+    }
+
+    return Row(
+      children: [
+        SvgPicture.asset(svgPath, width: 24.w, height: 24.h),
+        SizedBox(width: 6.w),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: AppTextStyles.caption.copyWith(
+                fontSize: 11.sp,
+                color: AppColors.grey500,
+              ),
+            ),
+            SizedBox(height: 2.h),
+            Text(
+              formatted.isEmpty ? '—' : formatted,
+              style: AppTextStyles.caption.copyWith(
+                fontSize: 11.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

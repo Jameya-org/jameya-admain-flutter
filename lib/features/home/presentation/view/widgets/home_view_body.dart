@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/features/home/presentation/manager/home_cubit/home_cubit.dart';
-import 'package:jameya/features/home/presentation/view/widgets/home_header.dart';
-import 'package:jameya/features/home/presentation/view/widgets/home_societies_section.dart';
-import 'package:jameya/features/home/presentation/view/widgets/home_stats_grid.dart';
-import 'package:jameya/features/home/presentation/view/widgets/home_task_list.dart';
+import 'package:jameya_admin/core/services/services_locator.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:jameya_admin/features/home/presentation/view/widgets/home_header.dart';
+import 'package:jameya_admin/features/home/presentation/view/widgets/home_societies_section.dart';
+import 'package:jameya_admin/features/home/presentation/view/widgets/home_stats_grid.dart';
+import 'package:jameya_admin/features/home/presentation/view/widgets/home_task_list.dart';
+import 'package:jameya_admin/features/society_management/presentation/viewmodel/society_cubit.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({
     super.key,
     required this.onNavigateToSocieties,
+    this.societyCubit,
   });
 
   final VoidCallback onNavigateToSocieties;
+  final SocietyCubit? societyCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,7 @@ class HomeViewBody extends StatelessWidget {
                 SizedBox(height: 24.h),
                 HomeSocietiesSection(
                   onNavigateToSocieties: onNavigateToSocieties,
+                  cubit: societyCubit,
                 ),
                 SizedBox(height: 24.h),
               ],

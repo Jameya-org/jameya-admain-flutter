@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jameya/core/cache/cache_helper.dart';
-import 'package:jameya/core/services/services_locator.dart';
-import 'package:jameya/features/onboarding/data/models/onboarding_model.dart';
-import 'package:jameya/features/onboarding/presentation/viewmodel/onboarding_state.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya/core/routing/routes.dart';
+
+import '../../../../core/cache/cache_helper.dart';
+import '../../../../core/routing/routes.dart';
+import '../../../../core/services/services_locator.dart';
+import '../../../../core/services/shared_preferences_service.dart';
+import '../../data/models/onboarding_model.dart';
+import 'onboarding_state.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit() : super(const OnboardingInitialState());
@@ -22,12 +24,10 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   Future<void> completeOnboarding(BuildContext context) async {
-    await getIt<CacheHelper>().saveData(
-      key: 'isOnboardingCompleted',
-      value: true,
-    );
+    await SharedPreferencesService.setOnBoardingViewed(true);
     if (context.mounted) {
-      context.go(AppRoutes.kHomeView);
+      // TODO: navigate to login/auth screen when ready
+       context.go(AppRoutes.kAdminLoginView);
     }
   }
 }

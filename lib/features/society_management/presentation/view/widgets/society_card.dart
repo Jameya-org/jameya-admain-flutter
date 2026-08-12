@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
 import '../../../data/models/society_model.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,7 +44,6 @@ class SocietyCard extends StatelessWidget {
     }
   }
 
-  /// نسبة التقدم في الدور الحالي بالنسبة لإجمالي المدة (بين 0 و 1)
   double _getProgress() {
     final totalDuration = int.tryParse(society.duration) ?? 0;
     if (totalDuration <= 0) return 0;
@@ -115,7 +114,6 @@ class SocietyCard extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
 
-            // ===== نقطة الحالة + النص =====
             Row(
               children: [
                 Container(
@@ -161,22 +159,20 @@ class SocietyCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 14.h),
+            SizedBox(height: 8.h),
 
             ClipRRect(
               borderRadius: BorderRadius.circular(10.r),
               child: LinearProgressIndicator(
                 value: _getProgress(),
                 minHeight: 4.h,
-                backgroundColor: Color(0xff00DDDB).withValues(alpha: 0.2),
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Color(0xff3EFFFE).withValues(alpha: 1),
-                ),
+                backgroundColor: Colors.grey.shade200,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
               ),
             ),
+
             SizedBox(height: 14.h),
 
-            // ===== صندوقين: المبلغ الشهري + المدة =====
             Row(
               children: [
                 Expanded(
@@ -185,6 +181,7 @@ class SocietyCard extends StatelessWidget {
                     text: society.duration,
                   ),
                 ),
+
                 SizedBox(width: 10.w),
                 Expanded(
                   child: _buildStatBox(
@@ -196,30 +193,25 @@ class SocietyCard extends StatelessWidget {
             ),
             SizedBox(height: 14.h),
 
-            // ===== النهاية / البداية: زي كودك الأصلي (Divider + عمودين) =====
             Divider(height: 1.h, color: Colors.grey.shade200),
             SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: _buildInfoCol(
-                    'assets/icons/EndDate.svg',
-                    'النهاية',
-                    society.endDate,
-                  ),
+                _buildInfoCol(
+                  'assets/icons/EndDate.svg',
+                  'النهاية',
+                  society.endDate,
                 ),
                 Container(
                   width: 1.w,
                   height: 32.h,
                   color: Colors.grey.shade200,
                 ),
-                Expanded(
-                  child: _buildInfoCol(
-                    'assets/icons/StartDate.svg',
-                    'البداية',
-                    society.startDate,
-                  ),
+                _buildInfoCol(
+                  'assets/icons/StartDate.svg',
+                  'البداية',
+                  society.startDate,
                 ),
               ],
             ),
@@ -240,8 +232,13 @@ class SocietyCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(iconAsset, width: 24.w, height: 24.h),
-          SizedBox(width: 17.w),
+          SvgPicture.asset(
+            iconAsset,
+            width: 18.w,
+            height: 18.h,
+            colorFilter: ColorFilter.mode(Colors.teal, BlendMode.srcIn),
+          ),
+          SizedBox(width: 6.w),
           Text(
             text,
             style: TextStyle(
@@ -255,38 +252,32 @@ class SocietyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCol(String iconAsset, String label, String rawDate) {
+  Widget _buildInfoCol(String svgAsset, String label, String rawDate) {
     String formatted = rawDate;
     if (rawDate.length > 10 && rawDate.contains('T')) {
       formatted = rawDate.substring(0, 10);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Row(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+        SvgPicture.asset(svgAsset, width: 20.w, height: 20.h),
+        SizedBox(width: 6.w),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(iconAsset, width: 14.w, height: 14.h),
-            SizedBox(width: 4.w),
             Text(
               label,
               style: TextStyle(fontSize: 16.sp, color: AppColors.textPrimary),
             ),
+            SizedBox(height: 2.h),
+            Text(
+              formatted.isEmpty ? '—' : formatted,
+              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+            ),
           ],
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          formatted,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColors.textHint,
-            fontWeight: FontWeight.w600,
-          ),
         ),
       ],
     );
   }
 }
+

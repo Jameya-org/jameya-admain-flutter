@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jameya/core/cache/cache_helper.dart';
-import 'package:jameya/core/routing/routes.dart';
-import 'package:jameya/core/services/services_locator.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
+import 'package:jameya_admin/core/services/secure_storage_service.dart';
+import 'package:jameya_admin/core/services/shared_preferences_service.dart';
 
 import '../controllers/splash_controller.dart';
 import '../widgets/animated_logo.dart';
@@ -37,14 +37,19 @@ class _SplashViewState extends State<SplashView> {
     }
   }
 
-  void _navigateToNextScreen() {
-    final bool isOnboardingCompleted =
-        getIt<CacheHelper>().getBool(key: 'isOnboardingCompleted') ?? false;
+  void _navigateToNextScreen() async {
+    final bool isOnboardingCompleted = SharedPreferencesService.isOnBoardingViewed();
+    final bool isLoggedIn = SharedPreferencesService.isLoggedIn();
+    final String? token = await SecureStorageService.getAccessToken();
 
-    if (isOnboardingCompleted) {
-      context.go(AppRoutes.kHomeView);
-    } else {
+    if (!mounted) return;
+
+    if (!isOnboardingCompleted) {
       context.go(AppRoutes.kOnboardingView);
+    } else if (!isLoggedIn || token == null || token.trim().isEmpty) {
+      context.go(AppRoutes.kAdminLoginView);
+    } else {
+      context.go(AppRoutes.kHomeView);
     }
   }
 

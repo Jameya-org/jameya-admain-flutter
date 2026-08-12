@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jameya/core/utils/app_colors.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
-import 'package:jameya/features/home/presentation/manager/home_cubit/home_cubit.dart';
-import 'package:jameya/features/home/presentation/manager/home_cubit/home_state.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:jameya_admin/features/home/presentation/manager/home_cubit/home_state.dart';
 
 class HomeStatsGrid extends StatelessWidget {
   const HomeStatsGrid({super.key});
@@ -17,10 +17,22 @@ class HomeStatsGrid extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (state is HomeDashboardLoaded) {
           final stats = [
-            {'title': 'الجمعيات النشطة', 'value': '${state.dashboard.circles.inProgress}'},
-            {'title': 'الاعضاء النشطون', 'value': '${state.dashboard.circles.totalActiveMembers}'},
-            {'title': 'توثيقات معلقة', 'value': '${state.dashboard.kyc.pendingReview}'},
-            {'title': 'عملاء مرفوضين', 'value': '${state.dashboard.kyc.rejectedToday}'},
+            {
+              'title': 'الجمعيات النشطة',
+              'value': '${state.dashboard.circles.inProgress}',
+            },
+            {
+              'title': 'الاعضاء النشطون',
+              'value': '${state.dashboard.circles.totalActiveMembers}',
+            },
+            {
+              'title': 'توثيقات معلقة',
+              'value': '${state.dashboard.kyc.pendingReview}',
+            },
+            {
+              'title': 'عملاء مرفوضين',
+              'value': '${state.dashboard.kyc.rejectedToday}',
+            },
           ];
 
           return GridView.builder(
@@ -43,7 +55,7 @@ class HomeStatsGrid extends StatelessWidget {
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jameya/core/utils/app_text_styles.dart';
+import 'package:jameya_admin/core/utils/app_text_styles.dart';
 
 // Animates the logo position from the screen center to the top
 class AnimatedLogo extends StatelessWidget {

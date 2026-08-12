@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jameya/features/home/data/repos/home_repo.dart';
-import 'package:jameya/features/home/presentation/manager/home_cubit/home_state.dart';
+import 'package:jameya_admin/features/home/data/repos/home_repo.dart';
+import 'package:jameya_admin/features/home/presentation/manager/home_cubit/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepo _homeRepo;

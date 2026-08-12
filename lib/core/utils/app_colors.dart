@@ -7,8 +7,8 @@ abstract final class AppColors {
   static const Color primaryLight = Color(0x9900A6A5); // 60%
   static const Color primaryLight50 = Color(0x8000A6A5); // 50%
   static const Color primaryDark = Color(0xFF006A6A);
-  static const Color accent = Color(0xFFC09302);
-
+  static const Color accent2 = Color(0xFFC09302);
+  static const Color accent = Color(0xFF00B8C9);
   // Background
   static const Color background = Color(0xFFFDFDFD);
   static const Color backgroundSecondary = Color(0xFFF9F9F9);

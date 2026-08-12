@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jameya/core/utils/app_colors.dart';
+import 'package:jameya_admin/core/utils/app_colors.dart';
 
 // Reusable text styles based on a consistent type scale
 // All styles use the Inter font via google_fonts
@@ -42,6 +42,12 @@ abstract final class AppTextStyles {
     fontWeight: FontWeight.w700,
     height: 1.5,
     letterSpacing: -.02,
+  );
+
+  static TextStyle get appBarTitle => GoogleFonts.inter(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primary,
   );
 
   static TextStyle get subtitle => GoogleFonts.inter(

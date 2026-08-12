@@ -25,10 +25,11 @@ class SocietyModel {
 
   factory SocietyModel.fromJson(Map<String, dynamic> json) {
     final rawStatus = json['status'] ?? 'DRAFT';
+    final rawCode = json['code']?.toString() ?? json['id']?.toString() ?? 'Unknown';
 
     return SocietyModel(
       id: json['id']?.toString() ?? '',
-      code: json['code'] ?? json['id']?.toString()?.substring(0, 8) ?? 'Unknown',
+      code: rawCode.length > 8 ? rawCode.substring(0, 8) : rawCode,
       name: json['name'] ?? 'جمعية',
       status: _mapStatusToArabic(rawStatus),
       currentTurn: json['currentTurn'] ?? json['currentMonth'] ?? 1,

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:jameya/core/api/api_services.dart';
-import 'package:jameya/core/api/end_points.dart';
-import 'package:jameya/core/errors/failures.dart';
-import 'package:jameya/features/home/data/models/dashboard_model.dart';
+import 'package:jameya_admin/core/api/api_services.dart';
+import 'package:jameya_admin/core/api/end_points.dart';
+import 'package:jameya_admin/core/errors/failures.dart';
+import 'package:jameya_admin/features/home/data/models/dashboard_model.dart';
 
 class HomeRepo {
   final ApiServices _apiServices;
@@ -11,7 +11,9 @@ class HomeRepo {
 
   Future<DashboardModel> getDashboardData() async {
     try {
-      final response = await _apiServices.get(endPoint: EndPoints.adminDashboard);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.adminDashboard,
+      );
       return DashboardModel.fromJson(response.data);
     } on DioException catch (e) {
       throw ServerFailure.fromDioException(e).error;
