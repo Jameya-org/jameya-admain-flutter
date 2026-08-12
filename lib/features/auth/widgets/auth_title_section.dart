@@ -15,27 +15,41 @@ class AuthTitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          title,
-          style: AppTextStyles.title.copyWith(
-            color: Colors.white,
-            fontSize: 36.sp,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+    return SizedBox(
+      width: double.infinity,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                title,
+                textAlign: TextAlign.right,
+                style: AppTextStyles.title.copyWith(
+                  color: Colors.white,
+                  fontSize: 36.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
 
-        SizedBox(height: 8.h),
+            SizedBox(height: 8.h),
 
-        Text(
-          subtitle,
-          style: AppTextStyles.subtitle.copyWith(
-            color: Colors.white,
-          ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                subtitle,
+                textAlign: TextAlign.right,
+                style: AppTextStyles.subtitle.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

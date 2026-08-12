@@ -106,13 +106,24 @@ class TrustScore {
     required this.identityVerification,
   });
 
-  factory TrustScore.fromJson(Map<String, dynamic>? json) {
+  factory TrustScore.fromJson(
+      Map<String, dynamic>? json,
+      ) {
     return TrustScore(
-      score: json?['score'] ?? 0,
-      paymentCommitment:
-      json?['paymentCommitment'] ?? 0,
-      identityVerification:
-      json?['identityVerification'] ?? 0,
+      score: int.tryParse(
+        json?['score']?.toString() ?? '',
+      ) ??
+          0,
+
+      paymentCommitment: int.tryParse(
+        json?['paymentCommitment']?.toString() ?? '',
+      ) ??
+          0,
+
+      identityVerification: int.tryParse(
+        json?['identityVerification']?.toString() ?? '',
+      ) ??
+          0,
     );
   }
 }
@@ -131,12 +142,28 @@ class PaymentsSummary {
   });
 
   factory PaymentsSummary.fromJson(
-      Map<String, dynamic>? json) {
+      Map<String, dynamic>? json,
+      ) {
     return PaymentsSummary(
-      total: json?['total'] ?? 0,
-      paid: json?['paid'] ?? 0,
-      pending: json?['pending'] ?? 0,
-      overdue: json?['overdue'] ?? 0,
+      total: int.tryParse(
+        json?['total']?.toString() ?? '',
+      ) ??
+          0,
+
+      paid: int.tryParse(
+        json?['paid']?.toString() ?? '',
+      ) ??
+          0,
+
+      pending: int.tryParse(
+        json?['pending']?.toString() ?? '',
+      ) ??
+          0,
+
+      overdue: int.tryParse(
+        json?['overdue']?.toString() ?? '',
+      ) ??
+          0,
     );
   }
 }
@@ -182,11 +209,20 @@ class CircleModel {
   });
 
   factory CircleModel.fromJson(
-      Map<String, dynamic> json) {
+      Map<String, dynamic> json,
+      ) {
     return CircleModel(
       id: json['id']?.toString() ?? '',
-      amount: (json['amount'] as num?)?.toDouble() ?? 0,
-      durationMonths: json['durationMonths'] ?? 0,
+
+        amount: double.tryParse(
+          json['amount']?.toString() ?? '',
+        ) ?? 0,
+
+      durationMonths: int.tryParse(
+        json['durationMonths']?.toString() ?? '',
+      ) ??
+          0,
+
       status: json['status']?.toString() ?? '',
     );
   }
