@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:jameya_admin/core/animations/smart_animate_transition.dart';
 import 'package:jameya_admin/core/utils/app_colors.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
@@ -27,10 +28,14 @@ class CreateJameyaView extends StatelessWidget {
               prev.loading != curr.loading ||
               prev.error != curr.error,
           builder: (context, state) {
-            return AnimatedSwitcher(
-              duration: SmartAnimateTransition.duration,
-              transitionBuilder: SmartAnimateTransition.transitionBuilder,
-              child: _buildStep(state.currentStep),
+            return ModalProgressHUD(
+              // Shown only while the Create Jameya API request is running.
+              inAsyncCall: state.loading,
+              child: AnimatedSwitcher(
+                duration: SmartAnimateTransition.duration,
+                transitionBuilder: SmartAnimateTransition.transitionBuilder,
+                child: _buildStep(state.currentStep),
+              ),
             );
           },
         ),

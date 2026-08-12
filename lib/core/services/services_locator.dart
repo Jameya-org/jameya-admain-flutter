@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jameya_admin/core/api/api_services.dart';
 import 'package:jameya_admin/core/api/app_interceptors.dart';
@@ -66,6 +67,18 @@ Future<void> setupServiceLocator() async {
       dio.interceptors.add(
         getIt<AppInterceptors>(),
       );
+
+      if (!kReleaseMode) {
+        dio.interceptors.add(
+          LogInterceptor(
+            requestHeader: true,
+            requestBody: true,
+            responseHeader: false,
+            responseBody: true,
+            error: true,
+          ),
+        );
+      }
 
       return dio;
     },
