@@ -10,13 +10,28 @@ import 'package:jameya_admin/features/member_verification/presentation/viewmodel
 import 'package:jameya_admin/features/member_verification/presentation/viewmodel/member_verification_state.dart';
 import 'package:jameya_admin/features/member_verification/presentation/widgets/member_verification_card.dart';
 
-class MemberVerificationListView extends StatelessWidget {
+class MemberVerificationListView extends StatefulWidget {
   const MemberVerificationListView({super.key});
 
   @override
+  State<MemberVerificationListView> createState() =>
+      _MemberVerificationListViewState();
+}
+
+class _MemberVerificationListViewState
+    extends State<MemberVerificationListView> {
+  late final MemberVerificationCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = getIt<MemberVerificationCubit>()..fetchPendingMembers();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<MemberVerificationCubit>()..fetchPendingMembers(),
+    return BlocProvider.value(
+      value: _cubit,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
@@ -65,11 +80,15 @@ class MemberVerificationListView extends StatelessWidget {
                     final member = members[index];
                     return MemberVerificationCard(
                       member: member,
-                      onTap: () {
-                        context.push(
+                      onTap: () async {
+                        await context.push(
                           AppRoutes.kMemberVerificationDetailView,
                           extra: member,
                         );
+                        // Refresh the list after returning from detail screen
+                        if (context.mounted) {
+                          _cubit.fetchPendingMembers();
+                        }
                       },
                     );
                   },

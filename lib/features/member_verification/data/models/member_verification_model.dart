@@ -41,17 +41,21 @@ class MemberDocumentModel {
   }
 
   factory MemberDocumentModel.fromJson(Map<String, dynamic> json) {
-    String docTitle = json['title'] ?? json['type'] ?? json['documentType'] ?? 'مستند مرفق';
+    String docTitle = json['title'] ?? json['type'] ?? json['documentType'] ?? json['docType'] ?? 'مستند مرفق';
     if (docTitle == 'NATIONAL_ID' || docTitle == 'national_id') {
       docTitle = 'صورة البطاقة الشخصية';
-    } else if (docTitle == 'INCOME_PROOF' || docTitle == 'salary' || docTitle == 'income') {
-      docTitle = 'المرتب';
+    } else if (docTitle == 'PROOF_OF_INCOME' || docTitle == 'INCOME_PROOF' || docTitle == 'salary' || docTitle == 'income') {
+      docTitle = 'إثبات الدخل / المرتب';
+    } else if (docTitle == 'UTILITY_BILL') {
+      docTitle = 'وصل مرافق';
+    } else if (docTitle == 'PASSPORT') {
+      docTitle = 'جواز السفر';
     }
 
     return MemberDocumentModel(
       id: json['id']?.toString() ?? '',
       title: docTitle,
-      imageUrl: json['imageUrl'] ?? json['fileUrl'] ?? json['url'] ?? '',
+      imageUrl: json['imageUrl'] ?? json['fileUrl'] ?? json['url'] ?? json['encryptedObjectRef'] ?? '',
       status: json['status'] == 'APPROVED'
           ? DocumentVerificationStatus.approved
           : json['status'] == 'REJECTED'
@@ -140,9 +144,11 @@ class MemberVerificationModel {
       avatarUrl: customerObj['avatarUrl'] ??
           customerObj['profileImage'] ??
           json['avatarUrl'],
-      status: json['status'] == 'PENDING'
-          ? 'قيد الانتظار'
-          : (json['status'] ?? 'قيد الانتظار'),
+      status: _mapStatusToArabic(
+          json['status']?.toString() ??
+          (json['identityProfile'] is Map ? json['identityProfile']['kycStatus']?.toString() : null) ??
+          customerObj['status']?.toString()
+        ),
       documents: () {
         final parsedDocs = (json['documents'] as List<dynamic>?)
             ?.map((e) => MemberDocumentModel.fromJson(e as Map<String, dynamic>))
@@ -150,22 +156,53 @@ class MemberVerificationModel {
         if (parsedDocs != null && parsedDocs.isNotEmpty) {
           return parsedDocs;
         }
-        return [
-          MemberDocumentModel(
-            id: 'doc_1',
-            title: 'صورة البطاقة الشخصية',
-            imageUrl: 'https://placeholder.co/600x400/png',
-          ),
-          MemberDocumentModel(
-            id: 'doc_2',
-            title: 'المرتب',
-            imageUrl: 'https://placeholder.co/600x400/png',
-          ),
-        ];
+        // If json itself represents a document item (e.g. from GET /admin/kyc/pending-documents)
+        if (json.containsKey('fileUrl') ||
+            json.containsKey('url') ||
+            json.containsKey('imageUrl') ||
+            json.containsKey('documentType') ||
+            json.containsKey('docType') ||
+            json.containsKey('encryptedObjectRef') ||
+            (json.containsKey('type') && json['type'] != null)) {
+          final doc = MemberDocumentModel.fromJson(json);
+          if (doc.id.isNotEmpty) {
+            return [doc];
+          }
+        }
+        return <MemberDocumentModel>[];
       }(),
       estimatedAmount:
           (json['estimatedAmount'] ?? json['maxMonthlyInstallmentLimit'] as num?)
               ?.toDouble(),
     );
+  }
+
+  static String _mapStatusToArabic(String? status) {
+    switch (status) {
+      case 'PENDING':
+        return 'قيد الانتظار';
+      case 'UNDER_REVIEW':
+        return 'تحت المراجعة';
+      case 'APPROVED':
+        return 'تمت الموافقة';
+      case 'REJECTED':
+        return 'مرفوض';
+      case 'ACTIVE':
+        return 'نشط';
+      case 'INACTIVE':
+        return 'غير نشط';
+      case 'SUSPENDED':
+        return 'موقوف';
+      case 'NOT_STARTED':
+        return 'لم يبدأ بعد';
+      case 'ELIGIBLE':
+        return 'مؤهل';
+      case 'INELIGIBLE':
+        return 'غير مؤهل';
+      case 'MANUAL_REVIEW':
+        return 'مراجعة يدوية';
+      default:
+        return status ?? 'قيد الانتظار';
+    }
   }
 }

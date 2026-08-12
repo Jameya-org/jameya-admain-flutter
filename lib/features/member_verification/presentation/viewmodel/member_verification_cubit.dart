@@ -96,13 +96,15 @@ class MemberVerificationCubit extends Cubit<MemberVerificationState> {
       // 1. Review each modified document via API
       for (final doc in _currentDocuments) {
         if (doc.status != DocumentVerificationStatus.pending) {
-          await repo.reviewDocument(
-            documentId: doc.id,
-            status: doc.status == DocumentVerificationStatus.approved
-                ? 'APPROVED'
-                : 'REJECTED',
-            rejectionReason: doc.rejectionReason,
-          );
+          if (doc.id.isNotEmpty && !doc.id.startsWith('doc_')) {
+            await repo.reviewDocument(
+              documentId: doc.id,
+              status: doc.status == DocumentVerificationStatus.approved
+                  ? 'APPROVED'
+                  : 'REJECTED',
+              rejectionReason: doc.rejectionReason,
+            );
+          }
         }
       }
 
