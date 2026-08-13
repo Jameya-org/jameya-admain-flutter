@@ -12,7 +12,9 @@ class SocietyEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
           child: Column(
