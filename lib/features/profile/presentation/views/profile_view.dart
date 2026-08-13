@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/functions/logout.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../view_model/profile_cubit.dart';
@@ -55,8 +56,11 @@ class ProfileView extends StatelessWidget {
                     SizedBox(height: 24.h),
 
                     ProfileLogoutButton(
-                      onPressed: () {
-                        context.push(AppRoutes.kMembersView);
+                      onPressed: () async {
+                        await logout();
+
+                        if (!context.mounted) return;
+                        context.go(AppRoutes.kAdminLoginView);
                       },
                     ),
                   ],

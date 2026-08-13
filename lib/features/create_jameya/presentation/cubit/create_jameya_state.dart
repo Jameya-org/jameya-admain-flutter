@@ -66,12 +66,16 @@ class CreateJameyaState {
   final bool success;
   final String? error;
 
+  /// ID of the jameya returned by the create API (available on success).
+  final String? createdId;
+
   const CreateJameyaState({
     this.currentStep = 0,
     this.form = const CreateJameyaFormData(),
     this.loading = false,
     this.success = false,
     this.error,
+    this.createdId,
   });
 
   CreateJameyaState copyWith({
@@ -80,6 +84,7 @@ class CreateJameyaState {
     bool? loading,
     bool? success,
     String? error,
+    String? createdId,
     bool clearError = false,
   }) {
     return CreateJameyaState(
@@ -88,6 +93,7 @@ class CreateJameyaState {
       loading: loading ?? this.loading,
       success: success ?? this.success,
       error: clearError ? null : (error ?? this.error),
+      createdId: createdId ?? this.createdId,
     );
   }
 }

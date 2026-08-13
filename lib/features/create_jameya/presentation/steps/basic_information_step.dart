@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +11,7 @@ import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_ja
 import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_state.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/widgets/create_jameya_step_layout.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/widgets/duration_selector.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/widgets/installment_amount_selector.dart';
 
 /// Step 0 — collect duration, installment amount, and displays the auto-total.
 class BasicInformationStep extends StatefulWidget {
@@ -22,7 +22,6 @@ class BasicInformationStep extends StatefulWidget {
 }
 
 class _BasicInformationStepState extends State<BasicInformationStep> {
-  late final TextEditingController _installmentController;
   late final TextEditingController _totalController;
 
   final _numberFormat = NumberFormat('#,##0', 'en_US');
@@ -31,11 +30,6 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
   void initState() {
     super.initState();
     final form = context.read<CreateJameyaCubit>().state.form;
-    _installmentController = TextEditingController(
-      text: form.installmentAmount != null && form.installmentAmount! > 0
-          ? form.installmentAmount!.toInt().toString()
-          : '',
-    );
     _totalController = TextEditingController(
       text: form.totalAmount != null
           ? _numberFormat.format(form.totalAmount!)
@@ -45,7 +39,6 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
 
   @override
   void dispose() {
-    _installmentController.dispose();
     _totalController.dispose();
     super.dispose();
   }
@@ -86,34 +79,9 @@ class _BasicInformationStepState extends State<BasicInformationStep> {
               SizedBox(height: 28.h),
 
               // ── Installment amount ─────────────────────────────────────────
-              Text(
-                'قيمة قسط الجمعية',
-                style: AppTextStyles.bodySmall.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              TextField(
-                controller: _installmentController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: false,
-                ),
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                textAlign: TextAlign.right,
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textPrimary,
-                ),
-                decoration: _fieldDecoration(),
-                onChanged: (value) {
-                  final amount = double.tryParse(value) ?? 0;
-                  cubit.setInstallmentAmount(amount);
-                },
-              ),
-              SizedBox(height: 6.h),
-              Text(
-                'يجب اختيار رقم صحيح',
-                style: AppTextStyles.label.copyWith(color: AppColors.textHint),
+              InstallmentAmountSelector(
+                selectedAmount: state.form.installmentAmount,
+                onSelected: cubit.setInstallmentAmount,
               ),
               SizedBox(height: 20.h),
 

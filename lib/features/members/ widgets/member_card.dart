@@ -24,7 +24,9 @@ class MemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 96.h,
+      constraints: BoxConstraints(
+        minHeight: 96.h,
+      ),
       padding: EdgeInsets.symmetric(
         horizontal: 18.w,
         vertical: 10.h,

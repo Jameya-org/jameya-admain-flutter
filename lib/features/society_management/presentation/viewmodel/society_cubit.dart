@@ -22,6 +22,15 @@ class SocietyCubit extends Cubit<SocietyState> {
     }
   }
 
+  Future<void> refreshSocieties() async {
+    try {
+      _allSocieties = await _societyRepo.getCircles();
+      _emitLoadedState();
+    } catch (e) {
+      emit(SocietyError(e.toString()));
+    }
+  }
+
   void search(String query) {
     _searchQuery = query;
     _emitLoadedState();

@@ -38,8 +38,8 @@ class CreateJameyaRequestModel {
   }
 
   Map<String, dynamic> toJson() => {
-    'amount': amount,
-    'contributionAmount': contributionAmount,
+    'amount': amount.toInt(),
+    'contributionAmount': contributionAmount.toInt(),
     'durationMonths': durationMonths,
     'memberCapacity': memberCapacity,
     'cycleFrequency': cycleFrequency,

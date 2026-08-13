@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:jameya_admin/core/services/api_config.dart';
 import 'package:jameya_admin/features/create_jameya/data/datasource/create_jameya_exception.dart';
 import 'package:jameya_admin/features/create_jameya/data/datasource/create_jameya_remote_data_source.dart';
@@ -18,9 +19,17 @@ class CreateJameyaRemoteDataSourceImpl implements CreateJameyaRemoteDataSource {
     CreateJameyaRequestModel request,
   ) async {
     try {
+      debugPrint(
+        '>> [CreateJameya] about to POST ${ApiConfig.createCircle} '
+        'body=${request.toJson()}',
+      );
       final response = await _dio.post(
         ApiConfig.createCircle,
         data: request.toJson(),
+      );
+      debugPrint(
+        '>> [CreateJameya] response status=${response.statusCode} '
+        'data=${response.data}',
       );
 
       // 201 Created — parse the circle draft
@@ -28,6 +37,7 @@ class CreateJameyaRemoteDataSourceImpl implements CreateJameyaRemoteDataSource {
         response.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
+      debugPrint('>> [CreateJameya] DioException: ${_mapDioError(e)}');
       // Convert Dio errors into readable messages for the Cubit to handle
       throw _mapDioError(e);
     }

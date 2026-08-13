@@ -96,21 +96,39 @@ class CreateJameyaCubit extends Cubit<CreateJameyaState> {
   // ─── Submit ────────────────────────────────────────────────────────────────
 
   Future<void> submitCreateJameya() async {
+    debugPrint('>> [CreateJameya] submitCreateJameya() entered');
+    if (state.loading) return; // Prevent duplicate submissions
     final form = state.form;
-    if (!form.isBasicInfoValid || !form.isScheduleValid) return;
-
+    if (!form.isBasicInfoValid || !form.isScheduleValid) {
+      debugPrint(
+        '>> [CreateJameya] validation FAILED '
+        '(basic=${form.isBasicInfoValid}, schedule=${form.isScheduleValid})',
+      );
+      return;
+    }
+    debugPrint('>> [CreateJameya] validation passed');
+    if (isClosed) return;
     emit(state.copyWith(loading: true, clearError: true));
 
     try {
-      await _createJameyaUseCase(form.toEntity());
+      debugPrint('>> [CreateJameya] calling use case');
+      final response = await _createJameyaUseCase(form.toEntity());
+      if (isClosed) return;
+      debugPrint(
+        '>> [CreateJameya] use case succeeded '
+        'id=${response.id} status=${response.status}',
+      );
       emit(
         state.copyWith(
           loading: false,
           success: true,
+          createdId: response.id,
           currentStep: totalFormSteps, // Navigate to success screen
         ),
       );
     } catch (e) {
+      if (isClosed) return;
+      debugPrint('>> [CreateJameya] use case threw: $e');
       emit(state.copyWith(loading: false, error: e.toString()));
     }
   }

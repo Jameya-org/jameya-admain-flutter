@@ -22,102 +22,107 @@ class MembersView extends StatelessWidget {
         child: Scaffold(
           backgroundColor: AppColors.background,
           body: SafeArea(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: 16.h),
+            child: RefreshIndicator(
+              onRefresh: () => context.read<MembersCubit>().refresh(),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 16.h),
 
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => context.pop(),
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: AppColors.primary,
-                            size: 24.sp,
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => context.pop(),
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: AppColors.primary,
+                              size: 24.sp,
+                            ),
                           ),
-                        ),
 
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              'إدارة الأعضاء',
-                              style: AppTextStyles.headline.copyWith(
-                                color: AppColors.primary,
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                'إدارة الأعضاء',
+                                style: AppTextStyles.headline.copyWith(
+                                  color: AppColors.primary,
+                                ),
                               ),
                             ),
                           ),
-                        ),
 
-                        SizedBox(width: 48.w),
-                      ],
-                    ),
+                          SizedBox(width: 48.w),
+                        ],
+                      ),
 
-                    SizedBox(height: 20.h),
+                      SizedBox(height: 20.h),
 
-                    const MembersSearchField(),
+                      const MembersSearchField(),
 
-                    SizedBox(height: 16.h),
+                      SizedBox(height: 16.h),
 
-                    const StatusFilter(),
+                      const StatusFilter(),
 
-                    SizedBox(height: 20.h),
+                      SizedBox(height: 20.h),
 
-                    BlocBuilder<MembersCubit, MembersState>(
-                      builder: (context, state) {
-                        if (state is MembersLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (state is MembersFailure) {
-                          return Center(
-                            child: Text(state.message),
-                          );
-                        }
-
-                        if (state is MembersSuccess) {
-                          if (state.members.isEmpty) {
+                      BlocBuilder<MembersCubit, MembersState>(
+                        builder: (context, state) {
+                          if (state is MembersLoading) {
                             return const Center(
-                              child: Text('لا يوجد أعضاء'),
+                              child: CircularProgressIndicator(),
                             );
                           }
 
-                          return ListView.separated(
-                            shrinkWrap: true,
-                            physics:
-                            const NeverScrollableScrollPhysics(),
-                            itemCount: state.members.length,
-                            separatorBuilder: (_, __) =>
-                                SizedBox(height: 16.h),
-                            itemBuilder: (_, index) {
-                              final member = state.members[index];
+                          if (state is MembersFailure) {
+                            return Center(
+                              child: Text(state.message),
+                            );
+                          }
 
-                              debugPrint('================ MEMBER DEBUG ================');
-                              debugPrint('MEMBER ID: ${member.id}');
-                              debugPrint('MEMBER NAME: ${member.name}');
-                              debugPrint('==============================================');
-                             return MemberCard(
-                                id: member.id,
-                                name: member.name,
-                                phone: member.phone,
-                                status: member.kycStatus,
+                          if (state is MembersSuccess) {
+                            if (state.members.isEmpty) {
+                              return const Center(
+                                child: Text('لا يوجد أعضاء'),
                               );
-                            },
-                          );
-                        }
+                            }
 
-                        return const SizedBox();
-                      },
-                    ),
+                            return ListView.separated(
+                              shrinkWrap: true,
+                              physics:
+                              const NeverScrollableScrollPhysics(),
+                              itemCount: state.members.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(height: 16.h),
+                              itemBuilder: (_, index) {
+                                final member = state.members[index];
 
-                    SizedBox(height: 20.h),
-                  ],
+                                debugPrint('================ MEMBER DEBUG ================');
+                                debugPrint('MEMBER ID: ${member.id}');
+                                debugPrint('MEMBER NAME: ${member.name}');
+                                debugPrint('==============================================');
+                               return MemberCard(
+                                  id: member.id,
+                                  name: member.name,
+                                  phone: member.phone,
+                                  status: member.kycStatus,
+                                );
+                              },
+                            );
+                          }
+
+                          return const SizedBox();
+                        },
+                      ),
+
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
                 ),
               ),
             ),
