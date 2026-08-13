@@ -1,15 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jameya_admin/core/routing/routes.dart';
 import 'package:jameya_admin/core/utils/app_colors.dart';
 import 'package:jameya_admin/core/utils/app_text_styles.dart';
 import 'package:jameya_admin/core/widgets/custom_button.dart';
 import 'package:jameya_admin/core/widgets/custom_outlined_button.dart';
 import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_cubit.dart';
+import 'package:jameya_admin/features/create_jameya/presentation/cubit/create_jameya_state.dart';
+import 'package:jameya_admin/features/society_management/data/models/society_model.dart';
 
 /// Step 3 — success confirmation screen.
 /// No progress indicator or dismiss arrow — this is the terminal state.
 class SuccessStep extends StatelessWidget {
   const SuccessStep({super.key});
+
+  /// Builds a [SocietyModel] for the freshly created jameya from the
+  /// create response ID plus the wizard form data.
+  SocietyModel _buildCreatedSociety(CreateJameyaState state) {
+    final String createdId = state.createdId ?? '';
+    final form = state.form;
+    final startDate = form.startDate;
+
+    return SocietyModel(
+      id: createdId,
+      code: createdId.length > 8
+          ? createdId.substring(0, 8)
+          : createdId,
+      name: '',
+      status: 'مسودة',
+      currentTurn: 1,
+      monthlyAmount: form.installmentAmount ?? 0,
+      startDate: startDate?.toIso8601String() ?? '',
+      endDate: (startDate != null && form.duration != null)
+          ? startDate
+              .add(Duration(days: form.duration! * 30))
+              .toIso8601String()
+          : '',
+      duration: '${form.duration ?? 12}',
+      iconType: 'waiting',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +95,31 @@ class SuccessStep extends StatelessWidget {
                   CustomButton(
                     text: 'العودة للرئيسية',
                     onPressed: () {
-                      // Reset wizard state and navigate home
+                      // Reset wizard state and navigate to the Admin Home,
+                      // replacing the create wizard stack entirely.
                       CreateJameyaCubit.get(context).reset();
-                      Navigator.of(context).maybePop();
+                      context.go(AppRoutes.kHomeView);
                     },
                   ),
                   SizedBox(height: 12.h),
                   CustomOutlinedButton(
                     text: 'تفاصيل الجمعية',
                     onPressed: () {
-                      // TODO: Navigate to the jameya details screen when available
-                      Navigator.of(context).maybePop();
+                      final state = CreateJameyaCubit.get(context).state;
+                      final createdId = state.createdId;
+
+                      if (createdId == null || createdId.isEmpty) {
+                        CreateJameyaCubit.get(context).reset();
+                        context.go(AppRoutes.kHomeView);
+                        return;
+                      }
+
+                      // Replace the wizard with the details screen so Back
+                      // returns to Home instead of the creation flow.
+                      context.pushReplacement(
+                        AppRoutes.kSocietyDetailsView,
+                        extra: _buildCreatedSociety(state),
+                      );
                     },
                   ),
                 ],

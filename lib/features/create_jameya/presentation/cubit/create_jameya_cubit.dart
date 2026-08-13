@@ -112,13 +112,17 @@ class CreateJameyaCubit extends Cubit<CreateJameyaState> {
 
     try {
       debugPrint('>> [CreateJameya] calling use case');
-      await _createJameyaUseCase(form.toEntity());
+      final response = await _createJameyaUseCase(form.toEntity());
       if (isClosed) return;
-      debugPrint('>> [CreateJameya] use case succeeded');
+      debugPrint(
+        '>> [CreateJameya] use case succeeded '
+        'id=${response.id} status=${response.status}',
+      );
       emit(
         state.copyWith(
           loading: false,
           success: true,
+          createdId: response.id,
           currentStep: totalFormSteps, // Navigate to success screen
         ),
       );
